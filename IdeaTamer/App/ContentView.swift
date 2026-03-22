@@ -20,7 +20,7 @@ struct ContentView: View {
 
             Tab("Duel", systemImage: "figure.fencing", value: "duel") {
                 NavigationStack {
-                    DuelPlaceholder()
+                    DuelView()
                 }
             }
 

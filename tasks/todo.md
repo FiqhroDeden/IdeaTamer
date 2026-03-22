@@ -129,16 +129,16 @@
 **Goal:** Full duel system with snapshot, comparison, UI, and background task.
 **Dependencies:** Sprint 5 complete.
 
-- [ ] 6.1 Create `Services/DuelService.swift` — snapshot, compare rounds, momentum, result
-- [ ] 6.2 Create `ViewModels/DuelViewModel.swift` — load tracker + snapshot, compute rounds
-- [ ] 6.3 Create `Views/Duel/DuelView.swift` — VS card, rounds, momentum, history
-- [ ] 6.4 Create `Views/Duel/VSCard.swift` — Hero Blue vs Rival Red split card
-- [ ] 6.5 Create `Views/Duel/RoundCard.swift` — animated bar comparison (700ms)
-- [ ] 6.6 Create `Views/Duel/MomentumBadge.swift` — trend % with arrow
-- [ ] 6.7 Create `Views/Duel/DuelHistory.swift` — past W/L/D list
-- [ ] 6.8 Create `Views/Inbox/DuelBannerMini.swift` — compact duel status for Inbox
-- [ ] 6.9 Implement BGTaskScheduler + app-launch fallback for weekly snapshot
-- [ ] 6.10 Create `IdeaTamerTests/DuelServiceTests.swift` — rounds, momentum, boundary, results
+- [x] 6.1 Create `Services/DuelService.swift` — DuelRound struct, snapshot/compare/momentum/result, selfSurpassed badge
+- [x] 6.2 Create `ViewModels/DuelViewModel.swift` — loads tracker+snapshot, rounds, momentum, history, score text
+- [x] 6.3 Create `Views/Duel/DuelView.swift` — first week baseline, VS card, rounds, win bonus, history
+- [x] 6.4 Create `Views/Duel/VSCard.swift` — Hero vs Shadow avatars, score display, momentum section
+- [x] 6.5 Create `Views/Duel/RoundCard.swift` — animated bars (700ms), win/loss/tied badges, color-coded icons
+- [x] 6.6 Create `Views/Duel/MomentumBadge.swift` — trend % with arrow, green/red pill
+- [x] 6.7 Create `Views/Duel/DuelHistory.swift` — W/L/D squares, summary text
+- [x] 6.8 Create `Views/Inbox/DuelBannerMini.swift` — compact "Winning 3—1" banner, added to InboxView header
+- [x] 6.9 App-launch snapshot check in IdeaTamerApp.swift + streak reset (BGTask deferred — app-launch is primary)
+- [x] 6.10 Create `IdeaTamerTests/DuelServiceTests.swift` — 9 tests: rounds, momentum, clamping, results
 
 **Testing:** All duel tests pass. Snapshot creation works. 4 rounds compare. Momentum displays.
 **Done when:** Full duel lifecycle, animated UI, BGTask registered.

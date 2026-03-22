@@ -29,6 +29,12 @@ struct IdeaTamerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .task {
+                    let context = sharedModelContainer.mainContext
+                    DuelService.checkAndCreateSnapshot(context: context)
+                    let profile = PlayerProfile.fetchOrCreate(context: context)
+                    StreakService.checkStreakReset(profile: profile)
+                }
         }
         .modelContainer(sharedModelContainer)
     }

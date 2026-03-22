@@ -92,6 +92,8 @@ struct InboxView: View {
 
     private var headerAndCapture: some View {
         VStack(spacing: 12) {
+            DuelBannerMini()
+
             Text("Master your\nthoughts.")
                 .font(.brand(.display))
                 .foregroundStyle(Color.textPrimary)

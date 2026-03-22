@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import UIKit
 
 struct InboxView: View {
     @Environment(\.modelContext) private var modelContext

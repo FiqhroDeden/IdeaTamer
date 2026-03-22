@@ -93,12 +93,12 @@
 **Goal:** Ranked vault view with activation and detail sheet.
 **Dependencies:** Sprint 2, 3 complete.
 
-- [ ] 4.1 Create `Views/Park/ParkView.swift` — @Query .parked sorted by score desc
-- [ ] 4.2 Create `Views/Park/RankedQuestCard.swift` — rank #, title, ScoreBadge, activate button
-- [ ] 4.3 Create `Views/Park/VaultStats.swift` — total count, avg score, highest score
-- [ ] 4.4 Create `Views/Park/IdeaDetailSheet.swift` — edit title/desc, re-score, activate/park/delete
-- [ ] 4.5 Wire ParkView into ContentView tab with ParkViewModel
-- [ ] 4.6 Connect cross-tab activation flow (Park→Focus, Focus→Park)
+- [x] 4.1 Create `Views/Park/ParkView.swift` — @Query .parked sorted by score desc, VaultStats header
+- [x] 4.2 Create `Views/Park/RankedQuestCard.swift` — rank #, title, ScoreBadge, activate button
+- [x] 4.3 Create `Views/Park/VaultStats.swift` — 3-column grid: total, high (≥70), avg score
+- [x] 4.4 Create `Views/Park/IdeaDetailSheet.swift` — edit title/desc, re-score, activate/delete with confirmations
+- [x] 4.5 Wire ParkView into ContentView tab replacing placeholder
+- [x] 4.6 Cross-tab activation: Park→Focus via ParkViewModel, one-active alert, detail sheet activate
 
 **Testing:** Park shows ranked ideas. Activate → appears in Focus. Detail sheet edits work.
 **Done when:** Full cross-tab flow, detail sheet, one-active alert.

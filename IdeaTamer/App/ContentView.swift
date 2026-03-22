@@ -26,7 +26,7 @@ struct ContentView: View {
 
             Tab("Park", systemImage: "square.grid.2x2.fill", value: "park") {
                 NavigationStack {
-                    ParkPlaceholder()
+                    ParkView()
                 }
             }
 

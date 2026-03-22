@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IdeaTamer — Compete With Yourself</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: {
+    "hero":       "#1B6EF2", "hero-dim": "#0A4FBD", "hero-deep": "#0A3578",
+    "hero-light": "#A8C8FF", "hero-bg":  "#EBF2FF",
+    "rival":      "#E5432A", "rival-dim":"#B22D18", "rival-deep":"#721C0F",
+    "rival-light":"#FFB8AA", "rival-bg": "#FFF0ED",
+    "victory":    "#12B76A", "victory-dim":"#0D7A48", "victory-bg":"#E6F7EF", "victory-light":"#5CE0A0",
+    "streak":     "#F5A623", "streak-dim":"#B87A0A", "streak-bg":"#FFF6E5", "streak-light":"#FFCB57",
+    "surface":    "#F8F7F6", "surface-low":"#F1F0EF", "surface-high":"#E3E2E0",
+    "card":       "#FFFFFF",
+    "txt":        "#2E2F2F", "txt-mid":"#5B5C5B", "txt-light":"#8A8B8A",
+  },
+  fontFamily: { "sans": ["Plus Jakarta Sans","system-ui","sans-serif"] },
+}}}
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .filled { font-variation-settings: 'FILL' 1, 'wght' 400; }
+  .shadow { box-shadow: 0 8px 28px -4px rgba(10,53,120,0.07); }
+  .screen { display:none; animation: fadeIn .35s ease; }
+  .screen.active { display:block; }
+  .scroll-area { -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .scroll-area::-webkit-scrollbar { display:none; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fire { 0%,100%{transform:rotate(-3deg) scale(1)} 50%{transform:rotate(3deg) scale(1.08)} }
+  .fire { animation: fire .5s ease-in-out infinite; display:inline-block; }
+  @keyframes barGrow { from{width:0} }
+  .bar-grow { animation: barGrow .7s cubic-bezier(.4,0,.2,1) forwards; }
+  @keyframes pulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+  .pulse { animation: pulse 2s ease-in-out infinite; }
+  @keyframes confettiFall { 0%{opacity:1;transform:translateY(-10px) rotate(0)} 100%{opacity:0;transform:translateY(550px) rotate(720deg)} }
+  @keyframes slideUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  .su { animation: slideUp .4s ease forwards; }
+  .su1{animation-delay:.05s;opacity:0} .su2{animation-delay:.1s;opacity:0} .su3{animation-delay:.15s;opacity:0} .su4{animation-delay:.2s;opacity:0}
+  @keyframes heroGlow { 0%,100%{box-shadow:0 0 0 0 rgba(27,110,242,.15)} 50%{box-shadow:0 0 20px 6px rgba(27,110,242,.12)} }
+  .hero-glow { animation: heroGlow 2.5s ease-in-out infinite; }
+  /* Onboarding */
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .float { animation: float 3s ease-in-out infinite; }
+  .float-d { animation: float 3s ease-in-out infinite; animation-delay:.5s; }
+  @keyframes scaleIn { from{transform:scale(.9);opacity:0} to{transform:scale(1);opacity:1} }
+  .scale-in { animation: scaleIn .5s ease; }
+  body { min-height:100dvh; overflow-x:hidden; }
+</style>
+</head>
+<body class="bg-txt font-sans text-txt">
+<div class="min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-[#0a1628] via-[#0f2240] to-[#081830] py-8 px-4">
+
+  <!-- Header -->
+  <div class="text-center mb-6">
+    <div class="flex items-center justify-center gap-2.5 mb-1.5">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-hero to-hero-dim flex items-center justify-center shadow-lg shadow-hero/30">
+        <span class="material-symbols-outlined text-white text-lg filled">swords</span>
+      </div>
+      <h1 class="text-2xl font-extrabold tracking-tight text-white">IdeaTamer</h1>
+    </div>
+    <p class="text-hero-light/80 text-sm font-bold">"Compete with yourself."</p>
+    <p class="text-white/20 text-[11px] mt-1">The only obstacle is who you were last week.</p>
+  </div>
+
+  <!-- Phone -->
+  <div class="relative" style="width:393px">
+    <div class="bg-black rounded-[48px] p-[10px] shadow-[0_40px_100px_rgba(0,0,0,.5)]" style="width:393px">
+      <div class="absolute top-[10px] left-1/2 -translate-x-1/2 w-[126px] h-[35px] bg-black rounded-b-[20px] z-50"></div>
+      <div class="bg-surface rounded-[38px] overflow-hidden relative" style="height:852px" id="phone">
+
+        <!-- Onboarding Wrapper (shown first) -->
+        <div id="onboarding" class="absolute inset-0 z-40">
+
+          <!-- Page 1 -->
+          <div id="ob1" class="absolute inset-0 bg-gradient-to-b from-[#F8F7F6] to-hero-bg flex flex-col transition-opacity duration-300">
+            <div class="h-[54px]"></div>
+            <button onclick="skipOnboarding()" class="absolute top-[58px] right-6 text-hero text-[13px] font-bold z-10">Skip</button>
+            <div class="flex-1 flex flex-col items-center justify-center px-10">
+              <!-- Illustration: overwhelmed by ideas -->
+              <div class="relative w-48 h-48 mb-6">
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="w-20 h-20 rounded-2xl bg-hero/10 flex items-center justify-center float">
+                    <span class="material-symbols-outlined text-hero text-4xl filled">person</span>
+                  </div>
+                </div>
+                <!-- Scattered idea bubbles -->
+                <div class="absolute top-2 left-4 w-9 h-9 rounded-full bg-rival-bg border border-rival-light/40 flex items-center justify-center float" style="animation-delay:.2s"><span class="material-symbols-outlined text-rival/60 text-sm">lightbulb</span></div>
+                <div class="absolute top-0 right-6 w-8 h-8 rounded-full bg-streak-bg border border-streak-light/40 flex items-center justify-center float" style="animation-delay:.8s"><span class="material-symbols-outlined text-streak/60 text-sm">lightbulb</span></div>
+                <div class="absolute top-10 right-0 w-7 h-7 rounded-full bg-rival-bg/60 float" style="animation-delay:1.2s"></div>
+                <div class="absolute bottom-6 left-2 w-10 h-10 rounded-full bg-hero-bg border border-hero-light/40 flex items-center justify-center float-d"><span class="material-symbols-outlined text-hero/50 text-sm">lightbulb</span></div>
+                <div class="absolute bottom-2 right-4 w-8 h-8 rounded-full bg-victory-bg border border-victory-light/30 flex items-center justify-center float" style="animation-delay:.6s"><span class="material-symbols-outlined text-victory/50 text-sm">lightbulb</span></div>
+                <div class="absolute bottom-14 right-0 w-6 h-6 rounded-full bg-streak-bg/50 float-d"></div>
+                <div class="absolute top-16 left-0 w-6 h-6 rounded-full bg-rival-bg/40 float" style="animation-delay:1.5s"></div>
+              </div>
+              <h2 class="text-[26px] font-extrabold text-txt text-center leading-tight mb-3">You have too<br/>many ideas.</h2>
+              <p class="text-txt-mid text-[14px] text-center leading-relaxed max-w-[260px]">And that's the problem. More ideas won't help. <span class="font-bold text-txt">Finishing one will.</span></p>
+            </div>
+            <div class="flex justify-center gap-2 pb-10">
+              <div class="w-6 h-2 rounded-full bg-hero"></div>
+              <div class="w-2 h-2 rounded-full bg-txt/15"></div>
+              <div class="w-2 h-2 rounded-full bg-txt/15"></div>
+            </div>
+            <button onclick="goOb(2)" class="absolute bottom-16 left-1/2 -translate-x-1/2 text-hero text-[13px] font-bold flex items-center gap-1">Next <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+          </div>
+
+          <!-- Page 2 -->
+          <div id="ob2" class="absolute inset-0 bg-gradient-to-b from-[#F8F7F6] to-[#FFF0ED] flex flex-col opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="h-[54px]"></div>
+            <button onclick="skipOnboarding()" class="absolute top-[58px] right-6 text-hero text-[13px] font-bold z-10">Skip</button>
+            <div class="flex-1 flex flex-col items-center justify-center px-10">
+              <!-- Illustration: VS -->
+              <div class="relative w-56 h-44 mb-6 flex items-center justify-center gap-5">
+                <div class="flex flex-col items-center float">
+                  <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-hero to-hero-dim flex items-center justify-center shadow-lg shadow-hero/25">
+                    <span class="text-2xl font-black text-white">Y</span>
+                  </div>
+                  <span class="text-[10px] font-bold text-hero mt-2 uppercase tracking-wider">You now</span>
+                </div>
+                <div class="flex flex-col items-center">
+                  <span class="text-2xl font-black text-txt/20">VS</span>
+                </div>
+                <div class="flex flex-col items-center float-d">
+                  <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-rival to-rival-dim flex items-center justify-center shadow-lg shadow-rival/25">
+                    <span class="material-symbols-outlined text-white text-2xl filled">person</span>
+                  </div>
+                  <span class="text-[10px] font-bold text-rival mt-2 uppercase tracking-wider">Past you</span>
+                </div>
+              </div>
+              <h2 class="text-[26px] font-extrabold text-txt text-center leading-tight mb-3">Your only rival<br/>is <span class="text-rival">yesterday's you.</span></h2>
+              <p class="text-txt-mid text-[14px] text-center leading-relaxed max-w-[260px]">Every week, you duel your past self. Beat them in XP, milestones, and streaks to <span class="font-bold text-victory">level up.</span></p>
+            </div>
+            <div class="flex justify-center gap-2 pb-10">
+              <div class="w-2 h-2 rounded-full bg-txt/15"></div>
+              <div class="w-6 h-2 rounded-full bg-rival"></div>
+              <div class="w-2 h-2 rounded-full bg-txt/15"></div>
+            </div>
+            <button onclick="goOb(3)" class="absolute bottom-16 left-1/2 -translate-x-1/2 text-hero text-[13px] font-bold flex items-center gap-1">Next <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+          </div>
+
+          <!-- Page 3 -->
+          <div id="ob3" class="absolute inset-0 bg-gradient-to-b from-[#F8F7F6] to-victory-bg flex flex-col opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="h-[54px]"></div>
+            <div class="flex-1 flex flex-col items-center justify-center px-8">
+              <!-- 4-step flow -->
+              <div class="flex items-center gap-2 mb-6 scale-in">
+                <div class="flex flex-col items-center">
+                  <div class="w-12 h-12 rounded-2xl bg-card shadow flex items-center justify-center border border-hero/10"><span class="material-symbols-outlined text-hero text-xl filled">lightbulb</span></div>
+                  <span class="text-[9px] font-bold text-txt-mid mt-1.5 uppercase tracking-wider">Capture</span>
+                </div>
+                <div class="w-4 border-t border-dashed border-txt/15"></div>
+                <div class="flex flex-col items-center">
+                  <div class="w-12 h-12 rounded-2xl bg-card shadow flex items-center justify-center border border-streak/10"><span class="material-symbols-outlined text-streak text-xl filled">analytics</span></div>
+                  <span class="text-[9px] font-bold text-txt-mid mt-1.5 uppercase tracking-wider">Score</span>
+                </div>
+                <div class="w-4 border-t border-dashed border-txt/15"></div>
+                <div class="flex flex-col items-center">
+                  <div class="w-12 h-12 rounded-2xl bg-card shadow flex items-center justify-center border border-rival/10"><span class="material-symbols-outlined text-rival text-xl filled">swords</span></div>
+                  <span class="text-[9px] font-bold text-txt-mid mt-1.5 uppercase tracking-wider">Focus</span>
+                </div>
+                <div class="w-4 border-t border-dashed border-txt/15"></div>
+                <div class="flex flex-col items-center">
+                  <div class="w-12 h-12 rounded-2xl bg-card shadow flex items-center justify-center border border-victory/10"><span class="material-symbols-outlined text-victory text-xl filled">emoji_events</span></div>
+                  <span class="text-[9px] font-bold text-txt-mid mt-1.5 uppercase tracking-wider">Ship</span>
+                </div>
+              </div>
+              <h2 class="text-[26px] font-extrabold text-txt text-center leading-tight mb-3">Capture. Score.<br/>Focus. <span class="text-victory">Ship.</span></h2>
+              <p class="text-txt-mid text-[14px] text-center leading-relaxed max-w-[260px] mb-8">One quest at a time. Earn XP. Beat your shadow. Share your wins with the world.</p>
+              <button onclick="skipOnboarding()" class="w-full max-w-[260px] py-3.5 bg-gradient-to-r from-hero to-hero-dim text-white rounded-2xl font-bold text-[15px] shadow-lg shadow-hero/25 active:scale-[.97] transition-all">
+                Start Your Journey
+              </button>
+            </div>
+            <div class="flex justify-center gap-2 pb-10">
+              <div class="w-2 h-2 rounded-full bg-txt/15"></div>
+              <div class="w-2 h-2 rounded-full bg-txt/15"></div>
+              <div class="w-6 h-2 rounded-full bg-victory"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ APP (hidden behind onboarding initially) ═══ -->
+
+        <!-- Status Bar -->
+        <div class="h-[54px] flex items-end justify-between px-8 pb-1 text-[12px] font-semibold text-txt relative z-20">
+          <span>9:41</span>
+          <div class="flex items-center gap-1.5">
+            <svg width="16" height="12" viewBox="0 0 16 12"><rect x="0" y="4" width="3" height="8" rx=".7" fill="#2E2F2F"/><rect x="4.5" y="3" width="3" height="9" rx=".7" fill="#2E2F2F"/><rect x="9" y="1" width="3" height="11" rx=".7" fill="#2E2F2F"/><rect x="13.5" y="0" width="3" height="12" rx=".7" fill="#2E2F2F" opacity=".3"/></svg>
+            <div class="flex items-center"><div class="w-[24px] h-[11px] border border-txt/80 rounded-[3px] p-[1.5px]"><div class="h-full rounded-[1.5px] bg-txt" style="width:72%"></div></div></div>
+          </div>
+        </div>
+
+        <!-- App Bar -->
+        <header class="sticky top-0 z-20 bg-surface/80 backdrop-blur-xl">
+          <div class="flex justify-between items-center px-5 py-2">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-hero to-hero-dim flex items-center justify-center"><span class="material-symbols-outlined text-white text-xs filled">swords</span></div>
+              <span class="text-base font-extrabold tracking-tighter text-hero">IdeaTamer</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="flex items-center gap-1 bg-victory-bg px-2 py-0.5 rounded-full">
+                <span class="material-symbols-outlined text-victory text-[12px] filled">trending_up</span>
+                <span class="text-[10px] font-extrabold text-victory-dim">+12%</span>
+              </div>
+              <span class="text-[10px] font-bold text-hero bg-hero-bg px-2 py-1 rounded-full">LVL 14</span>
+            </div>
+          </div>
+          <div class="h-[.5px] bg-txt/5"></div>
+        </header>
+
+        <!-- Content -->
+        <div class="overflow-y-auto scroll-area" style="height:calc(852px - 54px - 42px - 68px)">
+
+          <!-- ══ INBOX ══ -->
+          <div id="s-inbox" class="screen active">
+            <div class="px-5 pt-4 pb-3">
+              <!-- Duel Banner -->
+              <div onclick="sw('duel')" class="bg-gradient-to-r from-hero-bg to-rival-bg border border-hero-light/20 rounded-2xl p-3.5 mb-4 flex items-center justify-between cursor-pointer active:scale-[.98] transition-all">
+                <div>
+                  <div class="flex items-center gap-1.5 mb-0.5"><span class="material-symbols-outlined text-rival text-[14px] filled">swords</span><span class="text-[9px] font-bold uppercase tracking-widest text-rival">Weekly Duel</span></div>
+                  <p class="text-[12px] font-bold text-txt">Winning <span class="text-hero">3</span> — <span class="text-rival">1</span> against past you</p>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <div class="w-9 h-9 rounded-full bg-hero/10 flex items-center justify-center"><span class="text-sm font-black text-hero">Y</span></div>
+                  <div class="w-9 h-9 rounded-full bg-rival/10 flex items-center justify-center -ml-3 pulse"><span class="text-sm font-black text-rival">L</span></div>
+                </div>
+              </div>
+
+              <!-- Streak + Capture -->
+              <div class="flex items-center gap-2 mb-3">
+                <div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-streak-bg text-streak text-[10px] font-bold uppercase tracking-widest"><span>5 Days</span><span class="text-sm fire">🔥</span></div>
+                <span class="text-[10px] text-txt-light">Past week: 3 days</span>
+              </div>
+              <h2 class="text-[26px] font-extrabold tracking-tight text-txt leading-tight mb-4">Master your<br/>thoughts.</h2>
+              <div class="flex items-center bg-card border border-txt/5 shadow rounded-2xl p-1.5 pl-4 mb-4">
+                <input class="w-full bg-transparent border-none focus:ring-0 text-[13px] font-medium placeholder:text-txt-light/60 py-2.5" placeholder="Capture an idea..."/>
+                <button class="flex items-center gap-1 bg-hero text-white px-3.5 py-2.5 rounded-xl font-bold text-[11px] whitespace-nowrap active:scale-95 transition-all shadow-sm shadow-hero/20"><span class="text-[9px] uppercase tracking-widest">+10 XP</span><span class="material-symbols-outlined text-sm">add_circle</span></button>
+              </div>
+
+              <!-- Pace -->
+              <div class="bg-surface-low rounded-xl px-4 py-3 mb-5">
+                <div class="flex justify-between mb-1"><span class="text-[9px] font-bold uppercase tracking-wider text-txt-mid">Captures this week</span><span class="text-[9px] font-bold text-hero">+2 ahead</span></div>
+                <div class="relative h-2.5 rounded-full bg-surface-high overflow-hidden">
+                  <div class="absolute inset-y-0 left-0 bg-hero rounded-full bar-grow" style="width:72%"></div>
+                  <div class="absolute inset-y-0 left-0 border-r-2 border-dashed border-rival/50" style="width:55%"><div class="absolute -top-[3px] -right-[5px] w-2.5 h-2.5 rounded-full bg-rival/50 pulse"></div></div>
+                </div>
+                <div class="flex justify-between mt-1"><span class="text-[9px] font-bold text-hero">You: 8</span><span class="text-[9px] font-bold text-rival/60">Past you: 6</span></div>
+              </div>
+            </div>
+
+            <!-- Quests -->
+            <div class="px-5">
+              <div class="flex items-center mb-3"><span class="text-[9px] font-bold uppercase tracking-widest text-txt-light">Quests</span><div class="h-[.5px] flex-grow mx-3 bg-txt/5"></div><button class="text-hero text-[10px] font-bold">Filter</button></div>
+              <div class="bg-card p-4 rounded-2xl shadow mb-2 flex items-start justify-between">
+                <div class="flex items-start gap-2.5">
+                  <div class="mt-1.5 w-2 h-2 rounded-full bg-txt-light/40 animate-pulse"></div>
+                  <div><h4 class="text-[14px] font-bold text-txt mb-0.5">Decentralized gardening protocol</h4><p class="text-[11px] text-txt-light">2h ago · <span class="text-hero">New</span></p></div>
+                </div>
+              </div>
+              <div class="bg-card p-4 rounded-2xl shadow mb-2 flex items-start justify-between">
+                <div class="flex items-start gap-2.5">
+                  <div class="w-8 h-8 rounded-lg bg-victory-bg flex items-center justify-center text-victory font-bold text-[11px]">84</div>
+                  <div><div class="flex items-center gap-1.5"><h4 class="text-[14px] font-bold text-txt">Kinetic Quest UI</h4><span class="text-[8px] font-bold uppercase tracking-widest bg-victory-bg text-victory-dim px-1.5 py-0.5 rounded">High</span></div><p class="text-[11px] text-txt-light">Yesterday</p></div>
+                </div>
+                <span class="material-symbols-outlined text-hero text-lg filled">bolt</span>
+              </div>
+              <div class="bg-card p-4 rounded-2xl shadow mb-2">
+                <div class="flex items-start gap-2.5">
+                  <div class="mt-1.5 w-2 h-2 rounded-full bg-txt-light/40"></div>
+                  <div><h4 class="text-[14px] font-bold text-txt mb-0.5">Coffee roast tracking SaaS</h4><p class="text-[11px] text-txt-light mb-2">4h ago</p><div class="flex gap-1"><span class="px-2 py-0.5 bg-surface-low text-txt-mid rounded-full text-[9px] font-bold">#SaaS</span><span class="px-2 py-0.5 bg-surface-low text-txt-mid rounded-full text-[9px] font-bold">#IoT</span></div></div>
+                </div>
+              </div>
+              <div class="bg-card p-4 rounded-2xl shadow mb-6 flex items-start justify-between">
+                <div class="flex items-start gap-2.5">
+                  <div class="w-8 h-8 rounded-lg bg-streak-bg flex items-center justify-center text-streak-dim font-bold text-[11px]">42</div>
+                  <div><h4 class="text-[14px] font-bold text-txt mb-0.5">Pet rock AI marketplace</h4><p class="text-[11px] text-txt-light">3d ago</p></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="px-5 pb-6">
+              <div class="bg-gradient-to-br from-hero to-hero-dim p-5 rounded-3xl text-white relative overflow-hidden">
+                <p class="text-[9px] uppercase tracking-widest opacity-70 mb-1">Mastery</p>
+                <p class="text-lg font-extrabold">Legendary Creator</p>
+                <div class="w-full bg-white/20 h-2.5 rounded-full mt-4 overflow-hidden"><div class="h-full bg-victory-light rounded-full" style="width:72%;box-shadow:0 0 10px rgba(92,224,160,.4)"></div></div>
+                <div class="absolute -right-4 -bottom-4 opacity-15"><span class="material-symbols-outlined text-[100px] filled">emoji_events</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ FOCUS ══ -->
+          <div id="s-focus" class="screen">
+            <div class="px-5 pt-4 pb-4">
+              <span class="text-[9px] font-bold uppercase tracking-widest text-txt-light">Current Focus</span>
+              <div class="bg-card rounded-3xl p-5 shadow mt-3 mb-4 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-hero/5 rounded-full -mr-12 -mt-12 blur-2xl"></div>
+                <div class="relative flex flex-col items-center">
+                  <svg width="160" height="160" viewBox="0 0 180 180" class="mb-3">
+                    <circle cx="90" cy="90" r="72" fill="transparent" stroke="#E3E2E0" stroke-width="12"/>
+                    <circle cx="90" cy="90" r="72" fill="transparent" stroke="#1B6EF2" stroke-width="14" stroke-linecap="round" stroke-dasharray="452.39" stroke-dashoffset="257.86" class="progress-ring" style="transform:rotate(-90deg);transform-origin:50% 50%;filter:drop-shadow(0 0 4px rgba(27,110,242,.2))"/>
+                  </svg>
+                  <div class="absolute top-[32px] left-1/2 -translate-x-1/2 flex flex-col items-center" style="width:120px">
+                    <span class="text-3xl font-black text-txt">43%</span>
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-txt-light mt-0.5">Mastery</span>
+                  </div>
+                  <h1 class="text-[18px] font-extrabold text-txt text-center leading-tight mb-1">Open source component library</h1>
+                  <p class="text-txt-mid text-[11px] text-center mb-4">React-based UI kit for developers</p>
+                  <div class="flex gap-2 w-full">
+                    <div class="flex-1 bg-surface-low px-3 py-2 rounded-xl flex items-center gap-2"><span class="material-symbols-outlined text-hero text-sm">schedule</span><div><span class="text-[8px] uppercase font-bold tracking-wider text-txt-light block">Left</span><span class="text-[11px] font-bold">4d 12h</span></div></div>
+                    <div class="flex-1 bg-surface-low px-3 py-2 rounded-xl flex items-center gap-2"><span class="material-symbols-outlined text-streak text-sm filled">stars</span><div><span class="text-[8px] uppercase font-bold tracking-wider text-txt-light block">Reward</span><span class="text-[11px] font-bold text-streak">+500 XP</span></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shadow Pace -->
+              <div class="bg-gradient-to-r from-hero-bg to-rival-bg border border-hero-light/15 rounded-2xl p-3.5 mb-4">
+                <div class="flex items-center gap-1.5 mb-2"><span class="material-symbols-outlined text-rival text-sm filled">person</span><span class="text-[9px] font-bold uppercase tracking-widest text-rival">Shadow Check</span></div>
+                <p class="text-[11px] text-txt">Last quest: <span class="font-bold">12 days</span>. You're on day <span class="font-bold text-hero">6</span> at <span class="font-bold text-hero">43%</span>.</p>
+                <div class="flex items-center gap-1.5 mt-2"><span class="material-symbols-outlined text-victory text-xs filled">trending_up</span><span class="text-[10px] font-bold text-victory-dim">On pace to beat your shadow by 2 days</span></div>
+              </div>
+
+              <!-- Milestones -->
+              <div class="bg-surface-low rounded-3xl p-4 mb-4">
+                <div class="flex justify-between items-center mb-3"><h2 class="text-[14px] font-bold">Milestones</h2><span class="text-[9px] font-bold bg-victory-bg text-victory-dim px-2 py-0.5 rounded-full uppercase">3/7</span></div>
+                <div class="space-y-2">
+                  <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-card border border-victory/10"><div class="w-4.5 h-4.5 rounded-full bg-victory flex items-center justify-center flex-shrink-0" style="width:18px;height:18px"><span class="material-symbols-outlined text-white text-[10px]" style="font-variation-settings:'wght' 700">check</span></div><span class="text-[11px] font-bold text-txt line-through decoration-victory/30 flex-1">Define design tokens</span></div>
+                  <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-card border border-victory/10"><div class="w-4.5 h-4.5 rounded-full bg-victory flex items-center justify-center flex-shrink-0" style="width:18px;height:18px"><span class="material-symbols-outlined text-white text-[10px]" style="font-variation-settings:'wght' 700">check</span></div><span class="text-[11px] font-bold text-txt line-through decoration-victory/30 flex-1">Set up Tailwind config</span></div>
+                  <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-card border border-victory/10"><div class="w-4.5 h-4.5 rounded-full bg-victory flex items-center justify-center flex-shrink-0" style="width:18px;height:18px"><span class="material-symbols-outlined text-white text-[10px]" style="font-variation-settings:'wght' 700">check</span></div><span class="text-[11px] font-bold text-txt line-through decoration-victory/30 flex-1">Build core Button system</span></div>
+                  <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-card border border-hero/15 shadow-sm"><div class="flex-shrink-0 rounded-full border-2 border-hero flex items-center justify-center" style="width:18px;height:18px"><div class="w-1.5 h-1.5 rounded-full bg-hero animate-pulse"></div></div><div class="flex-1"><span class="text-[11px] font-extrabold text-txt">Write unit tests</span><br/><span class="text-[8px] font-bold text-hero uppercase">In Progress</span></div></div>
+                  <div class="flex items-center gap-2.5 p-2.5 rounded-xl opacity-40"><div class="flex-shrink-0 rounded-full border-2 border-txt-light/40" style="width:18px;height:18px"></div><span class="text-[11px] text-txt flex-1">Create npm pipeline</span></div>
+                  <div class="flex items-center gap-2.5 p-2.5 rounded-xl opacity-40"><div class="flex-shrink-0 rounded-full border-2 border-txt-light/40" style="width:18px;height:18px"></div><span class="text-[11px] text-txt flex-1">Write README</span></div>
+                  <div class="flex items-center gap-2.5 p-2.5 rounded-xl opacity-40"><div class="flex-shrink-0 rounded-full border-2 border-txt-light/40" style="width:18px;height:18px"></div><span class="text-[11px] text-txt flex-1">Launch on socials</span></div>
+                </div>
+                <button class="w-full mt-3 py-3 bg-hero text-white rounded-2xl font-bold text-[12px] flex items-center justify-center gap-1.5 active:scale-[.98] transition-all shadow shadow-hero/15"><span class="material-symbols-outlined text-sm">add_circle</span>Add Milestone</button>
+              </div>
+              <div class="grid grid-cols-2 gap-2.5 pb-4">
+                <div class="bg-card p-3.5 rounded-2xl shadow"><span class="material-symbols-outlined text-streak text-base filled mb-1">local_fire_department</span><div class="text-lg font-extrabold">12d</div><div class="text-[8px] font-bold text-txt-light uppercase tracking-widest">Focus Streak</div><div class="text-[8px] text-rival/50 mt-0.5">Past: 8d</div></div>
+                <div class="bg-card p-3.5 rounded-2xl shadow"><span class="material-symbols-outlined text-victory text-base">trending_up</span><div class="text-lg font-extrabold">+1.2k</div><div class="text-[8px] font-bold text-txt-light uppercase tracking-widest">Weekly XP</div><div class="text-[8px] text-rival/50 mt-0.5">Past: 980</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ DUEL ══ -->
+          <div id="s-duel" class="screen">
+            <div class="px-5 pt-4 pb-4">
+              <div class="text-center mb-5">
+                <span class="text-[9px] font-bold uppercase tracking-widest text-rival">Weekly Duel</span>
+                <h2 class="text-[24px] font-extrabold text-txt leading-tight mt-1">Compete with<br/>yourself.</h2>
+                <p class="text-[11px] text-txt-mid mt-1.5">Beat the person you were 7 days ago.</p>
+              </div>
+
+              <!-- VS Card -->
+              <div class="bg-card rounded-3xl p-5 shadow mb-5 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-hero/[.03] to-rival/[.03]"></div>
+                <div class="relative flex items-center justify-between mb-4">
+                  <div class="flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-hero to-hero-dim flex items-center justify-center shadow shadow-hero/20 mb-1 hero-glow"><span class="text-lg font-black text-white">Y</span></div>
+                    <span class="text-[9px] font-extrabold text-hero">This week</span>
+                  </div>
+                  <div class="flex flex-col items-center"><div class="bg-surface-low px-4 py-2 rounded-xl"><span class="text-xl font-black text-txt">3 <span class="text-txt-light">:</span> 1</span></div><span class="text-[8px] font-bold text-victory mt-1 uppercase tracking-wider">You lead</span></div>
+                  <div class="flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-rival to-rival-dim flex items-center justify-center shadow shadow-rival/20 mb-1 pulse"><span class="material-symbols-outlined text-white text-xl filled">person</span></div>
+                    <span class="text-[9px] font-extrabold text-rival">Past you</span>
+                  </div>
+                </div>
+                <!-- Momentum -->
+                <div class="bg-gradient-to-r from-victory-bg to-surface-low rounded-xl p-3 text-center">
+                  <span class="text-[8px] font-bold uppercase tracking-widest text-txt-mid">Momentum</span>
+                  <div class="flex items-center justify-center gap-1.5 mt-0.5"><span class="material-symbols-outlined text-victory text-base filled">trending_up</span><span class="text-2xl font-black text-txt">+12%</span></div>
+                  <span class="text-[9px] text-txt-mid">Improving week over week</span>
+                </div>
+              </div>
+
+              <!-- Rounds -->
+              <div class="space-y-2">
+                <div class="bg-card p-3.5 rounded-2xl shadow su su1">
+                  <div class="flex justify-between mb-2"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-streak text-sm filled">bolt</span><span class="text-[11px] font-bold">XP Earned</span></div><span class="text-[8px] font-bold bg-victory-bg text-victory-dim px-2 py-0.5 rounded-full uppercase">You Win</span></div>
+                  <div class="space-y-1">
+                    <div class="flex items-center gap-2"><span class="text-[9px] font-bold text-hero w-7">You</span><div class="flex-1 h-2.5 rounded-full bg-surface-high overflow-hidden"><div class="h-full rounded-full bg-hero bar-grow" style="width:78%"></div></div><span class="text-[10px] font-extrabold w-8 text-right">840</span></div>
+                    <div class="flex items-center gap-2"><span class="text-[9px] font-bold text-rival/50 w-7">Past</span><div class="flex-1 h-2.5 rounded-full bg-surface-high overflow-hidden"><div class="h-full rounded-full bg-rival/40 bar-grow" style="width:55%"></div></div><span class="text-[10px] font-bold text-txt-light w-8 text-right">590</span></div>
+                  </div>
+                </div>
+                <div class="bg-card p-3.5 rounded-2xl shadow su su2">
+                  <div class="flex justify-between mb-2"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-victory text-sm filled">check_circle</span><span class="text-[11px] font-bold">Milestones</span></div><span class="text-[8px] font-bold bg-victory-bg text-victory-dim px-2 py-0.5 rounded-full uppercase">You Win</span></div>
+                  <div class="space-y-1">
+                    <div class="flex items-center gap-2"><span class="text-[9px] font-bold text-hero w-7">You</span><div class="flex-1 h-2.5 rounded-full bg-surface-high overflow-hidden"><div class="h-full rounded-full bg-hero bar-grow" style="width:85%"></div></div><span class="text-[10px] font-extrabold w-8 text-right">6</span></div>
+                    <div class="flex items-center gap-2"><span class="text-[9px] font-bold text-rival/50 w-7">Past</span><div class="flex-1 h-2.5 rounded-full bg-surface-high overflow-hidden"><div class="h-full rounded-full bg-rival/40 bar-grow" style="width:57%"></div></div><span class="text-[10px] font-bold text-txt-light w-8 text-right">4</span></div>
+                  </div>
+                </div>
+                <div class="bg-card p-3.5 rounded-2xl shadow su su3">
+                  <div class="flex justify-between mb-2"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-hero text-sm filled">lightbulb</span><span class="text-[11px] font-bold">Ideas Captured</span></div><span class="text-[8px] font-bold bg-victory-bg text-victory-dim px-2 py-0.5 rounded-full uppercase">You Win</span></div>
+                  <div class="space-y-1">
+                    <div class="flex items-center gap-2"><span class="text-[9px] font-bold text-hero w-7">You</span><div class="flex-1 h-2.5 rounded-full bg-surface-high overflow-hidden"><div class="h-full rounded-full bg-hero bar-grow" style="width:72%"></div></div><span class="text-[10px] font-extrabold w-8 text-right">8</span></div>
+                    <div class="flex items-center gap-2"><span class="text-[9px] font-bold text-rival/50 w-7">Past</span><div class="flex-1 h-2.5 rounded-full bg-surface-high overflow-hidden"><div class="h-full rounded-full bg-rival/40 bar-grow" style="width:54%"></div></div><span class="text-[10px] font-bold text-txt-light w-8 text-right">6</span></div>
+                  </div>
+                </div>
+                <div class="bg-card p-3.5 rounded-2xl shadow su su4 border border-rival/10">
+                  <div class="flex justify-between mb-2"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-streak text-sm filled">local_fire_department</span><span class="text-[11px] font-bold">Streak Days</span></div><span class="text-[8px] font-bold bg-rival-bg text-rival px-2 py-0.5 rounded-full uppercase">Shadow Wins</span></div>
+                  <div class="space-y-1">
+                    <div class="flex items-center gap-2"><span class="text-[9px] font-bold text-hero w-7">You</span><div class="flex-1 h-2.5 rounded-full bg-surface-high overflow-hidden"><div class="h-full rounded-full bg-hero bar-grow" style="width:55%"></div></div><span class="text-[10px] font-extrabold w-8 text-right">5</span></div>
+                    <div class="flex items-center gap-2"><span class="text-[9px] font-bold text-rival/50 w-7">Past</span><div class="flex-1 h-2.5 rounded-full bg-surface-high overflow-hidden"><div class="h-full rounded-full bg-rival/60 bar-grow" style="width:77%"></div></div><span class="text-[10px] font-bold text-rival w-8 text-right">7</span></div>
+                  </div>
+                  <p class="text-[9px] text-txt-mid mt-2 italic">2 more days to reclaim this round.</p>
+                </div>
+              </div>
+
+              <!-- Win bonus -->
+              <div class="mt-4 bg-gradient-to-r from-victory-bg to-victory/5 border border-victory/15 rounded-2xl p-4 text-center">
+                <span class="material-symbols-outlined text-victory text-xl mb-1 filled">emoji_events</span>
+                <p class="text-[11px] font-bold text-txt">Win 3+ rounds for</p>
+                <p class="text-base font-extrabold text-victory mt-0.5">+200 Bonus XP</p>
+              </div>
+
+              <!-- History -->
+              <div class="text-center pt-5 pb-4">
+                <span class="text-[9px] uppercase tracking-widest font-bold text-txt-light">Past Duels</span>
+                <div class="flex justify-center gap-1.5 mt-2">
+                  <div class="w-7 h-7 rounded-lg bg-hero-bg flex items-center justify-center text-[9px] font-bold text-hero">W</div>
+                  <div class="w-7 h-7 rounded-lg bg-hero-bg flex items-center justify-center text-[9px] font-bold text-hero">W</div>
+                  <div class="w-7 h-7 rounded-lg bg-rival-bg flex items-center justify-center text-[9px] font-bold text-rival">L</div>
+                  <div class="w-7 h-7 rounded-lg bg-hero-bg flex items-center justify-center text-[9px] font-bold text-hero">W</div>
+                  <div class="w-7 h-7 rounded-lg bg-surface-high flex items-center justify-center text-[9px] font-bold text-txt-light">D</div>
+                  <div class="w-7 h-7 rounded-lg bg-hero-bg flex items-center justify-center text-[9px] font-bold text-hero">W</div>
+                </div>
+                <p class="text-[9px] text-txt-mid mt-2">4W · 1L · 1D — <span class="font-bold text-hero">2-week win streak</span></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ PARK ══ -->
+          <div id="s-park" class="screen">
+            <div class="px-5 pt-4 pb-4">
+              <span class="text-[9px] font-bold uppercase tracking-widest text-hero">The Vault</span>
+              <h2 class="text-[26px] font-extrabold text-txt leading-tight mb-1.5">The Park</h2>
+              <p class="text-txt-mid text-[11px] mb-5">Ranked ideas waiting for activation.</p>
+              <div class="grid grid-cols-3 gap-2 mb-5">
+                <div class="bg-card rounded-xl p-3 shadow text-center"><p class="text-lg font-extrabold text-hero">42</p><p class="text-[7px] uppercase font-bold tracking-widest text-txt-light">Total</p></div>
+                <div class="bg-card rounded-xl p-3 shadow text-center"><p class="text-lg font-extrabold text-victory">12</p><p class="text-[7px] uppercase font-bold tracking-widest text-txt-light">High</p></div>
+                <div class="bg-card rounded-xl p-3 shadow text-center"><p class="text-lg font-extrabold text-streak">86</p><p class="text-[7px] uppercase font-bold tracking-widest text-txt-light">Avg</p></div>
+              </div>
+              <div class="space-y-2">
+                <div class="bg-card p-4 rounded-2xl shadow"><div class="flex items-start gap-2.5"><span class="text-lg font-black text-txt/15 italic">#1</span><div class="flex-1"><div class="flex justify-between"><h4 class="text-[13px] font-bold text-txt">AI-Driven Habit Stacking</h4><span class="bg-victory-bg text-victory-dim text-[10px] font-extrabold px-1.5 py-0.5 rounded">98</span></div><p class="text-[10px] text-txt-mid mt-0.5">Neuro-adaptive formation...</p></div></div><button class="mt-2 bg-hero text-white px-3 py-1.5 rounded-xl text-[10px] font-bold flex items-center gap-1 active:scale-95 transition-all">Activate <span class="material-symbols-outlined text-xs filled">bolt</span></button></div>
+                <div class="bg-card p-4 rounded-2xl shadow"><div class="flex items-start gap-2.5"><span class="text-lg font-black text-txt/15 italic">#2</span><div class="flex-1"><div class="flex justify-between"><h4 class="text-[13px] font-bold text-txt">Vertical Garden OS</h4><span class="bg-victory-bg text-victory-dim text-[10px] font-extrabold px-1.5 py-0.5 rounded">91</span></div><p class="text-[10px] text-txt-mid mt-0.5">Automated nutrient delivery...</p></div></div><button class="mt-2 bg-hero text-white px-3 py-1.5 rounded-xl text-[10px] font-bold flex items-center gap-1 active:scale-95 transition-all">Activate <span class="material-symbols-outlined text-xs filled">bolt</span></button></div>
+                <div class="bg-card p-4 rounded-2xl shadow"><div class="flex items-start gap-2.5"><span class="text-lg font-black text-txt/15 italic">#3</span><div class="flex-1"><div class="flex justify-between"><h4 class="text-[13px] font-bold text-txt">Credit Hub</h4><span class="bg-streak-bg text-streak-dim text-[10px] font-extrabold px-1.5 py-0.5 rounded">84</span></div><p class="text-[10px] text-txt-mid mt-0.5">Community lending...</p></div></div><button class="mt-2 bg-hero text-white px-3 py-1.5 rounded-xl text-[10px] font-bold flex items-center gap-1 active:scale-95 transition-all">Activate <span class="material-symbols-outlined text-xs filled">bolt</span></button></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ DONE ══ -->
+          <div id="s-done" class="screen">
+            <div id="confetti" class="absolute inset-0 pointer-events-none z-30 overflow-hidden"></div>
+            <div class="px-5 pt-4 pb-4">
+              <span class="text-[9px] font-bold uppercase tracking-widest text-victory">Hall of Fame</span>
+              <h2 class="text-[28px] font-extrabold text-txt leading-tight mb-1.5">Your Legacy.</h2>
+              <p class="text-txt-mid text-[11px] mb-5">Proof you beat yourself, again and again.</p>
+              <div class="grid grid-cols-3 gap-2 mb-5">
+                <div class="bg-card rounded-2xl p-3.5 shadow text-center"><p class="text-2xl font-extrabold text-hero">03</p><p class="text-[7px] uppercase font-bold tracking-widest text-txt-light">Shipped</p></div>
+                <div class="bg-card rounded-2xl p-3.5 shadow text-center"><p class="text-2xl font-extrabold text-victory">12.4k</p><p class="text-[7px] uppercase font-bold tracking-widest text-txt-light">XP</p></div>
+                <div class="bg-gradient-to-br from-hero-bg to-rival-bg rounded-2xl p-3.5 shadow text-center border border-hero-light/20"><p class="text-2xl font-extrabold text-hero">4<span class="text-rival">-1</span></p><p class="text-[7px] uppercase font-bold tracking-widest text-txt-light">Duel W-L</p></div>
+              </div>
+              <div class="bg-card p-4 rounded-2xl shadow mb-2 relative overflow-hidden hero-glow">
+                <div class="absolute top-2 right-2 w-8 h-8 rounded-full bg-victory flex items-center justify-center shadow"><span class="material-symbols-outlined text-white text-sm filled">workspace_premium</span></div>
+                <p class="text-[8px] uppercase font-bold tracking-widest text-txt-light mb-1">Oct 24, 2023</p>
+                <h4 class="text-[15px] font-extrabold text-txt pr-10 mb-1.5">Design System V1</h4>
+                <div class="flex gap-1.5 flex-wrap"><span class="bg-victory-bg text-victory-dim text-[9px] font-bold px-1.5 py-0.5 rounded">+5,000 XP</span><span class="bg-hero-bg text-hero text-[9px] font-bold px-1.5 py-0.5 rounded">Beat shadow by 3d</span></div>
+              </div>
+              <div class="bg-card p-4 rounded-2xl shadow mb-2 relative overflow-hidden">
+                <div class="absolute top-2 right-2 w-8 h-8 rounded-full bg-victory flex items-center justify-center shadow"><span class="material-symbols-outlined text-white text-sm filled">workspace_premium</span></div>
+                <p class="text-[8px] uppercase font-bold tracking-widest text-txt-light mb-1">Sep 12, 2023</p>
+                <h4 class="text-[15px] font-extrabold text-txt pr-10 mb-1.5">Mobile App: Zenith</h4>
+                <div class="flex gap-1.5"><span class="bg-victory-bg text-victory-dim text-[9px] font-bold px-1.5 py-0.5 rounded">+4,250 XP</span></div>
+              </div>
+              <!-- Badges -->
+              <div class="bg-surface-low rounded-3xl p-4 mt-5">
+                <h3 class="text-[14px] font-extrabold mb-3">Badges</h3>
+                <div class="grid grid-cols-3 gap-2">
+                  <div class="bg-card rounded-xl p-3 flex flex-col items-center shadow"><div class="w-9 h-9 rounded-full bg-streak-bg flex items-center justify-center mb-1"><span class="material-symbols-outlined text-streak text-lg filled">local_fire_department</span></div><span class="text-[7px] font-bold uppercase tracking-wide">7-Day</span></div>
+                  <div class="bg-card rounded-xl p-3 flex flex-col items-center shadow"><div class="w-9 h-9 rounded-full bg-hero-bg flex items-center justify-center mb-1"><span class="material-symbols-outlined text-hero text-lg filled">bolt</span></div><span class="text-[7px] font-bold uppercase tracking-wide">Focus</span></div>
+                  <div class="bg-card rounded-xl p-3 flex flex-col items-center shadow border border-rival/10"><div class="w-9 h-9 rounded-full bg-rival-bg flex items-center justify-center mb-1"><span class="material-symbols-outlined text-rival text-lg filled">swords</span></div><span class="text-[7px] font-bold uppercase tracking-wide text-rival">Surpassed</span></div>
+                  <div class="bg-card rounded-xl p-3 flex flex-col items-center shadow"><div class="w-9 h-9 rounded-full bg-victory-bg flex items-center justify-center mb-1"><span class="material-symbols-outlined text-victory text-lg filled">auto_awesome</span></div><span class="text-[7px] font-bold uppercase tracking-wide">Polisher</span></div>
+                  <div class="bg-card rounded-xl p-3 flex flex-col items-center shadow opacity-30"><div class="w-9 h-9 rounded-full bg-surface-high flex items-center justify-center mb-1"><span class="material-symbols-outlined text-txt-light text-lg">rocket_launch</span></div><span class="text-[7px] font-bold uppercase tracking-wide">Moonshot</span></div>
+                  <div class="bg-card rounded-xl p-3 flex flex-col items-center shadow opacity-30"><div class="w-9 h-9 rounded-full bg-surface-high flex items-center justify-center mb-1"><span class="material-symbols-outlined text-txt-light text-lg">whatshot</span></div><span class="text-[7px] font-bold uppercase tracking-wide">Streak+</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Tab Bar -->
+        <nav class="absolute bottom-0 left-0 w-full z-20 bg-white/75 backdrop-blur-xl rounded-t-2xl shadow-[0_-2px_16px_rgba(0,0,0,.05)]">
+          <div class="flex justify-around items-center px-1 pb-7 pt-2">
+            <button onclick="sw('inbox')" data-t="inbox" class="tb flex flex-col items-center px-2.5 py-1 rounded-xl transition-all active:scale-90 bg-blue-50 text-hero">
+              <span class="material-symbols-outlined text-[20px] filled">move_to_inbox</span><span class="text-[8px] font-bold uppercase tracking-widest mt-0.5">Inbox</span>
+            </button>
+            <button onclick="sw('focus')" data-t="focus" class="tb flex flex-col items-center px-2.5 py-1 rounded-xl transition-all active:scale-90 text-txt-light">
+              <span class="material-symbols-outlined text-[20px]">bolt</span><span class="text-[8px] font-bold uppercase tracking-widest mt-0.5">Focus</span>
+            </button>
+            <button onclick="sw('duel')" data-t="duel" class="tb flex flex-col items-center px-2.5 py-1 rounded-xl transition-all active:scale-90 text-txt-light">
+              <span class="material-symbols-outlined text-[20px]">swords</span><span class="text-[8px] font-bold uppercase tracking-widest mt-0.5">Duel</span>
+            </button>
+            <button onclick="sw('park')" data-t="park" class="tb flex flex-col items-center px-2.5 py-1 rounded-xl transition-all active:scale-90 text-txt-light">
+              <span class="material-symbols-outlined text-[20px]">grid_view</span><span class="text-[8px] font-bold uppercase tracking-widest mt-0.5">Park</span>
+            </button>
+            <button onclick="sw('done')" data-t="done" class="tb flex flex-col items-center px-2.5 py-1 rounded-xl transition-all active:scale-90 text-txt-light">
+              <span class="material-symbols-outlined text-[20px]">emoji_events</span><span class="text-[8px] font-bold uppercase tracking-widest mt-0.5">Done</span>
+            </button>
+          </div>
+        </nav>
+
+      </div>
+    </div>
+
+    <!-- FAB -->
+    <button id="fab" class="absolute bottom-[104px] right-3 w-12 h-12 rounded-full bg-hero text-white shadow-xl shadow-hero/30 flex items-center justify-center active:scale-90 transition-all z-40"><span class="material-symbols-outlined text-xl">add</span></button>
+  </div>
+
+  <!-- Legend -->
+  <div class="flex flex-wrap gap-4 justify-center mt-6 opacity-40">
+    <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded" style="background:#1B6EF2"></div><span class="text-white/60 text-[10px]">Hero blue</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded" style="background:#E5432A"></div><span class="text-white/60 text-[10px]">Rival red</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded" style="background:#12B76A"></div><span class="text-white/60 text-[10px]">Victory emerald</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 rounded" style="background:#F5A623"></div><span class="text-white/60 text-[10px]">Streak amber</span></div>
+  </div>
+</div>
+
+<script>
+function sw(tab) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const t = document.getElementById('s-'+tab);
+  if(t){t.classList.add('active');t.parentElement.scrollTop=0;}
+  document.querySelectorAll('.tb').forEach(b => {
+    const a = b.dataset.t === tab;
+    b.className = b.className.replace(/bg-blue-50|bg-red-50|text-hero|text-rival|text-txt-light/g,'').trim();
+    if(a){
+      b.classList.add(tab==='duel'?'bg-red-50':'bg-blue-50', tab==='duel'?'text-rival':'text-hero');
+      b.querySelector('.material-symbols-outlined').style.fontVariationSettings="'FILL' 1,'wght' 400";
+    } else {
+      b.classList.add('text-txt-light');
+      b.querySelector('.material-symbols-outlined').style.fontVariationSettings="'FILL' 0,'wght' 400";
+    }
+  });
+  if(tab==='done') boom();
+  document.getElementById('fab').style.display = tab==='inbox'?'flex':'none';
+}
+function boom(){
+  const c=document.getElementById('confetti');c.innerHTML='';
+  const cols=['#1B6EF2','#E5432A','#12B76A','#F5A623','#A8C8FF','#FFB8AA'];
+  for(let i=0;i<28;i++){const e=document.createElement('div');e.style.cssText=`position:absolute;left:${Math.random()*100}%;top:-8px;width:${4+Math.random()*5}px;height:${3+Math.random()*3}px;background:${cols[i%cols.length]};border-radius:1px;animation:confettiFall ${1.4+Math.random()}s ${Math.random()*.5}s ease-in forwards;opacity:0;`;c.appendChild(e);}
+}
+function goOb(n){
+  for(let i=1;i<=3;i++){const el=document.getElementById('ob'+i);el.style.opacity=i===n?'1':'0';el.style.pointerEvents=i===n?'auto':'none';}
+}
+function skipOnboarding(){document.getElementById('onboarding').style.display='none';}
+document.querySelector('[data-t="inbox"] .material-symbols-outlined').style.fontVariationSettings="'FILL' 1,'wght' 400";
+</script>
+</body>
+</html>

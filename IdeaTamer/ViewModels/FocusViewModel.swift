@@ -7,6 +7,8 @@ import SwiftUI
 final class FocusViewModel {
     private let modelContext: ModelContext
     var activeQuest: Idea?
+    private(set) var lastXPEvent: XPEvent?
+    private(set) var newBadges: [BadgeType] = []
 
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
@@ -50,6 +52,14 @@ final class FocusViewModel {
         if let activatedAt = idea.activatedAt {
             idea.completionDays = Date.daysBetween(activatedAt, and: .now)
         }
+
+        let profile = PlayerProfile.fetchOrCreate(context: modelContext)
+        let tracker = CurrentWeekTracker.fetchOrCreate(context: modelContext)
+
+        profile.questsCompletedCount += 1
+        lastXPEvent = XPService.awardQuestComplete(profile: profile, tracker: tracker)
+        newBadges = BadgeService.evaluate(profile: profile, idea: idea)
+
         activeQuest = nil
     }
 
@@ -65,6 +75,11 @@ final class FocusViewModel {
     func completeMilestone(_ milestone: Milestone) {
         milestone.isCompleted = true
         milestone.completedAt = .now
+
+        let profile = PlayerProfile.fetchOrCreate(context: modelContext)
+        let tracker = CurrentWeekTracker.fetchOrCreate(context: modelContext)
+
+        lastXPEvent = XPService.awardMilestone(profile: profile, tracker: tracker)
     }
 
     func uncompleteMilestone(_ milestone: Milestone) {

@@ -110,14 +110,14 @@
 **Goal:** XP/level/streak/badge engine fully wired.
 **Dependencies:** Sprint 3 complete.
 
-- [ ] 5.1 Create `Services/XPService.swift` — award methods, level-up detection, XPEvent return
-- [ ] 5.2 Create `Services/StreakService.swift` — capture/focus streak logic, reset on missed day
-- [ ] 5.3 Create `Services/BadgeService.swift` — evaluate all 7 badge conditions
-- [ ] 5.4 Create `Views/Components/LevelUpOverlay.swift` — full-screen, spring animation, haptic
-- [ ] 5.5 Integrate services into all ViewModels (capture, score, milestone, quest complete)
-- [ ] 5.6 Add XP/level display to app header
-- [ ] 5.7 Create `IdeaTamerTests/StreakServiceTests.swift` — consecutive, same-day, missed, 7-day
-- [ ] 5.8 Create `IdeaTamerTests/BadgeServiceTests.swift` — all conditions, no duplicates
+- [x] 5.1 Create `Services/XPService.swift` — XPEvent struct, awardXP core, convenience methods, level-up detection
+- [x] 5.2 Create `Services/StreakService.swift` — recordCapture/Focus, checkStreakReset, consecutive/missed logic
+- [x] 5.3 Create `Services/BadgeService.swift` — evaluate 7 conditions, no duplicates, returns newly unlocked
+- [x] 5.4 Create `Views/Components/LevelUpOverlay.swift` — spring scale animation, haptic, tap to dismiss
+- [x] 5.5 Integrate services into InboxVM (capture+streak+badge), ScoringVM (score+badge), FocusVM (milestone+quest+badge)
+- [ ] 5.6 Add XP/level display to app header (deferred — needs ContentView header redesign)
+- [x] 5.7 Create `IdeaTamerTests/StreakServiceTests.swift` — 7 tests: first, same-day, consecutive, missed, reset, preserve, focus
+- [x] 5.8 Create `IdeaTamerTests/BadgeServiceTests.swift` — 7 tests: firstBlood, streak7, polisher, moonshot, noDupes, superFocus, streakMaster
 
 **Testing:** All service tests pass. XP awards visible. Level-up triggers. Streaks track correctly.
 **Done when:** Gamification loop complete end-to-end. All tests green.

@@ -5,6 +5,7 @@ import SwiftData
 @MainActor
 final class InboxViewModel {
     private let modelContext: ModelContext
+    private(set) var lastXPEvent: XPEvent?
 
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
@@ -16,6 +17,14 @@ final class InboxViewModel {
     func captureIdea(title: String, description: String? = nil) -> Idea {
         let idea = Idea(title: title, descriptionText: description)
         modelContext.insert(idea)
+
+        let profile = PlayerProfile.fetchOrCreate(context: modelContext)
+        let tracker = CurrentWeekTracker.fetchOrCreate(context: modelContext)
+
+        lastXPEvent = XPService.awardCapture(profile: profile, tracker: tracker)
+        StreakService.recordCapture(profile: profile)
+        BadgeService.evaluate(profile: profile)
+
         return idea
     }
 

@@ -5,6 +5,7 @@ import SwiftData
 @MainActor
 final class ScoringViewModel {
     private let modelContext: ModelContext
+    private(set) var lastXPEvent: XPEvent?
 
     var impactScore: Int = 5
     var effortScore: Int = 5
@@ -30,6 +31,12 @@ final class ScoringViewModel {
         idea.alignmentScore = alignmentScore
         idea.computedScore = previewScore
         idea.status = .parked
+
+        let profile = PlayerProfile.fetchOrCreate(context: modelContext)
+        let tracker = CurrentWeekTracker.fetchOrCreate(context: modelContext)
+
+        lastXPEvent = XPService.awardScore(profile: profile, tracker: tracker)
+        BadgeService.evaluate(profile: profile, idea: idea)
     }
 
     func resetSliders() {

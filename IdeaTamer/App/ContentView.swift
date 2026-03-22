@@ -32,7 +32,7 @@ struct ContentView: View {
 
             Tab("Done", systemImage: "trophy.fill", value: "done") {
                 NavigationStack {
-                    DonePlaceholder()
+                    DoneView()
                 }
             }
         }

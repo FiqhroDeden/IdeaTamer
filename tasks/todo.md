@@ -150,12 +150,12 @@
 **Goal:** Hall of Fame with legacy stats and badge grid.
 **Dependencies:** Sprint 5, 6 complete.
 
-- [ ] 7.1 Create `ViewModels/DoneViewModel.swift` — fetch completed, compute stats, badge list
-- [ ] 7.2 Create `Views/Done/DoneView.swift` — LegacyStats + cards + BadgeGrid
-- [ ] 7.3 Create `Views/Done/CompletedQuestCard.swift` — title, date, days, XP, medal
-- [ ] 7.4 Create `Views/Done/BadgeGrid.swift` — locked (gray) / unlocked (colored) grid
-- [ ] 7.5 Create `Views/Done/LegacyStats.swift` — total quests, XP, streak, duel record
-- [ ] 7.6 Create `Views/Components/StreakBadge.swift` — fire icon + count, pulse animation
+- [x] 7.1 DoneViewModel already exists (Sprint 1) — uses fetchCompletedIdeas(), stats computed in DoneView
+- [x] 7.2 Create `Views/Done/DoneView.swift` — header, LegacyStats, quest cards, BadgeGrid, empty state
+- [x] 7.3 Create `Views/Done/CompletedQuestCard.swift` — title, date, days chip, XP chip, medal icon
+- [x] 7.4 Create `Views/Done/BadgeGrid.swift` — 3-column grid, all 7 badges, color-coded unlock/lock
+- [x] 7.5 Create `Views/Done/LegacyStats.swift` — 3 columns: shipped, XP (formatted), duel W-L
+- [x] 7.6 Create `Views/Components/StreakBadge.swift` — fire emoji + count, amber, pulse animation
 
 **Testing:** Done tab shows completed quests. Badge grid shows lock/unlock state.
 **Done when:** Hall of Fame complete, badges display correctly.

@@ -1,10 +1,13 @@
 import SwiftUI
 import SwiftData
+import UIKit
 
 struct DuelView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel: DuelViewModel?
     @State private var isLoaded = false
+    @State private var showShareSheet = false
+    @State private var shareImage: UIImage?
 
     var body: some View {
         Group {
@@ -61,6 +64,7 @@ struct DuelView: View {
                 )
                 roundCards(vm: vm)
                 winBonusCard(vm: vm)
+                shareButton(vm: vm)
                 DuelHistory(snapshots: vm.duelHistory)
             }
             .padding(.horizontal, 20)
@@ -124,6 +128,36 @@ struct DuelView: View {
             ),
             in: RoundedRectangle(cornerRadius: 16)
         )
+    }
+
+    // MARK: - Share
+
+    private func shareButton(vm: DuelViewModel) -> some View {
+        Button {
+            if let image = ShareCardService.renderDuelCard(
+                won: vm.currentWon,
+                lost: vm.currentLost,
+                momentum: vm.momentum
+            ) {
+                shareImage = image
+                showShareSheet = true
+            }
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "square.and.arrow.up")
+                Text("Share Results")
+                    .fontWeight(.semibold)
+            }
+            .foregroundStyle(Color.rival)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(Color.rivalBG, in: RoundedRectangle(cornerRadius: 16))
+        }
+        .sheet(isPresented: $showShareSheet) {
+            if let image = shareImage {
+                ShareSheet(activityItems: [image])
+            }
+        }
     }
 }
 

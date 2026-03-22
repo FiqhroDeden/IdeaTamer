@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import UIKit
 
 struct FocusView: View {
     @Environment(\.modelContext) private var modelContext
@@ -7,6 +8,8 @@ struct FocusView: View {
     @State private var showConfetti = false
     @State private var showXPFloat = false
     @State private var xpAmount = 0
+    @State private var showShareSheet = false
+    @State private var shareImage: UIImage?
 
     var body: some View {
         ZStack {
@@ -158,6 +161,24 @@ struct FocusView: View {
                 }
             }
 
+            // Share Progress
+            Button {
+                if let image = ShareCardService.renderQuestCard(idea: quest) {
+                    shareImage = image
+                    showShareSheet = true
+                }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "square.and.arrow.up")
+                    Text("Share Progress")
+                        .fontWeight(.semibold)
+                }
+                .foregroundStyle(Color.hero)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(Color.heroBG, in: RoundedRectangle(cornerRadius: 16))
+            }
+
             // Park Quest
             Button {
                 withAnimation(.springMedium) {
@@ -173,6 +194,11 @@ struct FocusView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
                 .background(Color.surfaceLow, in: RoundedRectangle(cornerRadius: 16))
+            }
+        }
+        .sheet(isPresented: $showShareSheet) {
+            if let image = shareImage {
+                ShareSheet(activityItems: [image])
             }
         }
     }

@@ -167,10 +167,10 @@
 **Goal:** Share cards for achievements and duel results.
 **Dependencies:** Sprint 7 complete.
 
-- [ ] 8.1 Create `Services/ShareCardService.swift` — ImageRenderer card generation
-- [ ] 8.2 Create `Views/Sharing/ShareSheet.swift` — bottom sheet, card preview, UIActivityViewController
-- [ ] 8.3 Create `Views/Sharing/ShareCardRenderer.swift` — SwiftUI view for card content
-- [ ] 8.4 Add share buttons to Focus, Done, Duel views
+- [x] 8.1 Create `Services/ShareCardService.swift` — ImageRenderer for quest + duel cards
+- [x] 8.2 Create `Views/Sharing/ShareSheet.swift` — UIActivityViewController wrapper
+- [x] 8.3 Create `Views/Sharing/ShareCardRenderer.swift` — QuestShareCard + DuelShareCard SwiftUI views
+- [x] 8.4 Share buttons: FocusView "Share Progress", DuelView "Share Results" (Done shares via quest cards)
 
 **Testing:** Share cards render with brand styling. System share sheet presents correctly.
 **Done when:** Cards render, share sheet works, branding consistent.

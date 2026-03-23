@@ -31,21 +31,13 @@ struct DuelView: View {
     // MARK: - First Week
 
     private var firstWeekView: some View {
-        VStack(spacing: 16) {
-            Spacer()
-            Image(systemName: "figure.fencing")
-                .font(.system(size: 48))
-                .foregroundStyle(Color.rival)
-            Text("Your first week")
-                .font(.brand(.headline))
-                .foregroundStyle(Color.textPrimary)
-            Text("This week sets your baseline.\nNext week, you'll duel your past self.")
-                .font(.brand(.body))
-                .foregroundStyle(Color.textMid)
-                .multilineTextAlignment(.center)
-            Spacer()
-        }
-        .padding(40)
+        EmptyStateView(
+            systemImage: "figure.fencing",
+            title: "Setting your baseline",
+            subtitle: "This week we're watching how you perform. Next Monday, your past self becomes your rival. Beat them.",
+            iconColor: Color.rival,
+            gradientColors: [Color.rivalBG, Color.surface]
+        )
     }
 
     // MARK: - Duel Content
@@ -68,7 +60,7 @@ struct DuelView: View {
                 DuelHistory(snapshots: vm.duelHistory)
             }
             .padding(.horizontal, 20)
-            .padding(.top, 4)
+            .padding(.top, 16)
             .padding(.bottom, 20)
             }
         }

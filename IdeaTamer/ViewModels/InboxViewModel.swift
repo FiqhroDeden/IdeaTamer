@@ -25,6 +25,10 @@ final class InboxViewModel {
         StreakService.recordCapture(profile: profile)
         BadgeService.evaluate(profile: profile)
 
+        if let event = lastXPEvent, event.didLevelUp, let newLevel = event.newLevel {
+            NotificationCenter.default.post(name: .leveledUp, object: newLevel)
+        }
+
         return idea
     }
 

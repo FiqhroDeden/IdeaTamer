@@ -4,6 +4,7 @@ import Foundation
 
 extension Notification.Name {
     static let questCompleted = Notification.Name("questCompleted")
+    static let leveledUp = Notification.Name("leveledUp")
 }
 
 // MARK: - App Errors

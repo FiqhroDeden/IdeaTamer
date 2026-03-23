@@ -58,7 +58,7 @@ struct ParkView: View {
                     ideaCards
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 4)
+                .padding(.top, 16)
                 .padding(.bottom, 20)
             }
         }
@@ -104,9 +104,11 @@ struct ParkView: View {
 
     private var emptyState: some View {
         EmptyStateView(
-            systemImage: "square.grid.2x2",
-            title: "Vault is empty",
-            subtitle: "Score ideas from Inbox to fill your vault"
+            systemImage: "archivebox",
+            title: "Your vault awaits",
+            subtitle: "Score ideas from your Inbox to rank them here. The highest-scored idea becomes your next quest.",
+            iconColor: Color.streak,
+            gradientColors: [Color.streakBG, Color.surface]
         )
     }
 

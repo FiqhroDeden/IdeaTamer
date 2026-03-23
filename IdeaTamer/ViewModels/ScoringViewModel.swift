@@ -37,6 +37,10 @@ final class ScoringViewModel {
 
         lastXPEvent = XPService.awardScore(profile: profile, tracker: tracker)
         BadgeService.evaluate(profile: profile, idea: idea)
+
+        if let event = lastXPEvent, event.didLevelUp, let newLevel = event.newLevel {
+            NotificationCenter.default.post(name: .leveledUp, object: newLevel)
+        }
     }
 
     func resetSliders() {

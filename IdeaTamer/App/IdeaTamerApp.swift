@@ -37,6 +37,17 @@ struct IdeaTamerApp: App {
                     DuelService.checkAndCreateSnapshot(context: context)
                     let profile = PlayerProfile.fetchOrCreate(context: context)
                     StreakService.checkStreakReset(profile: profile)
+
+                    // Re-schedule notifications if enabled
+                    if profile.streakRemindersEnabled {
+                        NotificationService.scheduleStreakReminder(
+                            hour: profile.streakReminderHour,
+                            minute: profile.streakReminderMinute
+                        )
+                    }
+                    if profile.questNudgeEnabled {
+                        NotificationService.scheduleQuestNudge()
+                    }
                 }
         }
         .modelContainer(sharedModelContainer)

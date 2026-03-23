@@ -43,7 +43,7 @@ struct FocusView: View {
                 actionButtons(quest: quest, vm: vm)
             }
             .padding(.horizontal, 20)
-            .padding(.top, 4)
+            .padding(.top, 16)
             .padding(.bottom, 20)
             }
         }
@@ -175,7 +175,7 @@ struct FocusView: View {
 
             // Share Progress
             Button {
-                if let image = ShareCardService.renderQuestCard(idea: quest) {
+                if let image = ShareCardService.renderProgressCard(idea: quest) {
                     ShareHelper.share(image)
                 }
             } label: {
@@ -213,9 +213,11 @@ struct FocusView: View {
 
     private var emptyState: some View {
         EmptyStateView(
-            systemImage: "bolt.slash",
-            title: "No active quest",
-            subtitle: "Activate a quest from Inbox or Park to start focusing"
+            systemImage: "bolt.circle",
+            title: "Ready to focus?",
+            subtitle: "Pick your best idea from Inbox or Park and activate it as your quest. One at a time — that's the superpower.",
+            iconColor: Color.hero,
+            gradientColors: [Color.heroBG, Color.surface]
         )
     }
 }

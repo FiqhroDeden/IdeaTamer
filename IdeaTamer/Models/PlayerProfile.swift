@@ -12,6 +12,10 @@ final class PlayerProfile {
     var unlockedBadges: [String]
     var questsCompletedCount: Int
     var hasCompletedOnboarding: Bool
+    var streakRemindersEnabled: Bool = false
+    var questNudgeEnabled: Bool = false
+    var streakReminderHour: Int = 21
+    var streakReminderMinute: Int = 0
 
     init() {
         self.totalXP = 0
@@ -21,6 +25,8 @@ final class PlayerProfile {
         self.unlockedBadges = []
         self.questsCompletedCount = 0
         self.hasCompletedOnboarding = false
+        self.streakRemindersEnabled = false
+        self.questNudgeEnabled = false
     }
 
     // MARK: - Singleton Access

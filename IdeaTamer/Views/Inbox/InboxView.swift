@@ -77,7 +77,7 @@ struct InboxView: View {
                 MasteryCard()
             }
             .padding(.horizontal, 20)
-            .padding(.top, 4)
+            .padding(.top, 16)
             .padding(.bottom, 20)
             }
         }
@@ -100,6 +100,20 @@ struct InboxView: View {
                     IdeaCard(idea: idea)
                 }
                 .buttonStyle(.plain)
+                .contextMenu {
+                    Button {
+                        selectedIdeaForScoring = idea
+                    } label: {
+                        Label("Score Idea", systemImage: "slider.horizontal.3")
+                    }
+                    Button(role: .destructive) {
+                        withAnimation(.springFast) {
+                            viewModel?.deleteIdea(idea)
+                        }
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
             }
         }
     }
@@ -110,9 +124,11 @@ struct InboxView: View {
         VStack(spacing: 24) {
             Spacer()
             EmptyStateView(
-                systemImage: "lightbulb.slash",
-                title: "No ideas yet",
-                subtitle: "Capture your first idea to start your quest"
+                systemImage: "lightbulb.max",
+                title: "Your journey starts here",
+                subtitle: "Capture your first idea below and begin your quest to ship something great",
+                iconColor: Color.hero,
+                gradientColors: [Color.heroBG, Color.surface]
             )
             Spacer()
             QuickCaptureBar(showXPFloat: $showXPFloat) { title in
@@ -151,46 +167,6 @@ private struct StreakRow: View {
         )
         descriptor.fetchLimit = 1
         pastStreakDays = (try? modelContext.fetch(descriptor).first)?.streakDays ?? 0
-    }
-}
-
-// MARK: - Player Header Trailing (for toolbar)
-
-struct PlayerHeaderTrailing: View {
-    @Environment(\.modelContext) private var modelContext
-    @State private var level = 1
-    @State private var momentum: Double = 0
-    @State private var hasMomentum = false
-
-    var body: some View {
-        HStack(spacing: 6) {
-            if hasMomentum {
-                MomentumBadge(value: momentum)
-            }
-            Text("LVL \(level)")
-                .font(.brand(.label))
-                .fontWeight(.heavy)
-                .foregroundStyle(Color.hero)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(Color.heroBG, in: Capsule())
-        }
-        .task { loadData() }
-    }
-
-    private func loadData() {
-        let profile = PlayerProfile.fetchOrCreate(context: modelContext)
-        level = profile.currentLevel
-
-        let tracker = CurrentWeekTracker.fetchOrCreate(context: modelContext)
-        var descriptor = FetchDescriptor<WeeklySnapshot>(
-            sortBy: [SortDescriptor(\.weekStartDate, order: .reverse)]
-        )
-        descriptor.fetchLimit = 1
-        if let last = try? modelContext.fetch(descriptor).first {
-            momentum = DuelService.computeMomentum(currentXP: tracker.xpEarned, previousXP: last.xpEarned)
-            hasMomentum = true
-        }
     }
 }
 

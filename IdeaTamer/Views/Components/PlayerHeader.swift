@@ -6,24 +6,18 @@ struct PlayerHeader: View {
     @State private var level = 1
     @State private var momentum: Double = 0
     @State private var hasMomentum = false
+    @State private var showSettings = false
 
     var body: some View {
         VStack(spacing: 0) {
             HStack {
                 // Logo + App Name — far left
                 HStack(spacing: 8) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(LinearGradient(
-                                colors: [Color.hero, Color.heroDim],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ))
-                            .frame(width: 32, height: 32)
-                        Image(systemName: "bolt.fill")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(.white)
-                    }
+                    Image("Logo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 32, height: 32)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                     Text("IdeaTamer")
                         .font(.brand(.headline))
                         .foregroundStyle(Color.hero)
@@ -31,7 +25,7 @@ struct PlayerHeader: View {
 
                 Spacer(minLength: 0)
 
-                // Momentum + Level — far right
+                // Momentum + Level + Settings — far right
                 HStack(spacing: 6) {
                     if hasMomentum {
                         MomentumBadge(value: momentum)
@@ -43,17 +37,27 @@ struct PlayerHeader: View {
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
                         .background(Color.heroBG, in: Capsule())
+
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gearshape.fill")
+                            .font(.system(size: 16))
+                            .foregroundStyle(Color.textLight)
+                    }
                 }
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
             .background(Color.surface)
 
-            // Divider for contrast
             Divider()
                 .foregroundStyle(Color.surfaceHigh.opacity(0.5))
         }
         .task { loadData() }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+        }
     }
 
     private func loadData() {

@@ -12,8 +12,9 @@ enum SeedDataService {
 
         // MARK: - Player Profile
 
-        profile.totalXP = 4850
-        profile.currentLevel = XP.levelFor(xp: 4850)
+        // Realistic total: 3 quests(2405) + active(185) + inbox(55) + parked(140) + duels(400) + streaks(75) ≈ 3260
+        profile.totalXP = 3260
+        profile.currentLevel = XP.levelFor(xp: 3260)
         profile.captureStreakCount = 5
         profile.captureStreakLastDate = Calendar.current.date(byAdding: .day, value: -1, to: .now)
         profile.focusStreakCount = 3
@@ -28,32 +29,36 @@ enum SeedDataService {
 
         // MARK: - Completed Ideas (Done tab)
 
+        // XP formula: capture(10) + score(25) + milestones(N×50) + questComplete(500)
+        // Design System V1: 10 + 25 + 5×50 + 500 = 785
         let completed1 = makeCompletedIdea(
             context: context,
             title: "Design System V1",
             description: "Component library with tokens, buttons, cards, and form elements",
             impact: 9, effort: 6, alignment: 8,
-            daysAgoCompleted: 8, completionDays: 6, xpEarned: 850,
+            daysAgoCompleted: 8, completionDays: 6, xpEarned: 785,
             milestones: ["Define design tokens", "Build Button component", "Build Card component", "Create form inputs", "Write documentation"]
         )
         context.insert(completed1)
 
+        // Podcast Launch Plan: 10 + 25 + 4×50 + 500 = 735
         let completed2 = makeCompletedIdea(
             context: context,
             title: "Podcast Launch Plan",
             description: "Research, record pilot, set up hosting, and publish first 3 episodes",
             impact: 7, effort: 5, alignment: 8,
-            daysAgoCompleted: 15, completionDays: 10, xpEarned: 725,
+            daysAgoCompleted: 15, completionDays: 10, xpEarned: 735,
             milestones: ["Research hosting platforms", "Record pilot episode", "Design cover art", "Publish first episode"]
         )
         context.insert(completed2)
 
+        // Portfolio Website Redesign: 10 + 25 + 7×50 + 500 = 885
         let completed3 = makeCompletedIdea(
             context: context,
             title: "Portfolio Website Redesign",
             description: "Modern portfolio with case studies, blog, and contact form",
             impact: 9, effort: 7, alignment: 10,
-            daysAgoCompleted: 22, completionDays: 14, xpEarned: 1050,
+            daysAgoCompleted: 22, completionDays: 14, xpEarned: 885,
             milestones: ["Wireframe layouts", "Design in Figma", "Build with Next.js", "Write case studies", "Set up CMS", "Add contact form", "Deploy to Vercel"]
         )
         context.insert(completed3)
@@ -65,7 +70,8 @@ enum SeedDataService {
         activeIdea.effortScore = 5
         activeIdea.alignmentScore = 9
         activeIdea.computedScore = ScoringFormula.compute(impact: 9, effort: 5, alignment: 9)
-        activeIdea.xpEarned = 150
+        // Active quest XP: capture(10) + score(25) + 3 milestones done(3×50) = 185
+        activeIdea.xpEarned = 185
         activeIdea.activatedAt = Calendar.current.date(byAdding: .day, value: -3, to: .now)
         activeIdea.createdAt = Calendar.current.date(byAdding: .day, value: -5, to: .now)!
         context.insert(activeIdea)

@@ -16,6 +16,7 @@ struct DoneView: View {
     @State private var duelLosses = 0
     @State private var showConfetti = false
     @State private var showXPFloat = false
+    @State private var selectedQuest: Idea?
 
     var body: some View {
         ZStack {
@@ -35,6 +36,9 @@ struct DoneView: View {
             showConfetti = true
             showXPFloat = true
         }
+        .sheet(item: $selectedQuest) { quest in
+            CompletedQuestDetailSheet(idea: quest)
+        }
     }
 
     // MARK: - Content
@@ -50,7 +54,7 @@ struct DoneView: View {
                     badgeSection
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 4)
+                .padding(.top, 16)
                 .padding(.bottom, 20)
             }
         }
@@ -91,7 +95,12 @@ struct DoneView: View {
     private var questCards: some View {
         LazyVStack(spacing: 8) {
             ForEach(Array(completedIdeas.enumerated()), id: \.element.id) { index, idea in
-                CompletedQuestCard(idea: idea, isLatest: index == 0)
+                Button {
+                    selectedQuest = idea
+                } label: {
+                    CompletedQuestCard(idea: idea, isLatest: index == 0)
+                }
+                .buttonStyle(.plain)
             }
         }
     }
@@ -106,9 +115,11 @@ struct DoneView: View {
 
     private var emptyState: some View {
         EmptyStateView(
-            systemImage: "trophy",
-            title: "No quests completed",
-            subtitle: "Complete your first quest to see it here"
+            systemImage: "trophy.circle",
+            title: "Your hall of fame is empty",
+            subtitle: "Ship your first quest and it'll live here forever. Every finished idea is proof you're getting better.",
+            iconColor: Color.victory,
+            gradientColors: [Color.victoryBG, Color.surface]
         )
     }
 

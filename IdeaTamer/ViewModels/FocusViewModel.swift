@@ -58,7 +58,12 @@ final class FocusViewModel {
 
         profile.questsCompletedCount += 1
         lastXPEvent = XPService.awardQuestComplete(profile: profile, tracker: tracker)
+        idea.xpEarned += XP.questComplete
         newBadges = BadgeService.evaluate(profile: profile, idea: idea)
+
+        if let event = lastXPEvent, event.didLevelUp, let newLevel = event.newLevel {
+            NotificationCenter.default.post(name: .leveledUp, object: newLevel)
+        }
 
         activeQuest = nil
     }
@@ -80,6 +85,11 @@ final class FocusViewModel {
         let tracker = CurrentWeekTracker.fetchOrCreate(context: modelContext)
 
         lastXPEvent = XPService.awardMilestone(profile: profile, tracker: tracker)
+        milestone.idea?.xpEarned += XP.milestone
+
+        if let event = lastXPEvent, event.didLevelUp, let newLevel = event.newLevel {
+            NotificationCenter.default.post(name: .leveledUp, object: newLevel)
+        }
     }
 
     func uncompleteMilestone(_ milestone: Milestone) {

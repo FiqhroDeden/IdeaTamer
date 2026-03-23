@@ -42,6 +42,8 @@ final class ScoringViewModel {
         if let event = lastXPEvent, event.didLevelUp, let newLevel = event.newLevel {
             NotificationCenter.default.post(name: .leveledUp, object: newLevel)
         }
+
+        WidgetService.updateWidgetData(context: modelContext)
     }
 
     func resetSliders() {

@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import WidgetKit
 
 @main
 struct IdeaTamerApp: App {
@@ -48,6 +49,8 @@ struct IdeaTamerApp: App {
                     if profile.questNudgeEnabled {
                         NotificationService.scheduleQuestNudge()
                     }
+
+                    WidgetService.updateWidgetData(context: context)
                 }
         }
         .modelContainer(sharedModelContainer)

@@ -50,6 +50,17 @@ struct ContentView: View {
                 showLevelUp = true
             }
         }
+        .onOpenURL { url in
+            guard url.scheme == "ideatamer" else { return }
+            switch url.host {
+            case "focus": selectedTab = "focus"
+            case "inbox": selectedTab = "inbox"
+            case "duel": selectedTab = "duel"
+            case "park": selectedTab = "park"
+            case "done": selectedTab = "done"
+            default: break
+            }
+        }
     }
 }
 

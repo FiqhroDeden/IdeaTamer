@@ -6,7 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F4624D7B2F7118C60087079B /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4624D7A2F7118C50087079B /* WidgetKit.framework */; };
+		F4624D7D2F7118C60087079B /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4624D7C2F7118C60087079B /* SwiftUI.framework */; };
+		F4624D8E2F7118C80087079B /* IdeaTamerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F4624D782F7118C50087079B /* IdeaTamerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		F4624D8C2F7118C80087079B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4B44C102F701A1300B070E1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F4624D772F7118C50087079B;
+			remoteInfo = IdeaTamerWidgetExtension;
+		};
 		F4B44C282F701A1500B070E1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F4B44C102F701A1300B070E1 /* Project object */;
@@ -23,13 +36,51 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		F4624D8F2F7118C80087079B /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				F4624D8E2F7118C80087079B /* IdeaTamerWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		F4624D782F7118C50087079B /* IdeaTamerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = IdeaTamerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F4624D7A2F7118C50087079B /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		F4624D7C2F7118C60087079B /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		F4624D952F71192E0087079B /* IdeaTamerWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IdeaTamerWidgetExtension.entitlements; sourceTree = "<group>"; };
 		F4B44C182F701A1300B070E1 /* IdeaTamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IdeaTamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4B44C272F701A1500B070E1 /* IdeaTamerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IdeaTamerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4B44C312F701A1500B070E1 /* IdeaTamerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IdeaTamerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F4624D932F7118C80087079B /* Exceptions for "IdeaTamerWidget" folder in "IdeaTamerWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F4624D772F7118C50087079B /* IdeaTamerWidgetExtension */;
+		};
+		F4624D9E2F711DDC0087079B /* Exceptions for "IdeaTamer" folder in "IdeaTamerWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Extensions/Color+Brand.swift",
+				"Resources/Fonts/PlusJakartaSans-Bold.ttf",
+				"Resources/Fonts/PlusJakartaSans-ExtraBold.ttf",
+				"Resources/Fonts/PlusJakartaSans-Medium.ttf",
+				"Resources/Fonts/PlusJakartaSans-Regular.ttf",
+				"Resources/Fonts/PlusJakartaSans-SemiBold.ttf",
+				Shared/WidgetData.swift,
+			);
+			target = F4624D772F7118C50087079B /* IdeaTamerWidgetExtension */;
+		};
 		F4B44C552F703CA600B070E1 /* Exceptions for "IdeaTamer" folder in "IdeaTamer" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -40,10 +91,19 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		F4624D7E2F7118C60087079B /* IdeaTamerWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F4624D932F7118C80087079B /* Exceptions for "IdeaTamerWidget" folder in "IdeaTamerWidgetExtension" target */,
+			);
+			path = IdeaTamerWidget;
+			sourceTree = "<group>";
+		};
 		F4B44C1A2F701A1300B070E1 /* IdeaTamer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				F4B44C552F703CA600B070E1 /* Exceptions for "IdeaTamer" folder in "IdeaTamer" target */,
+				F4624D9E2F711DDC0087079B /* Exceptions for "IdeaTamer" folder in "IdeaTamerWidgetExtension" target */,
 			);
 			path = IdeaTamer;
 			sourceTree = "<group>";
@@ -61,6 +121,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F4624D752F7118C50087079B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4624D7D2F7118C60087079B /* SwiftUI.framework in Frameworks */,
+				F4624D7B2F7118C60087079B /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4B44C152F701A1300B070E1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -85,12 +154,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F4624D792F7118C50087079B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F4624D7A2F7118C50087079B /* WidgetKit.framework */,
+				F4624D7C2F7118C60087079B /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F4B44C0F2F701A1300B070E1 = {
 			isa = PBXGroup;
 			children = (
+				F4624D952F71192E0087079B /* IdeaTamerWidgetExtension.entitlements */,
 				F4B44C1A2F701A1300B070E1 /* IdeaTamer */,
 				F4B44C2A2F701A1500B070E1 /* IdeaTamerTests */,
 				F4B44C342F701A1500B070E1 /* IdeaTamerUITests */,
+				F4624D7E2F7118C60087079B /* IdeaTamerWidget */,
+				F4624D792F7118C50087079B /* Frameworks */,
 				F4B44C192F701A1300B070E1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,6 +182,7 @@
 				F4B44C182F701A1300B070E1 /* IdeaTamer.app */,
 				F4B44C272F701A1500B070E1 /* IdeaTamerTests.xctest */,
 				F4B44C312F701A1500B070E1 /* IdeaTamerUITests.xctest */,
+				F4624D782F7118C50087079B /* IdeaTamerWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,6 +190,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F4624D772F7118C50087079B /* IdeaTamerWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F4624D922F7118C80087079B /* Build configuration list for PBXNativeTarget "IdeaTamerWidgetExtension" */;
+			buildPhases = (
+				F4624D742F7118C50087079B /* Sources */,
+				F4624D752F7118C50087079B /* Frameworks */,
+				F4624D762F7118C50087079B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				F4624D7E2F7118C60087079B /* IdeaTamerWidget */,
+			);
+			name = IdeaTamerWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = IdeaTamerWidgetExtension;
+			productReference = F4624D782F7118C50087079B /* IdeaTamerWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		F4B44C172F701A1300B070E1 /* IdeaTamer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F4B44C3B2F701A1500B070E1 /* Build configuration list for PBXNativeTarget "IdeaTamer" */;
@@ -115,10 +219,12 @@
 				F4B44C142F701A1300B070E1 /* Sources */,
 				F4B44C152F701A1300B070E1 /* Frameworks */,
 				F4B44C162F701A1300B070E1 /* Resources */,
+				F4624D8F2F7118C80087079B /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				F4624D8D2F7118C80087079B /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				F4B44C1A2F701A1300B070E1 /* IdeaTamer */,
@@ -186,6 +292,9 @@
 				LastSwiftUpdateCheck = 2610;
 				LastUpgradeCheck = 2610;
 				TargetAttributes = {
+					F4624D772F7118C50087079B = {
+						CreatedOnToolsVersion = 26.1;
+					};
 					F4B44C172F701A1300B070E1 = {
 						CreatedOnToolsVersion = 26.1;
 					};
@@ -216,11 +325,19 @@
 				F4B44C172F701A1300B070E1 /* IdeaTamer */,
 				F4B44C262F701A1500B070E1 /* IdeaTamerTests */,
 				F4B44C302F701A1500B070E1 /* IdeaTamerUITests */,
+				F4624D772F7118C50087079B /* IdeaTamerWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F4624D762F7118C50087079B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4B44C162F701A1300B070E1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -245,6 +362,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F4624D742F7118C50087079B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F4B44C142F701A1300B070E1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -269,6 +393,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		F4624D8D2F7118C80087079B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F4624D772F7118C50087079B /* IdeaTamerWidgetExtension */;
+			targetProxy = F4624D8C2F7118C80087079B /* PBXContainerItemProxy */;
+		};
 		F4B44C292F701A1500B070E1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F4B44C172F701A1300B070E1 /* IdeaTamer */;
@@ -282,6 +411,68 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		F4624D902F7118C80087079B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = IdeaTamerWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C588LMCKSL;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = IdeaTamerWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = IdeaTamerWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.fiqhrodedhen.IdeaTamer.IdeaTamerWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F4624D912F7118C80087079B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = IdeaTamerWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C588LMCKSL;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = IdeaTamerWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = IdeaTamerWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.fiqhrodedhen.IdeaTamer.IdeaTamerWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		F4B44C392F701A1500B070E1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -408,6 +599,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = IdeaTamer/IdeaTamer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C588LMCKSL;
@@ -441,6 +633,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = IdeaTamer/IdeaTamer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C588LMCKSL;
@@ -556,6 +749,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F4624D922F7118C80087079B /* Build configuration list for PBXNativeTarget "IdeaTamerWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F4624D902F7118C80087079B /* Debug */,
+				F4624D912F7118C80087079B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F4B44C132F701A1300B070E1 /* Build configuration list for PBXProject "IdeaTamer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

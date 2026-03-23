@@ -38,12 +38,14 @@ final class FocusViewModel {
         idea.status = .active
         idea.activatedAt = .now
         activeQuest = idea
+        WidgetService.updateWidgetData(context: modelContext)
     }
 
     func parkQuest(_ idea: Idea) {
         idea.status = .parked
         idea.activatedAt = nil
         activeQuest = nil
+        WidgetService.updateWidgetData(context: modelContext)
     }
 
     func completeQuest(_ idea: Idea) {
@@ -67,6 +69,7 @@ final class FocusViewModel {
         }
 
         activeQuest = nil
+        WidgetService.updateWidgetData(context: modelContext)
     }
 
     // MARK: - Milestone Management
@@ -76,6 +79,7 @@ final class FocusViewModel {
         let milestone = Milestone(title: title, sortOrder: nextOrder, idea: idea)
         modelContext.insert(milestone)
         idea.milestones.append(milestone)
+        WidgetService.updateWidgetData(context: modelContext)
     }
 
     func completeMilestone(_ milestone: Milestone) {
@@ -92,11 +96,14 @@ final class FocusViewModel {
         if let event = lastXPEvent, event.didLevelUp, let newLevel = event.newLevel {
             NotificationCenter.default.post(name: .leveledUp, object: newLevel)
         }
+
+        WidgetService.updateWidgetData(context: modelContext)
     }
 
     func uncompleteMilestone(_ milestone: Milestone) {
         milestone.isCompleted = false
         milestone.completedAt = nil
+        WidgetService.updateWidgetData(context: modelContext)
     }
 
     func deleteMilestone(_ milestone: Milestone) {
@@ -104,6 +111,7 @@ final class FocusViewModel {
             idea.milestones.removeAll { $0.id == milestone.id }
         }
         modelContext.delete(milestone)
+        WidgetService.updateWidgetData(context: modelContext)
     }
 
     func reorderMilestones(_ idea: Idea, from source: IndexSet, to destination: Int) {

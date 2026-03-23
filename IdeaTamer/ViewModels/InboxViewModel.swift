@@ -30,11 +30,13 @@ final class InboxViewModel {
             NotificationCenter.default.post(name: .leveledUp, object: newLevel)
         }
 
+        WidgetService.updateWidgetData(context: modelContext)
         return idea
     }
 
     func deleteIdea(_ idea: Idea) {
         modelContext.delete(idea)
+        WidgetService.updateWidgetData(context: modelContext)
     }
 
     func activateIdea(_ idea: Idea) throws {
@@ -48,5 +50,6 @@ final class InboxViewModel {
         }
         idea.status = .active
         idea.activatedAt = .now
+        WidgetService.updateWidgetData(context: modelContext)
     }
 }

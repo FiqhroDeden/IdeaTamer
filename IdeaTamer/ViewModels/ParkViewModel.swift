@@ -23,9 +23,11 @@ final class ParkViewModel {
         }
         idea.status = .active
         idea.activatedAt = .now
+        WidgetService.updateWidgetData(context: modelContext)
     }
 
     func deleteIdea(_ idea: Idea) {
         modelContext.delete(idea)
+        WidgetService.updateWidgetData(context: modelContext)
     }
 }

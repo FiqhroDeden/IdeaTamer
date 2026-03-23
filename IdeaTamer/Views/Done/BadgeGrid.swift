@@ -41,7 +41,7 @@ struct BadgeGrid: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
         .background(Color.card, in: RoundedRectangle(cornerRadius: 12))
-        .shadow(color: Color.heroDeep.opacity(0.03), radius: 4, y: 1)
+        .shadow(color: Color.cardShadow, radius: 4, y: 1)
         .opacity(isUnlocked ? 1 : 0.4)
     }
 

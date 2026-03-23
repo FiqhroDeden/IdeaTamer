@@ -37,6 +37,6 @@ struct VaultStats: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
         .background(Color.card, in: RoundedRectangle(cornerRadius: 12))
-        .shadow(color: Color.heroDeep.opacity(0.05), radius: 8, y: 2)
+        .shadow(color: Color.cardShadow, radius: 8, y: 2)
     }
 }

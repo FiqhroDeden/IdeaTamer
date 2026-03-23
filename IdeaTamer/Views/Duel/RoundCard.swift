@@ -15,7 +15,7 @@ struct RoundCard: View {
         }
         .padding(14)
         .background(Color.card, in: RoundedRectangle(cornerRadius: 16))
-        .shadow(color: Color.heroDeep.opacity(0.05), radius: 8, y: 2)
+        .shadow(color: Color.cardShadow, radius: 8, y: 2)
         .onAppear {
             withAnimation(.easeOut(duration: AnimationDuration.duelBar).delay(0.2)) {
                 animateBar = true

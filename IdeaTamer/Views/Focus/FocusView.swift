@@ -84,7 +84,7 @@ struct FocusView: View {
         }
         .padding(20)
         .background(Color.card, in: RoundedRectangle(cornerRadius: 24))
-        .shadow(color: Color.heroDeep.opacity(0.07), radius: 14, y: 4)
+        .shadow(color: Color.cardShadow, radius: 14, y: 4)
         .sheet(isPresented: $showTargetDatePicker) {
             targetDatePicker(quest: quest)
         }

@@ -10,10 +10,10 @@ struct UndoToast: View {
             HStack(spacing: 12) {
                 Image(systemName: "trash")
                     .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.7))
+                    .foregroundStyle(Color.surface.opacity(0.7))
                 Text(message)
                     .font(.brand(.body))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color.surface)
                 Spacer()
                 Button("Undo") {
                     Haptics.light()

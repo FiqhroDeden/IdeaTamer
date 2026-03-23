@@ -80,7 +80,7 @@ struct OnboardingPage5: View {
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
         .background(Color.card, in: Capsule())
-        .shadow(color: Color.heroDeep.opacity(0.04), radius: 4, y: 1)
+        .shadow(color: Color.cardShadow, radius: 4, y: 1)
     }
 
     // MARK: - Content

@@ -16,7 +16,7 @@ struct RankedQuestCard: View {
         }
         .padding(16)
         .background(Color.card, in: RoundedRectangle(cornerRadius: 16))
-        .shadow(color: Color.heroDeep.opacity(0.07), radius: 14, y: 4)
+        .shadow(color: Color.cardShadow, radius: 14, y: 4)
     }
 
     // MARK: - Rank

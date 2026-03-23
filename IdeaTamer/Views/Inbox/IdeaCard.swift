@@ -16,7 +16,7 @@ struct IdeaCard: View {
         }
         .padding(16)
         .background(Color.card, in: RoundedRectangle(cornerRadius: 16))
-        .shadow(color: Color.heroDeep.opacity(0.07), radius: 14, y: 4)
+        .shadow(color: Color.cardShadow, radius: 14, y: 4)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(idea.title), \(idea.isScored ? "score \(idea.computedScore ?? 0)" : "unscored")")
         .accessibilityHint("Tap to score this idea")

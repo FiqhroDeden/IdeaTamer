@@ -36,7 +36,7 @@ struct LegacyStats: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 14)
         .background(Color.card, in: RoundedRectangle(cornerRadius: 16))
-        .shadow(color: Color.heroDeep.opacity(0.05), radius: 8, y: 2)
+        .shadow(color: Color.cardShadow, radius: 8, y: 2)
     }
 
     private var duelCell: some View {

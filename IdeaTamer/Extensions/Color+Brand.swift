@@ -80,6 +80,13 @@ extension Color {
     }
 }
 
+// MARK: - Adaptive Shadow
+
+extension Color {
+    /// Card shadow that's visible in both light and dark modes.
+    static let cardShadow = Color(light: Color(hex: "0A3578").opacity(0.07), dark: Color.black.opacity(0.25))
+}
+
 // MARK: - Score Color Coding
 
 extension Color {

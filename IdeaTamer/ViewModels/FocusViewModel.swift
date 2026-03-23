@@ -26,6 +26,17 @@ final class FocusViewModel {
         activeQuest = try? modelContext.fetch(descriptor).first
     }
 
+    /// Reschedule streak reminder with current quest context (if enabled).
+    private func refreshStreakReminder(activeQuestTitle: String?) {
+        let profile = PlayerProfile.fetchOrCreate(context: modelContext)
+        guard profile.streakRemindersEnabled else { return }
+        NotificationService.scheduleStreakReminder(
+            hour: profile.streakReminderHour,
+            minute: profile.streakReminderMinute,
+            activeQuestTitle: activeQuestTitle
+        )
+    }
+
     func activateIdea(_ idea: Idea) throws {
         let activeStatus = IdeaStatus.active.rawValue
         let descriptor = FetchDescriptor<Idea>(
@@ -38,6 +49,7 @@ final class FocusViewModel {
         idea.status = .active
         idea.activatedAt = .now
         activeQuest = idea
+        refreshStreakReminder(activeQuestTitle: idea.title)
         WidgetService.updateWidgetData(context: modelContext)
     }
 
@@ -56,6 +68,7 @@ final class FocusViewModel {
         activeQuest = nil
         NotificationService.cancelTargetDateReminders()
         NotificationService.cancelQuestNudge()
+        refreshStreakReminder(activeQuestTitle: nil)
         WidgetService.updateWidgetData(context: modelContext)
     }
 
@@ -83,6 +96,7 @@ final class FocusViewModel {
         activeQuest = nil
         NotificationService.cancelTargetDateReminders()
         NotificationService.cancelQuestNudge()
+        refreshStreakReminder(activeQuestTitle: nil)
         WidgetService.updateWidgetData(context: modelContext)
     }
 

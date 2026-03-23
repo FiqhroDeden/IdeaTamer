@@ -20,12 +20,17 @@ enum NotificationService {
 
     // MARK: - Streak Reminder
 
-    static func scheduleStreakReminder(hour: Int = 21, minute: Int = 0) {
+    static func scheduleStreakReminder(hour: Int = 21, minute: Int = 0, activeQuestTitle: String? = nil) {
         cancelStreakReminder()
 
         let content = UNMutableNotificationContent()
-        content.title = "Keep your focus alive!"
-        content.body = "Make progress on your quest today to keep your streak going. 🔥"
+        if let title = activeQuestTitle {
+            content.title = "Keep your focus alive!"
+            content.body = "Your quest \"\(title)\" is waiting. Make progress today to keep your streak going. 🔥"
+        } else {
+            content.title = "No active quest"
+            content.body = "Pick your best idea and start a quest. The sooner you focus, the sooner you ship. ⚡"
+        }
         content.sound = .default
 
         var dateComponents = DateComponents()

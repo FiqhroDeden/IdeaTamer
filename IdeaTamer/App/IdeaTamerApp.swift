@@ -41,9 +41,17 @@ struct IdeaTamerApp: App {
 
                     // Re-schedule notifications if enabled
                     if profile.streakRemindersEnabled {
+                        let activeStatus = IdeaStatus.active.rawValue
+                        var questDescriptor = FetchDescriptor<Idea>(
+                            predicate: #Predicate { $0.statusRaw == activeStatus }
+                        )
+                        questDescriptor.fetchLimit = 1
+                        let activeTitle = (try? context.fetch(questDescriptor).first)?.title
+
                         NotificationService.scheduleStreakReminder(
                             hour: profile.streakReminderHour,
-                            minute: profile.streakReminderMinute
+                            minute: profile.streakReminderMinute,
+                            activeQuestTitle: activeTitle
                         )
                     }
                     if profile.questNudgeEnabled {

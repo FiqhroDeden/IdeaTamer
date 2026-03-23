@@ -68,7 +68,8 @@ struct SettingsView: View {
                     if streakReminders {
                         NotificationService.scheduleStreakReminder(
                             hour: components.hour ?? 21,
-                            minute: components.minute ?? 0
+                            minute: components.minute ?? 0,
+                            activeQuestTitle: activeQuestTitle
                         )
                     }
                 }
@@ -210,6 +211,15 @@ struct SettingsView: View {
         }
     }
 
+    private var activeQuestTitle: String? {
+        let activeStatus = IdeaStatus.active.rawValue
+        var descriptor = FetchDescriptor<Idea>(
+            predicate: #Predicate { $0.statusRaw == activeStatus }
+        )
+        descriptor.fetchLimit = 1
+        return (try? modelContext.fetch(descriptor).first)?.title
+    }
+
     private func loadData() async {
         profile = PlayerProfile.fetchOrCreate(context: modelContext)
         streakReminders = profile?.streakRemindersEnabled ?? false
@@ -229,7 +239,8 @@ struct SettingsView: View {
                 let components = Calendar.current.dateComponents([.hour, .minute], from: reminderTime)
                 NotificationService.scheduleStreakReminder(
                     hour: components.hour ?? 21,
-                    minute: components.minute ?? 0
+                    minute: components.minute ?? 0,
+                    activeQuestTitle: activeQuestTitle
                 )
                 profile?.streakRemindersEnabled = true
             } else {

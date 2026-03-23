@@ -8,8 +8,6 @@ struct FocusView: View {
     @State private var viewModel: FocusViewModel?
     @State private var showXPFloat = false
     @State private var xpAmount = 0
-    @State private var showShareSheet = false
-    @State private var shareImage: UIImage?
     @State private var showCompleteConfirm = false
 
     var body: some View {
@@ -174,8 +172,7 @@ struct FocusView: View {
             // Share Progress
             Button {
                 if let image = ShareCardService.renderQuestCard(idea: quest) {
-                    shareImage = image
-                    showShareSheet = true
+                    ShareHelper.share(image)
                 }
             } label: {
                 HStack(spacing: 6) {
@@ -204,11 +201,6 @@ struct FocusView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
                 .background(Color.surfaceLow, in: RoundedRectangle(cornerRadius: 16))
-            }
-        }
-        .sheet(isPresented: $showShareSheet) {
-            if let image = shareImage {
-                ShareSheet(activityItems: [image])
             }
         }
     }

@@ -92,7 +92,9 @@ struct OnboardingPage3: View {
     // MARK: - CTA
 
     private var ctaButton: some View {
-        Button(action: onGetStarted) {
+        Button {
+            onGetStarted()
+        } label: {
             Text("Start Your Journey")
                 .font(.brand(.title))
                 .fontWeight(.bold)

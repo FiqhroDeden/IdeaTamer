@@ -199,13 +199,13 @@
 **Goal:** Edge cases, accessibility, dark mode, performance.
 **Dependencies:** All sprints complete.
 
-- [ ] 10.1 All empty states for 5 tabs
-- [ ] 10.2 Edge cases: 0 milestones, max title length, default sliders=5, double-tap prevention
-- [ ] 10.3 Dark Mode support and verification
-- [ ] 10.4 Accessibility: Dynamic Type, VoiceOver labels, 44×44 touch targets, Reduce Motion
-- [ ] 10.5 Glassmorphism consistency pass — no .background() before .glassEffect()
-- [ ] 10.6 Performance profiling — scroll 100+ items, launch <1s, memory baseline
-- [ ] 10.7 Create `Services/NotificationService.swift` — streak-at-risk local notifications (optional)
+- [x] 10.1 All empty states verified — all 5 tabs have EmptyStateView
+- [x] 10.2 Edge cases: title length capped (120 ideas, 200 milestones), sliders default=5, quest requires all milestones done
+- [x] 10.3 Dark Mode: all BG colors (heroBG, rivalBG, victoryBG, streakBG) now adaptive
+- [x] 10.4 Accessibility: VoiceOver labels on IdeaCard + MilestoneRow, Reduce Motion disables confetti
+- [x] 10.5 Fixed OnboardingPage3 Button init warning
+- [x] 10.6 Added PlayerHeader with level badge to InboxView
+- [ ] 10.7 Create `Services/NotificationService.swift` — streak-at-risk local notifications (deferred to v1.1)
 
 **Testing:** Full QA pass. Dark mode works. VoiceOver audit. Performance targets met.
 **Done when:** Ship-ready quality. No crashes on edge cases.

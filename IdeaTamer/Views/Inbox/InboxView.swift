@@ -92,6 +92,7 @@ struct InboxView: View {
 
     private var headerAndCapture: some View {
         VStack(spacing: 12) {
+            PlayerHeader()
             DuelBannerMini()
 
             Text("Master your\nthoughts.")

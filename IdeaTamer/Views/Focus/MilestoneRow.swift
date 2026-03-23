@@ -15,6 +15,8 @@ struct MilestoneRow: View {
             .padding(.vertical, 4)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("\(milestone.title), \(milestone.isCompleted ? "completed" : "not completed")")
+        .accessibilityHint(milestone.isCompleted ? "Tap to uncomplete" : "Tap to mark complete")
     }
 
     // MARK: - Checkbox

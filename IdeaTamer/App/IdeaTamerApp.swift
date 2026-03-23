@@ -31,6 +31,9 @@ struct IdeaTamerApp: App {
             ContentView()
                 .task {
                     let context = sharedModelContainer.mainContext
+                    #if DEBUG
+                    SeedDataService.populate(context: context)
+                    #endif
                     DuelService.checkAndCreateSnapshot(context: context)
                     let profile = PlayerProfile.fetchOrCreate(context: context)
                     StreakService.checkStreakReset(profile: profile)

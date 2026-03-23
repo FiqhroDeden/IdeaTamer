@@ -19,7 +19,7 @@ extension Color {
 // MARK: - Hero Blue — "You, right now"
 
 extension Color {
-    static let heroBG    = Color(hex: "EBF2FF")
+    static let heroBG    = Color(light: Color(hex: "EBF2FF"), dark: Color(hex: "1A2740"))
     static let heroLight = Color(hex: "A8C8FF")
     static let heroMid   = Color(hex: "4D8FFF")
     static let hero      = Color(hex: "1B6EF2")
@@ -30,7 +30,7 @@ extension Color {
 // MARK: - Rival Red — "Past you, the enemy"
 
 extension Color {
-    static let rivalBG    = Color(hex: "FFF0ED")
+    static let rivalBG    = Color(light: Color(hex: "FFF0ED"), dark: Color(hex: "3D1F18"))
     static let rivalLight = Color(hex: "FFB8AA")
     static let rivalMid   = Color(hex: "FF6B52")
     static let rival      = Color(hex: "E5432A")
@@ -41,7 +41,7 @@ extension Color {
 // MARK: - Victory Emerald — completions, XP, success
 
 extension Color {
-    static let victoryBG    = Color(hex: "E6F7EF")
+    static let victoryBG    = Color(light: Color(hex: "E6F7EF"), dark: Color(hex: "1A3328"))
     static let victoryLight = Color(hex: "5CE0A0")
     static let victory      = Color(hex: "12B76A")
     static let victoryDim   = Color(hex: "0D7A48")
@@ -50,7 +50,7 @@ extension Color {
 // MARK: - Streak Amber — streaks, urgency, rewards
 
 extension Color {
-    static let streakBG    = Color(hex: "FFF6E5")
+    static let streakBG    = Color(light: Color(hex: "FFF6E5"), dark: Color(hex: "3D2E0A"))
     static let streakLight = Color(hex: "FFCB57")
     static let streak      = Color(hex: "F5A623")
     static let streakDim   = Color(hex: "B87A0A")
@@ -66,15 +66,6 @@ extension Color {
     static let textPrimary = Color(light: Color(hex: "2E2F2F"), dark: Color(hex: "F5F5F5"))
     static let textMid     = Color(light: Color(hex: "5B5C5B"), dark: Color(hex: "ABABAB"))
     static let textLight   = Color(light: Color(hex: "8A8B8A"), dark: Color(hex: "787878"))
-}
-
-// MARK: - Adaptive BG colors (light tints darken in dark mode)
-
-extension Color {
-    static let heroBGAdaptive    = Color(light: Color(hex: "EBF2FF"), dark: Color(hex: "1A2740"))
-    static let rivalBGAdaptive   = Color(light: Color(hex: "FFF0ED"), dark: Color(hex: "3D1F18"))
-    static let victoryBGAdaptive = Color(light: Color(hex: "E6F7EF"), dark: Color(hex: "1A3328"))
-    static let streakBGAdaptive  = Color(light: Color(hex: "FFF6E5"), dark: Color(hex: "3D2E0A"))
 }
 
 // MARK: - Light/Dark Color Helper

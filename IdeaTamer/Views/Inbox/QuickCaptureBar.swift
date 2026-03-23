@@ -47,7 +47,7 @@ struct QuickCaptureBar: View {
     // MARK: - Actions
 
     private func submitCapture() {
-        let trimmed = title.trimmingCharacters(in: .whitespaces)
+        let trimmed = String(title.trimmingCharacters(in: .whitespaces).prefix(120))
         guard !trimmed.isEmpty else { return }
         onCapture(trimmed)
         title = ""

@@ -6,8 +6,6 @@ struct DuelView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel: DuelViewModel?
     @State private var isLoaded = false
-    @State private var showShareSheet = false
-    @State private var shareImage: UIImage?
 
     var body: some View {
         Group {
@@ -139,8 +137,7 @@ struct DuelView: View {
                 lost: vm.currentLost,
                 momentum: vm.momentum
             ) {
-                shareImage = image
-                showShareSheet = true
+                ShareHelper.share(image)
             }
         } label: {
             HStack(spacing: 6) {
@@ -152,11 +149,6 @@ struct DuelView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
             .background(Color.rivalBG, in: RoundedRectangle(cornerRadius: 16))
-        }
-        .sheet(isPresented: $showShareSheet) {
-            if let image = shareImage {
-                ShareSheet(activityItems: [image])
-            }
         }
     }
 }

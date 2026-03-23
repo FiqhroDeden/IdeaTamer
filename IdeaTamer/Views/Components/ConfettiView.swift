@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ConfettiView: View {
     @Binding var isShowing: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let colors: [Color] = [
         .hero, .rival, .victory, .streak, .heroLight, .rivalLight
@@ -9,7 +10,7 @@ struct ConfettiView: View {
     private let particleCount = 24
 
     var body: some View {
-        if isShowing {
+        if isShowing && !reduceMotion {
             GeometryReader { geo in
                 ZStack {
                     ForEach(0..<particleCount, id: \.self) { index in

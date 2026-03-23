@@ -117,7 +117,7 @@ struct MilestoneList: View {
     }
 
     private func submitMilestone() {
-        let trimmed = newMilestoneTitle.trimmingCharacters(in: .whitespaces)
+        let trimmed = String(newMilestoneTitle.trimmingCharacters(in: .whitespaces).prefix(200))
         guard !trimmed.isEmpty else { return }
         withAnimation(.springFast) {
             viewModel.addMilestone(to: idea, title: trimmed)

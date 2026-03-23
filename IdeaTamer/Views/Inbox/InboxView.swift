@@ -15,12 +15,48 @@ struct InboxView: View {
     @State private var viewModel: InboxViewModel?
     @State private var selectedIdeaForScoring: Idea?
     @State private var showXPFloat = false
+    @State private var searchText = ""
+    @State private var filter: InboxFilter = .all
+    @State private var showUndoToast = false
+    @State private var deletedIdea: Idea?
+
+    enum InboxFilter: String, CaseIterable {
+        case all = "All"
+        case unscored = "Unscored"
+        case scored = "Scored"
+    }
+
+    private var filteredIdeas: [Idea] {
+        var result = ideas
+        // Apply filter
+        switch filter {
+        case .all: break
+        case .unscored: result = result.filter { !$0.isScored }
+        case .scored: result = result.filter { $0.isScored }
+        }
+        // Apply search
+        if !searchText.isEmpty {
+            result = result.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
+        }
+        return result
+    }
 
     var body: some View {
         ZStack(alignment: .top) {
             mainContent
             XPFloatView(amount: 10, isShowing: $showXPFloat)
                 .padding(.top, 60)
+
+            // Undo toast at bottom
+            VStack {
+                Spacer()
+                UndoToast(
+                    message: "Idea deleted",
+                    onUndo: restoreDeletedIdea,
+                    isShowing: $showUndoToast
+                )
+                .padding(.bottom, 8)
+            }
         }
         .onTapGesture {
             UIApplication.shared.sendAction(
@@ -71,6 +107,9 @@ struct InboxView: View {
 
                 CapturePaceIndicator()
 
+                // Search + Filter
+                searchAndFilter
+
                 // Quests section
                 questsSection
 
@@ -89,11 +128,55 @@ struct InboxView: View {
         StreakRow()
     }
 
+    // MARK: - Search & Filter
+
+    private var searchAndFilter: some View {
+        VStack(spacing: 10) {
+            // Search bar
+            HStack(spacing: 8) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundStyle(Color.textLight)
+                TextField("Search ideas...", text: $searchText)
+                    .font(.brand(.body))
+                if !searchText.isEmpty {
+                    Button { searchText = "" } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(Color.textLight)
+                    }
+                }
+            }
+            .padding(10)
+            .background(Color.surfaceLow, in: RoundedRectangle(cornerRadius: 10))
+
+            // Filter pills
+            HStack(spacing: 8) {
+                ForEach(InboxFilter.allCases, id: \.self) { f in
+                    Button {
+                        withAnimation(.springFast) { filter = f }
+                        Haptics.selection()
+                    } label: {
+                        Text(f.rawValue)
+                            .font(.brand(.label))
+                            .fontWeight(.bold)
+                            .foregroundStyle(filter == f ? .white : Color.textMid)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(
+                                filter == f ? Color.hero : Color.surfaceLow,
+                                in: Capsule()
+                            )
+                    }
+                }
+                Spacer()
+            }
+        }
+    }
+
     // MARK: - Quests Section
 
     private var questsSection: some View {
         VStack(spacing: 8) {
-            ForEach(ideas) { idea in
+            ForEach(filteredIdeas) { idea in
                 Button {
                     selectedIdeaForScoring = idea
                 } label: {
@@ -107,15 +190,38 @@ struct InboxView: View {
                         Label("Score Idea", systemImage: "slider.horizontal.3")
                     }
                     Button(role: .destructive) {
-                        withAnimation(.springFast) {
-                            viewModel?.deleteIdea(idea)
-                        }
+                        softDeleteIdea(idea)
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
                 }
             }
         }
+    }
+
+    // MARK: - Undo Delete
+
+    private func softDeleteIdea(_ idea: Idea) {
+        Haptics.warning()
+        deletedIdea = idea
+        idea.status = .completed // Temporarily hide from inbox query
+        idea.statusRaw = "pendingDelete" // Custom state to hide
+        withAnimation(.springFast) {
+            showUndoToast = true
+        }
+        // Auto-delete after 3.5s if not undone
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+            if idea.statusRaw == "pendingDelete" {
+                viewModel?.deleteIdea(idea)
+                deletedIdea = nil
+            }
+        }
+    }
+
+    private func restoreDeletedIdea() {
+        guard let idea = deletedIdea else { return }
+        idea.statusRaw = IdeaStatus.inbox.rawValue
+        deletedIdea = nil
     }
 
     // MARK: - Empty State

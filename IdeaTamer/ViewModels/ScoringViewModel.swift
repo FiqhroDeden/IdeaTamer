@@ -26,6 +26,7 @@ final class ScoringViewModel {
     // MARK: - Actions
 
     func saveScore(for idea: Idea) {
+        Haptics.medium()
         idea.impactScore = impactScore
         idea.effortScore = effortScore
         idea.alignmentScore = alignmentScore

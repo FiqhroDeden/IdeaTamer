@@ -15,6 +15,7 @@ final class InboxViewModel {
 
     @discardableResult
     func captureIdea(title: String, description: String? = nil) -> Idea {
+        Haptics.light()
         let idea = Idea(title: title, descriptionText: description)
         modelContext.insert(idea)
 

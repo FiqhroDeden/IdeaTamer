@@ -15,6 +15,24 @@ struct ParkView: View {
     @State private var viewModel: ParkViewModel?
     @State private var selectedIdea: Idea?
     @State private var activationError: String?
+    @State private var sortMode: ParkSort = .score
+
+    enum ParkSort: String, CaseIterable {
+        case score = "Score ↓"
+        case newest = "Newest"
+        case oldest = "Oldest"
+    }
+
+    private var sortedIdeas: [Idea] {
+        switch sortMode {
+        case .score:
+            return ideas.sorted { ($0.computedScore ?? 0) > ($1.computedScore ?? 0) }
+        case .newest:
+            return ideas.sorted { $0.createdAt > $1.createdAt }
+        case .oldest:
+            return ideas.sorted { $0.createdAt < $1.createdAt }
+        }
+    }
 
     var body: some View {
         Group {
@@ -55,6 +73,7 @@ struct ParkView: View {
                 VStack(spacing: 16) {
                     header
                     VaultStats(ideas: ideas)
+                    sortPicker
                     ideaCards
                 }
                 .padding(.horizontal, 20)
@@ -83,11 +102,36 @@ struct ParkView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
+    // MARK: - Sort Picker
+
+    private var sortPicker: some View {
+        HStack(spacing: 8) {
+            ForEach(ParkSort.allCases, id: \.self) { mode in
+                Button {
+                    withAnimation(.springFast) { sortMode = mode }
+                    Haptics.selection()
+                } label: {
+                    Text(mode.rawValue)
+                        .font(.brand(.label))
+                        .fontWeight(.bold)
+                        .foregroundStyle(sortMode == mode ? .white : Color.textMid)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(
+                            sortMode == mode ? Color.hero : Color.surfaceLow,
+                            in: Capsule()
+                        )
+                }
+            }
+            Spacer()
+        }
+    }
+
     // MARK: - Cards
 
     private var ideaCards: some View {
         LazyVStack(spacing: 8) {
-            ForEach(Array(ideas.enumerated()), id: \.element.id) { index, idea in
+            ForEach(Array(sortedIdeas.enumerated()), id: \.element.id) { index, idea in
                 Button {
                     selectedIdea = idea
                 } label: {

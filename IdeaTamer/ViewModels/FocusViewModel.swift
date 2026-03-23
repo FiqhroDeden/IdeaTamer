@@ -47,6 +47,7 @@ final class FocusViewModel {
     }
 
     func completeQuest(_ idea: Idea) {
+        Haptics.success()
         idea.status = .completed
         idea.completedAt = .now
         if let activatedAt = idea.activatedAt {
@@ -78,6 +79,7 @@ final class FocusViewModel {
     }
 
     func completeMilestone(_ milestone: Milestone) {
+        Haptics.medium()
         milestone.isCompleted = true
         milestone.completedAt = .now
 

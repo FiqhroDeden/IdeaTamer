@@ -49,15 +49,18 @@ struct ParkView: View {
     // MARK: - Park List
 
     private var parkList: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                header
-                VaultStats(ideas: ideas)
-                ideaCards
+        VStack(spacing: 0) {
+            PlayerHeader()
+            ScrollView {
+                VStack(spacing: 16) {
+                    header
+                    VaultStats(ideas: ideas)
+                    ideaCards
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 4)
+                .padding(.bottom, 20)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 4)
-            .padding(.bottom, 20)
         }
     }
 

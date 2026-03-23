@@ -40,16 +40,19 @@ struct DoneView: View {
     // MARK: - Content
 
     private var doneContent: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                header
-                legacyStats
-                questCards
-                badgeSection
+        VStack(spacing: 0) {
+            PlayerHeader()
+            ScrollView {
+                VStack(spacing: 16) {
+                    header
+                    legacyStats
+                    questCards
+                    badgeSection
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 4)
+                .padding(.bottom, 20)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 4)
-            .padding(.bottom, 20)
         }
     }
 

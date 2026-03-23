@@ -51,9 +51,11 @@ struct DuelView: View {
     // MARK: - Duel Content
 
     private func duelContent(vm: DuelViewModel) -> some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                header
+        VStack(spacing: 0) {
+            PlayerHeader()
+            ScrollView {
+                VStack(spacing: 16) {
+                    header
                 VSCard(
                     won: vm.currentWon,
                     lost: vm.currentLost,
@@ -68,6 +70,7 @@ struct DuelView: View {
             .padding(.horizontal, 20)
             .padding(.top, 4)
             .padding(.bottom, 20)
+            }
         }
     }
 

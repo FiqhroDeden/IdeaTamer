@@ -52,61 +52,56 @@ struct InboxView: View {
 
     private var ideaList: some View {
         VStack(spacing: 0) {
-            headerAndCapture
-            List {
-                ForEach(ideas) { idea in
-                    Button {
-                        selectedIdeaForScoring = idea
-                    } label: {
-                        IdeaCard(idea: idea)
-                    }
-                    .buttonStyle(.plain)
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(EdgeInsets(top: 4, leading: 20, bottom: 4, trailing: 20))
-                    .listRowBackground(Color.clear)
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button(role: .destructive) {
-                            withAnimation(.springFast) {
-                                viewModel?.deleteIdea(idea)
-                            }
-                        } label: {
-                            Label("Delete", systemImage: "trash")
-                        }
-                    }
-                    .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                        Button {
-                            selectedIdeaForScoring = idea
-                        } label: {
-                            Label("Score", systemImage: "slider.horizontal.3")
-                        }
-                        .tint(Color.hero)
-                    }
+            PlayerHeader()
+            ScrollView {
+                VStack(spacing: 12) {
+                    DuelBannerMini()
+
+                // Streak
+                streakRow
+
+                Text("Master your\nthoughts.")
+                    .font(.brand(.display))
+                    .foregroundStyle(Color.textPrimary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                QuickCaptureBar(showXPFloat: $showXPFloat) { title in
+                    viewModel?.captureIdea(title: title)
                 }
+
+                CapturePaceIndicator()
+
+                // Quests section
+                questsSection
+
+                MasteryCard()
             }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
+            .padding(.horizontal, 20)
+            .padding(.top, 4)
+            .padding(.bottom, 20)
+            }
         }
     }
 
-    // MARK: - Header + Capture
+    // MARK: - Streak Row
 
-    private var headerAndCapture: some View {
-        VStack(spacing: 12) {
-            PlayerHeader()
-            DuelBannerMini()
+    private var streakRow: some View {
+        StreakRow()
+    }
 
-            Text("Master your\nthoughts.")
-                .font(.brand(.display))
-                .foregroundStyle(Color.textPrimary)
-                .frame(maxWidth: .infinity, alignment: .leading)
+    // MARK: - Quests Section
 
-            QuickCaptureBar(showXPFloat: $showXPFloat) { title in
-                viewModel?.captureIdea(title: title)
+    private var questsSection: some View {
+        VStack(spacing: 8) {
+            ForEach(ideas) { idea in
+                Button {
+                    selectedIdeaForScoring = idea
+                } label: {
+                    IdeaCard(idea: idea)
+                }
+                .buttonStyle(.plain)
             }
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 4)
-        .padding(.bottom, 8)
     }
 
     // MARK: - Empty State
@@ -125,6 +120,76 @@ struct InboxView: View {
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
+        }
+    }
+}
+
+// MARK: - Streak Row
+
+private struct StreakRow: View {
+    @Environment(\.modelContext) private var modelContext
+    @State private var streakCount = 0
+    @State private var pastStreakDays = 0
+
+    var body: some View {
+        HStack(spacing: 8) {
+            StreakBadge(count: streakCount, label: "Days")
+            Text("Past week: \(pastStreakDays) days")
+                .font(.brand(.caption))
+                .foregroundStyle(Color.textLight)
+            Spacer()
+        }
+        .task { loadData() }
+    }
+
+    private func loadData() {
+        let profile = PlayerProfile.fetchOrCreate(context: modelContext)
+        streakCount = profile.captureStreakCount
+
+        var descriptor = FetchDescriptor<WeeklySnapshot>(
+            sortBy: [SortDescriptor(\.weekStartDate, order: .reverse)]
+        )
+        descriptor.fetchLimit = 1
+        pastStreakDays = (try? modelContext.fetch(descriptor).first)?.streakDays ?? 0
+    }
+}
+
+// MARK: - Player Header Trailing (for toolbar)
+
+struct PlayerHeaderTrailing: View {
+    @Environment(\.modelContext) private var modelContext
+    @State private var level = 1
+    @State private var momentum: Double = 0
+    @State private var hasMomentum = false
+
+    var body: some View {
+        HStack(spacing: 6) {
+            if hasMomentum {
+                MomentumBadge(value: momentum)
+            }
+            Text("LVL \(level)")
+                .font(.brand(.label))
+                .fontWeight(.heavy)
+                .foregroundStyle(Color.hero)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color.heroBG, in: Capsule())
+        }
+        .task { loadData() }
+    }
+
+    private func loadData() {
+        let profile = PlayerProfile.fetchOrCreate(context: modelContext)
+        level = profile.currentLevel
+
+        let tracker = CurrentWeekTracker.fetchOrCreate(context: modelContext)
+        var descriptor = FetchDescriptor<WeeklySnapshot>(
+            sortBy: [SortDescriptor(\.weekStartDate, order: .reverse)]
+        )
+        descriptor.fetchLimit = 1
+        if let last = try? modelContext.fetch(descriptor).first {
+            momentum = DuelService.computeMomentum(currentXP: tracker.xpEarned, previousXP: last.xpEarned)
+            hasMomentum = true
         }
     }
 }

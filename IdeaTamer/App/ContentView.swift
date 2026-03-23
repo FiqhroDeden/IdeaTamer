@@ -9,33 +9,23 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             Tab("Inbox", systemImage: "tray.and.arrow.down.fill", value: "inbox") {
-                NavigationStack {
-                    InboxView()
-                }
+                InboxView()
             }
 
             Tab("Focus", systemImage: "bolt.fill", value: "focus") {
-                NavigationStack {
-                    FocusView(selectedTab: $selectedTab)
-                }
+                FocusView(selectedTab: $selectedTab)
             }
 
             Tab("Duel", systemImage: "figure.fencing", value: "duel") {
-                NavigationStack {
-                    DuelView()
-                }
+                DuelView()
             }
 
             Tab("Park", systemImage: "square.grid.2x2.fill", value: "park") {
-                NavigationStack {
-                    ParkView()
-                }
+                ParkView()
             }
 
             Tab("Done", systemImage: "trophy.fill", value: "done") {
-                NavigationStack {
-                    DoneView()
-                }
+                DoneView()
             }
         }
         .tint(selectedTab == "duel" ? Color.rival : Color.hero)

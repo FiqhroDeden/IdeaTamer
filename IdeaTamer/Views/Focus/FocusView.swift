@@ -32,16 +32,20 @@ struct FocusView: View {
     // MARK: - Quest Content
 
     private func questContent(quest: Idea, vm: FocusViewModel) -> some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                questHeader
+        VStack(spacing: 0) {
+            PlayerHeader()
+            ScrollView {
+                VStack(spacing: 16) {
+                    questHeader
                 questCard(quest: quest)
+                ShadowCheckCard(quest: quest)
                 milestoneSection(quest: quest, vm: vm)
                 actionButtons(quest: quest, vm: vm)
             }
             .padding(.horizontal, 20)
             .padding(.top, 4)
             .padding(.bottom, 20)
+            }
         }
     }
 

@@ -2,7 +2,9 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
     @State private var selectedTab = "inbox"
+    @State private var showOnboarding = false
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -14,7 +16,7 @@ struct ContentView: View {
 
             Tab("Focus", systemImage: "bolt.fill", value: "focus") {
                 NavigationStack {
-                    FocusView()
+                    FocusView(selectedTab: $selectedTab)
                 }
             }
 
@@ -37,82 +39,14 @@ struct ContentView: View {
             }
         }
         .tint(selectedTab == "duel" ? Color.rival : Color.hero)
-    }
-}
-
-// MARK: - Placeholder Views
-
-private struct InboxPlaceholder: View {
-    var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "tray.and.arrow.down.fill")
-                .font(.system(size: 48))
-                .foregroundStyle(Color.hero)
-            Text("Inbox")
-                .font(.brand(.headline))
-            Text("Capture your ideas here")
-                .font(.brand(.body))
-                .foregroundStyle(Color.textMid)
+        .task {
+            let profile = PlayerProfile.fetchOrCreate(context: modelContext)
+            if !profile.hasCompletedOnboarding {
+                showOnboarding = true
+            }
         }
-    }
-}
-
-private struct FocusPlaceholder: View {
-    var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "bolt.fill")
-                .font(.system(size: 48))
-                .foregroundStyle(Color.hero)
-            Text("Focus")
-                .font(.brand(.headline))
-            Text("Your active quest appears here")
-                .font(.brand(.body))
-                .foregroundStyle(Color.textMid)
-        }
-    }
-}
-
-private struct DuelPlaceholder: View {
-    var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "figure.fencing")
-                .font(.system(size: 48))
-                .foregroundStyle(Color.rival)
-            Text("Duel")
-                .font(.brand(.headline))
-            Text("Compete with your past self")
-                .font(.brand(.body))
-                .foregroundStyle(Color.textMid)
-        }
-    }
-}
-
-private struct ParkPlaceholder: View {
-    var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "square.grid.2x2.fill")
-                .font(.system(size: 48))
-                .foregroundStyle(Color.hero)
-            Text("Park")
-                .font(.brand(.headline))
-            Text("Ranked ideas waiting for activation")
-                .font(.brand(.body))
-                .foregroundStyle(Color.textMid)
-        }
-    }
-}
-
-private struct DonePlaceholder: View {
-    var body: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "trophy.fill")
-                .font(.system(size: 48))
-                .foregroundStyle(Color.hero)
-            Text("Done")
-                .font(.brand(.headline))
-            Text("Your Hall of Fame")
-                .font(.brand(.body))
-                .foregroundStyle(Color.textMid)
+        .fullScreenCover(isPresented: $showOnboarding) {
+            OnboardingView()
         }
     }
 }

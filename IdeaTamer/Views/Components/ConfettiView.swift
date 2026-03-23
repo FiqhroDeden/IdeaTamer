@@ -10,16 +10,19 @@ struct ConfettiView: View {
 
     var body: some View {
         if isShowing {
-            ZStack {
-                ForEach(0..<particleCount, id: \.self) { index in
-                    ConfettiParticle(
-                        color: colors[index % colors.count],
-                        delay: Double.random(in: 0...0.5)
-                    )
-                    .position(
-                        x: CGFloat.random(in: 0...UIScreen.main.bounds.width),
-                        y: -10
-                    )
+            GeometryReader { geo in
+                ZStack {
+                    ForEach(0..<particleCount, id: \.self) { index in
+                        ConfettiParticle(
+                            color: colors[index % colors.count],
+                            delay: Double.random(in: 0...0.5),
+                            screenHeight: geo.size.height
+                        )
+                        .position(
+                            x: CGFloat.random(in: 0...geo.size.width),
+                            y: -10
+                        )
+                    }
                 }
             }
             .allowsHitTesting(false)
@@ -37,6 +40,7 @@ struct ConfettiView: View {
 private struct ConfettiParticle: View {
     let color: Color
     let delay: Double
+    let screenHeight: CGFloat
 
     @State private var offset: CGFloat = 0
     @State private var rotation: Double = 0
@@ -57,7 +61,7 @@ private struct ConfettiParticle: View {
                     .easeIn(duration: Double.random(in: 1.4...2.4))
                     .delay(delay)
                 ) {
-                    offset = UIScreen.main.bounds.height + 50
+                    offset = screenHeight + 50
                     rotation = Double.random(in: 360...720)
                     opacity = 0
                 }

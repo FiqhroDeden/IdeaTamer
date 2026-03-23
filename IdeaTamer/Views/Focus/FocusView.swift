@@ -3,13 +3,14 @@ import SwiftData
 import UIKit
 
 struct FocusView: View {
+    @Binding var selectedTab: String
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel: FocusViewModel?
-    @State private var showConfetti = false
     @State private var showXPFloat = false
     @State private var xpAmount = 0
     @State private var showShareSheet = false
     @State private var shareImage: UIImage?
+    @State private var showCompleteConfirm = false
 
     var body: some View {
         ZStack {
@@ -22,7 +23,6 @@ struct FocusView: View {
             }
 
             // Overlays
-            ConfettiView(isShowing: $showConfetti)
             XPFloatView(amount: xpAmount, isShowing: $showXPFloat)
                 .padding(.top, 100)
         }
@@ -136,15 +136,10 @@ struct FocusView: View {
 
     private func actionButtons(quest: Idea, vm: FocusViewModel) -> some View {
         VStack(spacing: 10) {
-            // Complete Quest
-            if quest.milestones.isEmpty || quest.milestoneProgress > 0 {
+            // Complete Quest — requires at least 1 milestone and ALL completed
+            if !quest.milestones.isEmpty && quest.milestoneProgress == 1.0 {
                 Button {
-                    withAnimation(.springMedium) {
-                        vm.completeQuest(quest)
-                        xpAmount = 500
-                        showXPFloat = true
-                        showConfetti = true
-                    }
+                    showCompleteConfirm = true
                 } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "trophy.fill")
@@ -158,6 +153,21 @@ struct FocusView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
                     .background(Color.victory, in: RoundedRectangle(cornerRadius: 16))
+                }
+                .confirmationDialog(
+                    "Complete Quest?",
+                    isPresented: $showCompleteConfirm,
+                    titleVisibility: .visible
+                ) {
+                    Button("Complete & Earn 500 XP") {
+                        vm.completeQuest(quest)
+                        selectedTab = "done"
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            NotificationCenter.default.post(name: .questCompleted, object: nil)
+                        }
+                    }
+                } message: {
+                    Text("This will mark \"\(quest.title)\" as completed and move it to the Hall of Fame.")
                 }
             }
 
@@ -216,7 +226,7 @@ struct FocusView: View {
 
 #Preview {
     NavigationStack {
-        FocusView()
+        FocusView(selectedTab: .constant("focus"))
     }
     .modelContainer(
         for: [Idea.self, Milestone.self, PlayerProfile.self,

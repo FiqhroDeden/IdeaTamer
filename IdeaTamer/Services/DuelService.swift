@@ -49,7 +49,7 @@ enum DuelService {
 
             // Award XP
             let profile = PlayerProfile.fetchOrCreate(context: context)
-            XPService.awardDuel(profile: profile, tracker: tracker, result: result)
+            _ = XPService.awardDuel(profile: profile, tracker: tracker, result: result)
 
             if result == .win {
                 profile.unlockBadge(.selfSurpassed)

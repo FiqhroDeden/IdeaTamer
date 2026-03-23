@@ -14,16 +14,27 @@ struct DoneView: View {
     @State private var profile: PlayerProfile?
     @State private var duelWins = 0
     @State private var duelLosses = 0
+    @State private var showConfetti = false
+    @State private var showXPFloat = false
 
     var body: some View {
-        Group {
-            if completedIdeas.isEmpty && profile != nil {
-                emptyState
-            } else {
-                doneContent
+        ZStack {
+            Group {
+                if completedIdeas.isEmpty && profile != nil {
+                    emptyState
+                } else {
+                    doneContent
+                }
             }
+            ConfettiView(isShowing: $showConfetti)
+            XPFloatView(amount: 500, isShowing: $showXPFloat)
+                .padding(.top, 100)
         }
         .task { loadStats() }
+        .onReceive(NotificationCenter.default.publisher(for: .questCompleted)) { _ in
+            showConfetti = true
+            showXPFloat = true
+        }
     }
 
     // MARK: - Content

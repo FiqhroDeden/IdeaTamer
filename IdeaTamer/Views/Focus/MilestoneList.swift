@@ -5,7 +5,8 @@ struct MilestoneList: View {
     let viewModel: FocusViewModel
 
     @State private var newMilestoneTitle = ""
-    @FocusState private var isAddFocused: Bool
+    @State private var showAddSheet = false
+    @FocusState private var isFieldFocused: Bool
 
     private var sortedMilestones: [Milestone] {
         idea.milestones.sorted { $0.sortOrder < $1.sortOrder }
@@ -19,10 +20,14 @@ struct MilestoneList: View {
         VStack(alignment: .leading, spacing: 12) {
             header
             milestoneItems
-            addMilestoneField
+            addButton
         }
         .padding(16)
         .background(Color.surfaceLow, in: RoundedRectangle(cornerRadius: 24))
+        .sheet(isPresented: $showAddSheet) {
+            addMilestoneSheet
+                .presentationDetents([.height(140)])
+        }
     }
 
     // MARK: - Header
@@ -61,24 +66,15 @@ struct MilestoneList: View {
                         }
                     }
                 )
-                .swipeActions(edge: .trailing) {
-                    Button(role: .destructive) {
-                        withAnimation(.springFast) {
-                            viewModel.deleteMilestone(milestone)
-                        }
-                    } label: {
-                        Label("Delete", systemImage: "trash")
-                    }
-                }
             }
         }
     }
 
-    // MARK: - Add Milestone
+    // MARK: - Add Button
 
-    private var addMilestoneField: some View {
+    private var addButton: some View {
         Button {
-            addMilestone()
+            showAddSheet = true
         } label: {
             HStack(spacing: 6) {
                 Image(systemName: "plus.circle.fill")
@@ -91,44 +87,42 @@ struct MilestoneList: View {
             .padding(.vertical, 12)
             .background(Color.hero, in: RoundedRectangle(cornerRadius: 16))
         }
-        .sheet(isPresented: .init(
-            get: { isAddFocused },
-            set: { isAddFocused = $0 }
-        )) {
-            addMilestoneSheet
-                .presentationDetents([.height(120)])
-        }
     }
 
+    // MARK: - Add Sheet
+
     private var addMilestoneSheet: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 16) {
+            Text("New Milestone")
+                .font(.brand(.title))
+                .foregroundStyle(Color.textPrimary)
+
             HStack(spacing: 8) {
-                TextField("Milestone title...", text: $newMilestoneTitle)
+                TextField("What needs to be done?", text: $newMilestoneTitle)
                     .font(.brand(.body))
-                    .focused($isAddFocused)
-                    .onSubmit(addMilestone)
-                    .textFieldStyle(.plain)
+                    .focused($isFieldFocused)
+                    .onSubmit(submitMilestone)
+                    .textFieldStyle(.roundedBorder)
 
                 Button("Add") {
-                    addMilestone()
+                    submitMilestone()
                 }
                 .font(.brand(.title))
                 .foregroundStyle(Color.hero)
                 .disabled(newMilestoneTitle.trimmingCharacters(in: .whitespaces).isEmpty)
             }
-            .padding()
         }
+        .padding(20)
+        .onAppear { isFieldFocused = true }
     }
 
-    private func addMilestone() {
+    private func submitMilestone() {
         let trimmed = newMilestoneTitle.trimmingCharacters(in: .whitespaces)
-        guard !trimmed.isEmpty else {
-            isAddFocused = true
-            return
-        }
+        guard !trimmed.isEmpty else { return }
         withAnimation(.springFast) {
             viewModel.addMilestone(to: idea, title: trimmed)
         }
         newMilestoneTitle = ""
+        showAddSheet = false
     }
 }

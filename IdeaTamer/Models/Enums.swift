@@ -1,5 +1,11 @@
 import Foundation
 
+// MARK: - Notifications
+
+extension Notification.Name {
+    static let questCompleted = Notification.Name("questCompleted")
+}
+
 // MARK: - App Errors
 
 enum IdeaTamerError: Error, LocalizedError {
@@ -74,7 +80,7 @@ enum BadgeType: String, Codable, CaseIterable, Identifiable {
         case .superFocus: "bolt.fill"
         case .polisher: "sparkles"
         case .selfSurpassed: "figure.fencing"
-        case .moonshot: "rocket.fill"
+        case .moonshot: "paperplane.fill"
         case .streakMaster: "flame.circle.fill"
         }
     }

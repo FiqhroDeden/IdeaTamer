@@ -182,12 +182,12 @@
 **Goal:** 3-page animated onboarding flow.
 **Dependencies:** Sprint 1 (PlayerProfile) complete.
 
-- [ ] 9.1 Create `ViewModels/OnboardingViewModel.swift` — page tracking, completeOnboarding()
-- [ ] 9.2 Create `Views/Onboarding/OnboardingView.swift` — 3-page TabView, skip, page indicator
-- [ ] 9.3 Create `Views/Onboarding/OnboardingPage1.swift` — "Too many ideas" blue gradient
-- [ ] 9.4 Create `Views/Onboarding/OnboardingPage2.swift` — "Your rival" red gradient, VS
-- [ ] 9.5 Create `Views/Onboarding/OnboardingPage3.swift` — "Capture. Score. Focus. Ship." green
-- [ ] 9.6 Wire into App entry point — .fullScreenCover if !hasCompletedOnboarding
+- [x] 9.1 Create `ViewModels/OnboardingViewModel.swift` — page tracking, completeOnboarding() persists to profile
+- [x] 9.2 Create `Views/Onboarding/OnboardingView.swift` — page TabView, skip on 1-2, color-coded page dots
+- [x] 9.3 Create `Views/Onboarding/OnboardingPage1.swift` — blue gradient, floating lightbulb bubbles, "Too many ideas"
+- [x] 9.4 Create `Views/Onboarding/OnboardingPage2.swift` — red gradient, VS hero/shadow avatars, "Your only rival"
+- [x] 9.5 Create `Views/Onboarding/OnboardingPage3.swift` — green gradient, 4-step flow icons, "Start Your Journey" CTA
+- [x] 9.6 Wire into ContentView — .fullScreenCover if !hasCompletedOnboarding, cleaned up all placeholder views
 
 **Testing:** Shows on first launch. Skip works. "Get Started" persists. Never shows again.
 **Done when:** Onboarding flow complete, animations working, state persisted.

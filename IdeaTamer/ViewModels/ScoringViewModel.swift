@@ -31,7 +31,6 @@ final class ScoringViewModel {
         idea.effortScore = effortScore
         idea.alignmentScore = alignmentScore
         idea.computedScore = previewScore
-        idea.status = .parked
 
         let profile = PlayerProfile.fetchOrCreate(context: modelContext)
         let tracker = CurrentWeekTracker.fetchOrCreate(context: modelContext)

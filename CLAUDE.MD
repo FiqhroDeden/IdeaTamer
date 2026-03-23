@@ -198,14 +198,14 @@ static func computeScore(impact: Int, effort: Int, alignment: Int) -> Int {
 
 | Action | XP | Constant name |
 |--------|----|---------------|
-| Capture idea | +10 | `XP.capture` |
+| Capture idea | +5 | `XP.capture` |
 | Score idea | +25 | `XP.score` |
-| Complete milestone | +50 | `XP.milestone` |
+| Complete milestone | +75 | `XP.milestone` |
 | Complete quest | +500 | `XP.questComplete` |
 | Win weekly duel (3+ rounds) | +200 | `XP.duelWin` |
 | Draw weekly duel (2-2) | +50 | `XP.duelDraw` |
-| Daily capture streak/day | +15 | `XP.captureStreak` |
-| Focus streak/day | +20 | `XP.focusStreak` |
+| Daily capture streak/day | +10 | `XP.captureStreak` |
+| Focus streak/day | +30 | `XP.focusStreak` |
 
 ## Level formula
 
@@ -233,7 +233,7 @@ static let levelTitles: [Int: String] = [
 ```swift
 /// Compare current week vs last week's snapshot across 4 rounds.
 /// Returns (roundsWon: Int, roundsLost: Int) — win 3+ = duel win.
-/// Rounds: XP earned, milestones completed, ideas captured, streak days.
+/// Rounds: XP earned, milestones completed, quests shipped, streak days.
 ///
 /// Momentum = ((thisWeekXP - lastWeekXP) / lastWeekXP) × 100
 /// Clamped to -99%...999%. Show green trending_up or red trending_down.
@@ -246,7 +246,7 @@ static let levelTitles: [Int: String] = [
 ```
 Idea (@Model): id, title (120 max), descriptionText?, impactScore?, effortScore?,
   alignmentScore?, computedScore?, status: IdeaStatus, xpEarned: Int,
-  createdAt, activatedAt?, completedAt?, completionDays?: Int,
+  createdAt, activatedAt?, targetDate?, completedAt?, completionDays?: Int,
   milestones: [Milestone] (relationship)
 
 Milestone (@Model): id, title (200 max), isCompleted: Bool, completedAt?,
@@ -257,10 +257,10 @@ PlayerProfile (@Model singleton): totalXP, currentLevel, captureStreakCount,
   unlockedBadges: [String], questsCompletedCount, hasCompletedOnboarding
 
 WeeklySnapshot (@Model): id, weekStartDate, xpEarned, milestonesCompleted,
-  ideasCaptured, streakDays, duelResult?: DuelResult
+  ideasCaptured, questsCompleted, streakDays, duelResult?: DuelResult
 
 CurrentWeekTracker (@Model singleton): weekStartDate, xpEarned,
-  milestonesCompleted, ideasCaptured, streakDays
+  milestonesCompleted, ideasCaptured, questsCompleted, streakDays
 
 IdeaStatus: .inbox | .parked | .active | .completed
 DuelResult: .win | .loss | .draw
@@ -271,12 +271,12 @@ DuelResult: .win | .loss | .draw
 | Badge ID | Condition | Color |
 |----------|-----------|-------|
 | `firstBlood` | Complete first quest ever | Victory |
-| `streak7` | 7-day capture streak | Amber |
+| `streak7` | 7-day focus streak | Amber |
 | `superFocus` | Complete quest with 5+ milestones, no parking | Blue |
 | `polisher` | Score an idea ≥90/100 | Victory |
 | `selfSurpassed` | Win a weekly duel (3+ rounds) | Red |
 | `moonshot` | Complete 10 quests total | Gray → Victory on unlock |
-| `streakMaster` | 30-day capture streak | Amber |
+| `streakMaster` | 30-day focus streak | Amber |
 
 ## Typography
 
@@ -363,3 +363,7 @@ Full sprint breakdown in PRD Section 13. Summary:
 - Max 1 active quest enforced in ViewModel — always check `Idea.status == .active` count before allowing activation.
 - Score formula edge case: all sliders at default (5,5,5) = score of 50. Ensure sliders default to 5 not 1.
 - When a fix feels hacky, step back: "Knowing everything I know now, implement the elegant solution."
+- Inbox cap: max 10 unscored ideas. `InboxViewModel.captureIdea()` throws `IdeaTamerError.inboxFull` when at cap.
+- Park decay: ideas parked 30+ days show "Still relevant?" prompt. Uses `createdAt` to determine staleness.
+- Quest target date: optional `Idea.targetDate` — shows "Day X of Y" countdown on Focus tab.
+- Gamification philosophy: finishing > collecting. Focus streak XP (30) is 3x capture streak XP (10). Duel compares quests shipped, not ideas captured.

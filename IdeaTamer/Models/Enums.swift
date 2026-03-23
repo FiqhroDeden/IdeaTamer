@@ -11,11 +11,14 @@ extension Notification.Name {
 
 enum IdeaTamerError: Error, LocalizedError {
     case questAlreadyActive
+    case inboxFull
 
     var errorDescription: String? {
         switch self {
         case .questAlreadyActive:
             "You already have an active quest. Complete or park it first."
+        case .inboxFull:
+            "Inbox is full. Score or remove existing ideas first."
         }
     }
 }
@@ -53,7 +56,7 @@ enum BadgeType: String, Codable, CaseIterable, Identifiable {
     var displayName: String {
         switch self {
         case .firstBlood: "First Blood"
-        case .streak7: "7-Day Streak"
+        case .streak7: "7-Day Focus"
         case .superFocus: "Super Focus"
         case .polisher: "Polisher"
         case .selfSurpassed: "Self Surpassed"
@@ -65,12 +68,12 @@ enum BadgeType: String, Codable, CaseIterable, Identifiable {
     var description: String {
         switch self {
         case .firstBlood: "Complete your first quest"
-        case .streak7: "Maintain a 7-day capture streak"
+        case .streak7: "Maintain a 7-day focus streak"
         case .superFocus: "Complete a quest with 5+ milestones, no parking"
         case .polisher: "Score an idea 90 or above"
         case .selfSurpassed: "Win a weekly duel (3+ rounds)"
         case .moonshot: "Complete 10 quests total"
-        case .streakMaster: "Maintain a 30-day capture streak"
+        case .streakMaster: "Maintain a 30-day focus streak"
         }
     }
 

@@ -14,6 +14,7 @@ final class Idea {
     var xpEarned: Int
     var createdAt: Date
     var activatedAt: Date?
+    var targetDate: Date?
     var completedAt: Date?
     var completionDays: Int?
 

@@ -29,8 +29,8 @@ enum SeedDataService {
 
         // MARK: - Completed Ideas (Done tab)
 
-        // XP formula: capture(10) + score(25) + milestones(N×50) + questComplete(500)
-        // Design System V1: 10 + 25 + 5×50 + 500 = 785
+        // XP formula: capture(5) + score(25) + milestones(N×75) + questComplete(500)
+        // Design System V1: 5 + 25 + 5×75 + 500 = 905
         let completed1 = makeCompletedIdea(
             context: context,
             title: "Design System V1",
@@ -41,7 +41,7 @@ enum SeedDataService {
         )
         context.insert(completed1)
 
-        // Podcast Launch Plan: 10 + 25 + 4×50 + 500 = 735
+        // Podcast Launch Plan: 5 + 25 + 4×75 + 500 = 830
         let completed2 = makeCompletedIdea(
             context: context,
             title: "Podcast Launch Plan",
@@ -52,7 +52,7 @@ enum SeedDataService {
         )
         context.insert(completed2)
 
-        // Portfolio Website Redesign: 10 + 25 + 7×50 + 500 = 885
+        // Portfolio Website Redesign: 5 + 25 + 7×75 + 500 = 1055
         let completed3 = makeCompletedIdea(
             context: context,
             title: "Portfolio Website Redesign",
@@ -70,7 +70,7 @@ enum SeedDataService {
         activeIdea.effortScore = 5
         activeIdea.alignmentScore = 9
         activeIdea.computedScore = ScoringFormula.compute(impact: 9, effort: 5, alignment: 9)
-        // Active quest XP: capture(10) + score(25) + 3 milestones done(3×50) = 185
+        // Active quest XP: capture(5) + score(25) + 3 milestones done(3×75) = 255
         activeIdea.xpEarned = 185
         activeIdea.activatedAt = Calendar.current.date(byAdding: .day, value: -3, to: .now)
         activeIdea.createdAt = Calendar.current.date(byAdding: .day, value: -5, to: .now)!
@@ -134,17 +134,17 @@ enum SeedDataService {
         // MARK: - Weekly Snapshots (Duel tab)
 
         let threeWeeksAgo = Calendar.current.date(byAdding: .weekOfYear, value: -3, to: Date.now.startOfWeek)!
-        let snap1 = WeeklySnapshot(weekStartDate: threeWeeksAgo, xpEarned: 980, milestonesCompleted: 4, ideasCaptured: 6, streakDays: 5)
+        let snap1 = WeeklySnapshot(weekStartDate: threeWeeksAgo, xpEarned: 980, milestonesCompleted: 4, ideasCaptured: 6, questsCompleted: 1, streakDays: 5)
         snap1.duelResult = .win
         context.insert(snap1)
 
         let twoWeeksAgo = Calendar.current.date(byAdding: .weekOfYear, value: -2, to: Date.now.startOfWeek)!
-        let snap2 = WeeklySnapshot(weekStartDate: twoWeeksAgo, xpEarned: 1200, milestonesCompleted: 6, ideasCaptured: 8, streakDays: 7)
+        let snap2 = WeeklySnapshot(weekStartDate: twoWeeksAgo, xpEarned: 1200, milestonesCompleted: 6, ideasCaptured: 8, questsCompleted: 1, streakDays: 7)
         snap2.duelResult = .win
         context.insert(snap2)
 
         let lastWeek = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date.now.startOfWeek)!
-        let snap3 = WeeklySnapshot(weekStartDate: lastWeek, xpEarned: 850, milestonesCompleted: 3, ideasCaptured: 5, streakDays: 4)
+        let snap3 = WeeklySnapshot(weekStartDate: lastWeek, xpEarned: 850, milestonesCompleted: 3, ideasCaptured: 5, questsCompleted: 1, streakDays: 4)
         snap3.duelResult = .loss
         context.insert(snap3)
 
@@ -155,6 +155,7 @@ enum SeedDataService {
         tracker.xpEarned = 340
         tracker.milestonesCompleted = 3
         tracker.ideasCaptured = 3
+        tracker.questsCompleted = 0
         tracker.streakDays = 3
     }
 

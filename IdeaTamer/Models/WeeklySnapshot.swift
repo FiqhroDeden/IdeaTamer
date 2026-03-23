@@ -8,6 +8,7 @@ final class WeeklySnapshot {
     var xpEarned: Int
     var milestonesCompleted: Int
     var ideasCaptured: Int
+    var questsCompleted: Int
     var streakDays: Int
     var duelResultRaw: String?
 
@@ -24,6 +25,7 @@ final class WeeklySnapshot {
         xpEarned: Int,
         milestonesCompleted: Int,
         ideasCaptured: Int,
+        questsCompleted: Int = 0,
         streakDays: Int
     ) {
         self.id = UUID()
@@ -31,6 +33,7 @@ final class WeeklySnapshot {
         self.xpEarned = xpEarned
         self.milestonesCompleted = milestonesCompleted
         self.ideasCaptured = ideasCaptured
+        self.questsCompleted = questsCompleted
         self.streakDays = streakDays
     }
 }

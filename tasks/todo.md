@@ -115,7 +115,7 @@
 - [x] 5.3 Create `Services/BadgeService.swift` — evaluate 7 conditions, no duplicates, returns newly unlocked
 - [x] 5.4 Create `Views/Components/LevelUpOverlay.swift` — spring scale animation, haptic, tap to dismiss
 - [x] 5.5 Integrate services into InboxVM (capture+streak+badge), ScoringVM (score+badge), FocusVM (milestone+quest+badge)
-- [ ] 5.6 Add XP/level display to app header (deferred — needs ContentView header redesign)
+- [x] 5.6 Add XP/level display to app header — PlayerHeader with logo, level badge, momentum, settings gear in all 5 tabs
 - [x] 5.7 Create `IdeaTamerTests/StreakServiceTests.swift` — 7 tests: first, same-day, consecutive, missed, reset, preserve, focus
 - [x] 5.8 Create `IdeaTamerTests/BadgeServiceTests.swift` — 7 tests: firstBlood, streak7, polisher, moonshot, noDupes, superFocus, streakMaster
 
@@ -205,7 +205,7 @@
 - [x] 10.4 Accessibility: VoiceOver labels on IdeaCard + MilestoneRow, Reduce Motion disables confetti
 - [x] 10.5 Fixed OnboardingPage3 Button init warning
 - [x] 10.6 Added PlayerHeader with level badge to InboxView
-- [ ] 10.7 Create `Services/NotificationService.swift` — streak-at-risk local notifications (deferred to v1.1)
+- [x] 10.7 Create `Services/NotificationService.swift` — streak reminders + quest nudges with SettingsView UI
 
 **Testing:** Full QA pass. Dark mode works. VoiceOver audit. Performance targets met.
 **Done when:** Ship-ready quality. No crashes on edge cases.

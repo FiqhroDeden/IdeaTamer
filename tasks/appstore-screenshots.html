@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IdeaTamer — App Store Screenshots</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px;
+  }
+
+  h1.page-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #888;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  p.page-subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 48px;
+  }
+
+  .screenshots-row {
+    display: flex;
+    gap: 32px;
+    overflow-x: auto;
+    padding-bottom: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Each screenshot card at iPhone 6.7" aspect ratio: 1290×2796 ≈ 1:2.167 */
+  .screenshot {
+    flex-shrink: 0;
+    width: 320px;
+    height: 693px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 28px 24px;
+  }
+
+  .screenshot .label {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Headline styles */
+  .headline {
+    text-align: center;
+    font-weight: 800;
+    font-size: 34px;
+    line-height: 1.15;
+    color: #fff;
+    margin-top: 20px;
+    margin-bottom: 28px;
+    z-index: 2;
+  }
+
+  .headline em {
+    font-style: italic;
+    color: rgba(255,255,255,0.85);
+    /* Each screen overrides this */
+  }
+
+  /* Phone mockup */
+  .phone-frame {
+    width: 240px;
+    height: 490px;
+    background: #000;
+    border-radius: 36px;
+    padding: 12px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+  }
+
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: #F8F7F6;
+    border-radius: 26px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Dynamic Island */
+  .dynamic-island {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 24px;
+    background: #000;
+    border-radius: 12px;
+    z-index: 10;
+  }
+
+  /* Status bar */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px 0;
+    font-size: 11px;
+    font-weight: 600;
+    color: #2E2F2F;
+    height: 40px;
+  }
+
+  .status-bar .time { font-weight: 700; }
+  .status-bar .icons { display: flex; gap: 4px; font-size: 10px; }
+
+  /* Screen content area */
+  .screen-content {
+    padding: 8px 14px;
+    font-size: 9px;
+    color: #2E2F2F;
+    overflow: hidden;
+    height: calc(100% - 40px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Mini UI components for inside phone */
+  .mini-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .mini-header .logo {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 800;
+    font-size: 11px;
+    color: #1B6EF2;
+  }
+
+  .mini-header .logo .logo-icon {
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, #1B6EF2, #4D8FFF);
+    border-radius: 4px;
+  }
+
+  .mini-header .level-badge {
+    background: #EBF2FF;
+    color: #1B6EF2;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 8px;
+  }
+
+  .mini-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .mini-card-title {
+    font-weight: 700;
+    font-size: 10px;
+    margin-bottom: 2px;
+  }
+
+  .mini-card-sub {
+    font-size: 8px;
+    color: #8A8B8A;
+  }
+
+  .mini-score {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 8px;
+    font-size: 8px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .mini-score.green { background: #12B76A; }
+  .mini-score.amber { background: #F5A623; }
+  .mini-score.blue { background: #1B6EF2; }
+
+  .mini-streak {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #FFF6E5;
+    border-radius: 8px;
+    padding: 4px 8px;
+    margin-bottom: 8px;
+    font-size: 9px;
+    font-weight: 600;
+    color: #B87A0A;
+  }
+
+  .mini-capture-bar {
+    background: #fff;
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .mini-capture-bar .input {
+    font-size: 9px;
+    color: #8A8B8A;
+  }
+
+  .mini-capture-bar .btn {
+    background: #1B6EF2;
+    color: #fff;
+    font-size: 7px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+
+  .mini-display {
+    font-size: 14px;
+    font-weight: 800;
+    color: #2E2F2F;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  /* Tab bar */
+  .mini-tab-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 6px 0 4px;
+    background: rgba(248,247,246,0.9);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid #E3E2E0;
+    margin-top: auto;
+    font-size: 7px;
+    font-weight: 600;
+    color: #8A8B8A;
+  }
+
+  .mini-tab-bar .tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .mini-tab-bar .tab.active { color: #1B6EF2; }
+  .mini-tab-bar .tab.active-red { color: #E5432A; }
+
+  .mini-tab-bar .tab-icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  /* ===== SCREEN 1: Inbox ===== */
+  .screen-1 { background: #1B6EF2; }
+  .screen-1 .headline em { color: #A8C8FF; }
+
+  /* ===== SCREEN 2: Scoring ===== */
+  .screen-2 { background: #F5A623; }
+  .screen-2 .headline em { color: #FFF6E5; }
+
+  /* ===== SCREEN 3: Focus ===== */
+  .screen-3 { background: #12B76A; }
+  .screen-3 .headline em { color: #E6F7EF; }
+
+  /* ===== SCREEN 4: Duel ===== */
+  .screen-4 { background: #E5432A; }
+  .screen-4 .headline em { color: #FFB8AA; }
+
+  /* ===== SCREEN 5: Done ===== */
+  .screen-5 { background: #0A3578; }
+  .screen-5 .headline em { color: #A8C8FF; }
+
+  /* ===== SCREEN 6: Onboarding ===== */
+  .screen-6 { background: linear-gradient(160deg, #1B6EF2, #12B76A); }
+  .screen-6 .headline em { color: #E6F7EF; }
+
+  /* Scoring screen content */
+  .score-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid #12B76A;
+    background: rgba(18,183,106,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: #12B76A;
+    margin: 8px auto;
+  }
+
+  .slider-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #F1F0EF;
+    border-radius: 8px;
+    padding: 6px 8px;
+    margin-bottom: 4px;
+    font-size: 8px;
+    font-weight: 600;
+  }
+
+  .slider-track {
+    flex: 1;
+    height: 4px;
+    background: #E3E2E0;
+    border-radius: 2px;
+    margin: 0 6px;
+    position: relative;
+  }
+
+  .slider-fill {
+    height: 100%;
+    border-radius: 2px;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .slider-fill.blue { background: #1B6EF2; width: 70%; }
+  .slider-fill.red { background: #E5432A; width: 40%; }
+  .slider-fill.green { background: #12B76A; width: 80%; }
+
+  /* Progress ring */
+  .progress-ring-container {
+    width: 80px;
+    height: 80px;
+    margin: 4px auto 8px;
+    position: relative;
+  }
+
+  .progress-ring-bg {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 5px solid #EBF2FF;
+    position: absolute;
+  }
+
+  .progress-ring-fill {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 5px solid transparent;
+    border-top-color: #1B6EF2;
+    border-right-color: #1B6EF2;
+    border-bottom-color: #1B6EF2;
+    position: absolute;
+    transform: rotate(30deg);
+  }
+
+  .progress-ring-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    font-weight: 800;
+    color: #1B6EF2;
+  }
+
+  .progress-ring-label {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 6px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #8A8B8A;
+  }
+
+  /* Milestone */
+  .milestone-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 0;
+    font-size: 8px;
+    border-bottom: 1px solid #F1F0EF;
+  }
+
+  .milestone-check {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1.5px solid #E3E2E0;
+    flex-shrink: 0;
+  }
+
+  .milestone-check.done {
+    background: #12B76A;
+    border-color: #12B76A;
+  }
+
+  .milestone-text.done {
+    text-decoration: line-through;
+    color: #8A8B8A;
+  }
+
+  /* VS Card */
+  .vs-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .vs-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .vs-avatar.hero { background: linear-gradient(135deg, #1B6EF2, #4D8FFF); }
+  .vs-avatar.rival { background: linear-gradient(135deg, #E5432A, #FF6B52); }
+
+  .vs-score {
+    font-size: 18px;
+    font-weight: 800;
+    color: #2E2F2F;
+  }
+
+  .vs-label {
+    font-size: 7px;
+    font-weight: 600;
+    color: #8A8B8A;
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  /* Round card */
+  .round-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 6px 8px;
+    margin-bottom: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .round-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .round-name {
+    font-size: 8px;
+    font-weight: 700;
+  }
+
+  .round-result {
+    font-size: 6px;
+    font-weight: 700;
+    padding: 1px 4px;
+    border-radius: 4px;
+    color: #fff;
+  }
+
+  .round-result.win { background: #1B6EF2; }
+  .round-result.loss { background: #E5432A; }
+  .round-result.tie { background: #8A8B8A; }
+
+  .round-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .round-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 7px;
+  }
+
+  .round-bar-label {
+    width: 20px;
+    font-weight: 600;
+    color: #8A8B8A;
+  }
+
+  .round-bar-track {
+    flex: 1;
+    height: 4px;
+    background: #F1F0EF;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .round-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  .round-bar-fill.hero { background: #1B6EF2; }
+  .round-bar-fill.rival { background: rgba(229,67,42,0.4); }
+
+  .round-bar-value {
+    width: 16px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 7px;
+  }
+
+  /* Legacy stats */
+  .legacy-stats {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+
+  .legacy-stat {
+    flex: 1;
+    background: #fff;
+    border-radius: 8px;
+    padding: 6px 4px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .legacy-stat-value {
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  .legacy-stat-value.blue { color: #1B6EF2; }
+  .legacy-stat-value.green { color: #12B76A; }
+  .legacy-stat-value.dual {
+    background: linear-gradient(90deg, #1B6EF2, #E5432A);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .legacy-stat-label {
+    font-size: 7px;
+    font-weight: 600;
+    color: #8A8B8A;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Badge grid */
+  .badge-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+
+  .badge-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 2px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  .badge-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    margin-bottom: 3px;
+  }
+
+  .badge-icon.victory { background: rgba(18,183,106,0.15); color: #12B76A; }
+  .badge-icon.amber { background: rgba(245,166,35,0.15); color: #F5A623; }
+  .badge-icon.blue { background: rgba(27,110,242,0.15); color: #1B6EF2; }
+  .badge-icon.red { background: rgba(229,67,42,0.15); color: #E5432A; }
+  .badge-icon.locked { background: #F1F0EF; color: #C0C0C0; opacity: 0.5; }
+
+  .badge-name {
+    font-size: 6px;
+    font-weight: 600;
+    color: #5B5C5B;
+    text-align: center;
+  }
+
+  /* Completed quest card */
+  .completed-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .completed-card-date {
+    font-size: 6px;
+    font-weight: 700;
+    color: #8A8B8A;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1px;
+  }
+
+  .completed-card-title {
+    font-size: 9px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .completed-card-chips {
+    display: flex;
+    gap: 3px;
+  }
+
+  .chip {
+    font-size: 6px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: #fff;
+  }
+
+  .chip.green { background: #12B76A; }
+  .chip.blue { background: #1B6EF2; }
+
+  .completed-card-medal {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(18,183,106,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Onboarding screen content */
+  .onboarding-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px 12px;
+    text-align: center;
+    background: linear-gradient(180deg, #F8F7F6, #E6F7EF);
+  }
+
+  .onboarding-steps {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .onboarding-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .onboarding-step-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  .onboarding-step-icon.hero { background: rgba(27,110,242,0.15); color: #1B6EF2; }
+  .onboarding-step-icon.amber { background: rgba(245,166,35,0.15); color: #F5A623; }
+  .onboarding-step-icon.rival { background: rgba(229,67,42,0.15); color: #E5432A; }
+  .onboarding-step-icon.victory { background: rgba(18,183,106,0.15); color: #12B76A; }
+
+  .onboarding-step-label {
+    font-size: 7px;
+    font-weight: 700;
+    color: #5B5C5B;
+  }
+
+  .onboarding-connector {
+    width: 12px;
+    height: 1px;
+    border-top: 1.5px dashed #C0C0C0;
+    margin-bottom: 14px;
+  }
+
+  .onboarding-headline {
+    font-size: 14px;
+    font-weight: 800;
+    color: #2E2F2F;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .onboarding-body {
+    font-size: 9px;
+    color: #5B5C5B;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+
+  .onboarding-cta {
+    background: linear-gradient(135deg, #1B6EF2, #4D8FFF);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 8px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(27,110,242,0.3);
+  }
+
+  .onboarding-dots {
+    display: flex;
+    gap: 4px;
+    margin-top: 12px;
+  }
+
+  .onboarding-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: #C0C0C0;
+  }
+
+  .onboarding-dot.active {
+    width: 16px;
+    background: #12B76A;
+  }
+
+  /* Section label at bottom */
+  .screen-number {
+    position: absolute;
+    bottom: 12px;
+    font-size: 9px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+  }
+
+  /* Duel header */
+  .duel-header {
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .duel-header .subtitle {
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #E5432A;
+    margin-bottom: 2px;
+  }
+
+  .duel-header .title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #2E2F2F;
+    margin-bottom: 2px;
+  }
+
+  .duel-header .body {
+    font-size: 8px;
+    color: #8A8B8A;
+  }
+
+  /* Focus section */
+  .focus-label {
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #8A8B8A;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .focus-quest-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: #2E2F2F;
+    text-align: center;
+    margin-bottom: 2px;
+  }
+
+  .focus-quest-sub {
+    font-size: 8px;
+    color: #8A8B8A;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .milestones-container {
+    background: #F1F0EF;
+    border-radius: 10px;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+  }
+
+  .milestones-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .milestones-title {
+    font-size: 9px;
+    font-weight: 700;
+  }
+
+  .milestones-count {
+    font-size: 7px;
+    font-weight: 700;
+    background: #1B6EF2;
+    color: #fff;
+    padding: 1px 5px;
+    border-radius: 6px;
+  }
+
+  .focus-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+  .focus-btn {
+    padding: 6px;
+    border-radius: 8px;
+    font-size: 8px;
+    font-weight: 700;
+    text-align: center;
+    color: #fff;
+  }
+
+  .focus-btn.complete { background: #12B76A; }
+  .focus-btn.share { background: #1B6EF2; }
+
+  /* Scoring screen */
+  .scoring-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    color: #2E2F2F;
+    margin-bottom: 4px;
+  }
+
+  .scoring-idea-name {
+    font-size: 9px;
+    font-weight: 600;
+    text-align: center;
+    color: #5B5C5B;
+    margin-bottom: 4px;
+  }
+
+  .scoring-btn {
+    background: #1B6EF2;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 8px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  /* Done header */
+  .done-header {
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .done-header .subtitle {
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #12B76A;
+    margin-bottom: 2px;
+  }
+
+  .done-header .title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #2E2F2F;
+    margin-bottom: 2px;
+  }
+
+  .done-header .body {
+    font-size: 8px;
+    color: #8A8B8A;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">IdeaTamer — App Store Screenshots</h1>
+<p class="page-subtitle">6 screens at iPhone 6.7" aspect ratio (1290 &times; 2796) &mdash; reference mockups for theapplaunchpad.com</p>
+
+<div class="screenshots-row">
+
+  <!-- ===== SCREEN 1: INBOX ===== -->
+  <div class="screenshot screen-1">
+    <span class="label">1 / 6</span>
+    <div class="headline">
+      Stop collecting ideas.<br>Start <em>finishing</em> them.
+    </div>
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">&#9679;&#9679;&#9679;</span>
+        </div>
+        <div class="screen-content">
+          <div class="mini-header">
+            <div class="logo"><div class="logo-icon"></div> IdeaTamer</div>
+            <span class="level-badge">LVL 3</span>
+          </div>
+          <div class="mini-streak">&#128293; 5 Days</div>
+          <div class="mini-display">Master your<br>thoughts.</div>
+          <div class="mini-capture-bar">
+            <span class="input">Capture an idea...</span>
+            <span class="btn">+ 10 XP</span>
+          </div>
+          <div class="mini-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div class="mini-card-title">Build a habit tracker</div>
+                <div class="mini-card-sub">2 days ago</div>
+              </div>
+              <span class="mini-score green">82</span>
+            </div>
+          </div>
+          <div class="mini-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div class="mini-card-title">Launch podcast MVP</div>
+                <div class="mini-card-sub">3 days ago</div>
+              </div>
+              <span class="mini-score amber">56</span>
+            </div>
+          </div>
+          <div class="mini-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div class="mini-card-title">Redesign portfolio site</div>
+                <div class="mini-card-sub">5 days ago</div>
+              </div>
+              <span class="mini-score blue">34</span>
+            </div>
+          </div>
+          <div class="mini-tab-bar">
+            <div class="tab active">
+              <div class="tab-icon">&#9660;</div>
+              <span>Inbox</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9889;</div>
+              <span>Focus</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9876;</div>
+              <span>Duel</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9641;</div>
+              <span>Park</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#127942;</div>
+              <span>Done</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="screen-number">HERO &bull; INBOX</span>
+  </div>
+
+  <!-- ===== SCREEN 2: SCORING ===== -->
+  <div class="screenshot screen-2">
+    <span class="label">2 / 6</span>
+    <div class="headline">
+      Score every<br><em>idea</em>
+    </div>
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">&#9679;&#9679;&#9679;</span>
+        </div>
+        <div class="screen-content">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-size:9px;color:#1B6EF2;font-weight:600;">Cancel</span>
+            <span class="scoring-title">Score Idea</span>
+            <span style="width:30px;"></span>
+          </div>
+          <div class="scoring-idea-name">Build a habit tracker</div>
+          <div class="score-circle">82</div>
+          <div style="margin-top:8px;">
+            <div class="slider-row">
+              <span style="color:#1B6EF2;">Impact</span>
+              <div class="slider-track"><div class="slider-fill blue"></div></div>
+              <span>7</span>
+            </div>
+            <div class="slider-row">
+              <span style="color:#E5432A;">Effort</span>
+              <div class="slider-track"><div class="slider-fill red"></div></div>
+              <span>4</span>
+            </div>
+            <div class="slider-row">
+              <span style="color:#12B76A;">Alignment</span>
+              <div class="slider-track"><div class="slider-fill green"></div></div>
+              <span>8</span>
+            </div>
+          </div>
+          <div class="scoring-btn">&#10003; Score & Park &nbsp;&nbsp; +25 XP</div>
+          <div class="mini-tab-bar" style="margin-top:auto;">
+            <div class="tab active">
+              <div class="tab-icon">&#9660;</div>
+              <span>Inbox</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9889;</div>
+              <span>Focus</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9876;</div>
+              <span>Duel</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9641;</div>
+              <span>Park</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#127942;</div>
+              <span>Done</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="screen-number">SCORING &bull; MODAL</span>
+  </div>
+
+  <!-- ===== SCREEN 3: FOCUS ===== -->
+  <div class="screenshot screen-3">
+    <span class="label">3 / 6</span>
+    <div class="headline">
+      One quest<br>at a <em>time</em>
+    </div>
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">&#9679;&#9679;&#9679;</span>
+        </div>
+        <div class="screen-content">
+          <div class="mini-header">
+            <div class="logo"><div class="logo-icon"></div> IdeaTamer</div>
+            <span class="level-badge">LVL 3</span>
+          </div>
+          <div class="focus-label">CURRENT FOCUS</div>
+          <div class="progress-ring-container">
+            <div class="progress-ring-bg"></div>
+            <div class="progress-ring-fill"></div>
+            <span class="progress-ring-text">75%</span>
+            <span class="progress-ring-label">MASTERY</span>
+          </div>
+          <div class="mini-card" style="text-align:center;">
+            <div class="focus-quest-title">Build a habit tracker</div>
+            <div class="focus-quest-sub" style="margin:0;">Started 3 days ago &bull; +500 XP</div>
+          </div>
+          <div class="milestones-container">
+            <div class="milestones-header">
+              <span class="milestones-title">Milestones</span>
+              <span class="milestones-count">3/4</span>
+            </div>
+            <div class="milestone-row">
+              <div class="milestone-check done"></div>
+              <span class="milestone-text done">Design wireframes</span>
+            </div>
+            <div class="milestone-row">
+              <div class="milestone-check done"></div>
+              <span class="milestone-text done">Set up project</span>
+            </div>
+            <div class="milestone-row">
+              <div class="milestone-check done"></div>
+              <span class="milestone-text done">Build core tracking</span>
+            </div>
+            <div class="milestone-row">
+              <div class="milestone-check"></div>
+              <span class="milestone-text">Add streak rewards</span>
+            </div>
+          </div>
+          <div class="focus-btn complete">&#10003; Complete Quest &nbsp; +500 XP</div>
+          <div class="mini-tab-bar">
+            <div class="tab">
+              <div class="tab-icon">&#9660;</div>
+              <span>Inbox</span>
+            </div>
+            <div class="tab active">
+              <div class="tab-icon">&#9889;</div>
+              <span>Focus</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9876;</div>
+              <span>Duel</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9641;</div>
+              <span>Park</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#127942;</div>
+              <span>Done</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="screen-number">FOCUS &bull; QUEST</span>
+  </div>
+
+  <!-- ===== SCREEN 4: DUEL ===== -->
+  <div class="screenshot screen-4">
+    <span class="label">4 / 6</span>
+    <div class="headline">
+      Compete with<br><em>yourself</em>
+    </div>
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">&#9679;&#9679;&#9679;</span>
+        </div>
+        <div class="screen-content">
+          <div class="mini-header">
+            <div class="logo"><div class="logo-icon"></div> IdeaTamer</div>
+            <span class="level-badge">LVL 3</span>
+          </div>
+          <div class="duel-header">
+            <div class="subtitle">WEEKLY DUEL</div>
+            <div class="title">Compete with yourself.</div>
+            <div class="body">Beat the person you were 7 days ago.</div>
+          </div>
+          <div class="vs-card">
+            <div style="text-align:center;">
+              <div class="vs-avatar hero">Y</div>
+              <div class="vs-label">This week</div>
+            </div>
+            <div style="text-align:center;">
+              <div class="vs-score">3 : 1</div>
+              <div style="font-size:7px;color:#12B76A;font-weight:600;">You lead!</div>
+            </div>
+            <div style="text-align:center;">
+              <div class="vs-avatar rival">&#128100;</div>
+              <div class="vs-label">Past you</div>
+            </div>
+          </div>
+          <div class="round-card">
+            <div class="round-header">
+              <span class="round-name">&#9889; XP Earned</span>
+              <span class="round-result win">YOU WIN</span>
+            </div>
+            <div class="round-bars">
+              <div class="round-bar">
+                <span class="round-bar-label">You</span>
+                <div class="round-bar-track"><div class="round-bar-fill hero" style="width:80%;"></div></div>
+                <span class="round-bar-value">340</span>
+              </div>
+              <div class="round-bar">
+                <span class="round-bar-label">Past</span>
+                <div class="round-bar-track"><div class="round-bar-fill rival" style="width:50%;"></div></div>
+                <span class="round-bar-value">210</span>
+              </div>
+            </div>
+          </div>
+          <div class="round-card">
+            <div class="round-header">
+              <span class="round-name">&#10003; Milestones</span>
+              <span class="round-result win">YOU WIN</span>
+            </div>
+            <div class="round-bars">
+              <div class="round-bar">
+                <span class="round-bar-label">You</span>
+                <div class="round-bar-track"><div class="round-bar-fill hero" style="width:70%;"></div></div>
+                <span class="round-bar-value">5</span>
+              </div>
+              <div class="round-bar">
+                <span class="round-bar-label">Past</span>
+                <div class="round-bar-track"><div class="round-bar-fill rival" style="width:40%;"></div></div>
+                <span class="round-bar-value">3</span>
+              </div>
+            </div>
+          </div>
+          <div class="mini-tab-bar">
+            <div class="tab">
+              <div class="tab-icon">&#9660;</div>
+              <span>Inbox</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9889;</div>
+              <span>Focus</span>
+            </div>
+            <div class="tab active-red">
+              <div class="tab-icon">&#9876;</div>
+              <span>Duel</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9641;</div>
+              <span>Park</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#127942;</div>
+              <span>Done</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="screen-number">DUEL &bull; WEEKLY</span>
+  </div>
+
+  <!-- ===== SCREEN 5: DONE ===== -->
+  <div class="screenshot screen-5">
+    <span class="label">5 / 6</span>
+    <div class="headline">
+      Build your<br><em>legacy</em>
+    </div>
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">&#9679;&#9679;&#9679;</span>
+        </div>
+        <div class="screen-content">
+          <div class="mini-header">
+            <div class="logo"><div class="logo-icon"></div> IdeaTamer</div>
+            <span class="level-badge">LVL 3</span>
+          </div>
+          <div class="done-header">
+            <div class="subtitle">HALL OF FAME</div>
+            <div class="title">Your Legacy.</div>
+            <div class="body">Proof you beat yourself, again and again.</div>
+          </div>
+          <div class="legacy-stats">
+            <div class="legacy-stat">
+              <div class="legacy-stat-value blue">7</div>
+              <div class="legacy-stat-label">Shipped</div>
+            </div>
+            <div class="legacy-stat">
+              <div class="legacy-stat-value green">2.4k</div>
+              <div class="legacy-stat-label">XP</div>
+            </div>
+            <div class="legacy-stat">
+              <div class="legacy-stat-value dual">4-1</div>
+              <div class="legacy-stat-label">Duel W-L</div>
+            </div>
+          </div>
+          <div class="completed-card" style="border-left:2px solid #1B6EF2;">
+            <div>
+              <div class="completed-card-date">MAR 20, 2026</div>
+              <div class="completed-card-title">Build a habit tracker</div>
+              <div class="completed-card-chips">
+                <span class="chip green">+500 XP</span>
+                <span class="chip blue">12 days</span>
+              </div>
+            </div>
+            <div class="completed-card-medal">&#127941;</div>
+          </div>
+          <div class="completed-card">
+            <div>
+              <div class="completed-card-date">MAR 8, 2026</div>
+              <div class="completed-card-title">Launch podcast MVP</div>
+              <div class="completed-card-chips">
+                <span class="chip green">+500 XP</span>
+                <span class="chip blue">8 days</span>
+              </div>
+            </div>
+            <div class="completed-card-medal">&#127941;</div>
+          </div>
+          <div class="badge-grid">
+            <div class="badge-cell">
+              <div class="badge-icon victory">&#9876;</div>
+              <span class="badge-name">First Blood</span>
+            </div>
+            <div class="badge-cell">
+              <div class="badge-icon amber">&#128293;</div>
+              <span class="badge-name">Streak 7</span>
+            </div>
+            <div class="badge-cell">
+              <div class="badge-icon blue">&#9889;</div>
+              <span class="badge-name">Super Focus</span>
+            </div>
+            <div class="badge-cell">
+              <div class="badge-icon red">&#127942;</div>
+              <span class="badge-name">Self Surpassed</span>
+            </div>
+            <div class="badge-cell">
+              <div class="badge-icon locked">&#11088;</div>
+              <span class="badge-name">Polisher</span>
+            </div>
+            <div class="badge-cell">
+              <div class="badge-icon locked">&#127763;</div>
+              <span class="badge-name">Moonshot</span>
+            </div>
+          </div>
+          <div class="mini-tab-bar">
+            <div class="tab">
+              <div class="tab-icon">&#9660;</div>
+              <span>Inbox</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9889;</div>
+              <span>Focus</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9876;</div>
+              <span>Duel</span>
+            </div>
+            <div class="tab">
+              <div class="tab-icon">&#9641;</div>
+              <span>Park</span>
+            </div>
+            <div class="tab active" style="color:#12B76A;">
+              <div class="tab-icon">&#127942;</div>
+              <span>Done</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="screen-number">DONE &bull; HALL OF FAME</span>
+  </div>
+
+  <!-- ===== SCREEN 6: ONBOARDING ===== -->
+  <div class="screenshot screen-6">
+    <span class="label">6 / 6</span>
+    <div class="headline">
+      Capture. Score.<br>Focus. <em>Ship.</em>
+    </div>
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="dynamic-island"></div>
+        <div class="status-bar">
+          <span class="time">9:41</span>
+          <span class="icons">&#9679;&#9679;&#9679;</span>
+        </div>
+        <div class="onboarding-content">
+          <div class="onboarding-steps">
+            <div class="onboarding-step">
+              <div class="onboarding-step-icon hero">&#128161;</div>
+              <span class="onboarding-step-label">Capture</span>
+            </div>
+            <div class="onboarding-connector"></div>
+            <div class="onboarding-step">
+              <div class="onboarding-step-icon amber">&#128202;</div>
+              <span class="onboarding-step-label">Score</span>
+            </div>
+            <div class="onboarding-connector"></div>
+            <div class="onboarding-step">
+              <div class="onboarding-step-icon rival">&#9876;</div>
+              <span class="onboarding-step-label">Focus</span>
+            </div>
+            <div class="onboarding-connector"></div>
+            <div class="onboarding-step">
+              <div class="onboarding-step-icon victory">&#127942;</div>
+              <span class="onboarding-step-label">Ship</span>
+            </div>
+          </div>
+          <div class="onboarding-headline">Capture. Score.<br>Focus. <strong>Ship.</strong></div>
+          <div class="onboarding-body">One quest at a time. Earn XP.<br>Beat your shadow. Share your wins.</div>
+          <div class="onboarding-cta">Start Your Journey</div>
+          <div class="onboarding-dots">
+            <div class="onboarding-dot"></div>
+            <div class="onboarding-dot"></div>
+            <div class="onboarding-dot active"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="screen-number">ONBOARDING &bull; FLOW</span>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -9,6 +9,7 @@ struct FocusView: View {
     @State private var showXPFloat = false
     @State private var xpAmount = 0
     @State private var showCompleteConfirm = false
+    @State private var showTargetDatePicker = false
 
     var body: some View {
         ZStack {
@@ -79,10 +80,14 @@ struct FocusView: View {
             }
 
             questStats(quest: quest)
+            targetDateRow(quest: quest)
         }
         .padding(20)
         .background(Color.card, in: RoundedRectangle(cornerRadius: 24))
         .shadow(color: Color.heroDeep.opacity(0.07), radius: 14, y: 4)
+        .sheet(isPresented: $showTargetDatePicker) {
+            targetDatePicker(quest: quest)
+        }
     }
 
     // MARK: - Stats
@@ -126,6 +131,93 @@ struct FocusView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
         .background(Color.surfaceLow, in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    // MARK: - Target Date
+
+    private func targetDateRow(quest: Idea) -> some View {
+        Button { showTargetDatePicker = true } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "calendar.badge.clock")
+                    .foregroundStyle(quest.targetDate != nil ? Color.streak : Color.textLight)
+                    .font(.subheadline)
+
+                if let target = quest.targetDate, let activated = quest.activatedAt {
+                    let totalDays = max(1, Date.daysBetween(activated, and: target))
+                    let elapsed = Date.daysBetween(activated, and: .now)
+                    let remaining = max(0, totalDays - elapsed)
+
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text("TARGET")
+                            .font(.brand(.label))
+                            .textCase(.uppercase)
+                            .tracking(1)
+                            .foregroundStyle(Color.textLight)
+                        Text("Day \(min(elapsed, totalDays)) of \(totalDays) — \(remaining) left")
+                            .font(.brand(.body))
+                            .fontWeight(.bold)
+                            .foregroundStyle(remaining <= 2 ? Color.rival : Color.textPrimary)
+                    }
+                } else {
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text("TARGET")
+                            .font(.brand(.label))
+                            .textCase(.uppercase)
+                            .tracking(1)
+                            .foregroundStyle(Color.textLight)
+                        Text("Set a deadline")
+                            .font(.brand(.body))
+                            .foregroundStyle(Color.textMid)
+                    }
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(Color.textLight)
+            }
+            .padding(12)
+            .background(Color.surfaceLow, in: RoundedRectangle(cornerRadius: 12))
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func targetDatePicker(quest: Idea) -> some View {
+        NavigationStack {
+            VStack(spacing: 20) {
+                DatePicker(
+                    "Target Date",
+                    selection: Binding(
+                        get: { quest.targetDate ?? Calendar.current.date(byAdding: .day, value: 14, to: .now)! },
+                        set: { viewModel?.setTargetDate($0, for: quest) }
+                    ),
+                    in: Date.now...,
+                    displayedComponents: .date
+                )
+                .datePickerStyle(.graphical)
+                .tint(Color.hero)
+
+                if quest.targetDate != nil {
+                    Button("Remove Deadline") {
+                        viewModel?.setTargetDate(nil, for: quest)
+                        showTargetDatePicker = false
+                    }
+                    .foregroundStyle(Color.rival)
+                    .font(.brand(.body))
+                    .fontWeight(.semibold)
+                }
+
+                Spacer()
+            }
+            .padding(20)
+            .navigationTitle("Set Target Date")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { showTargetDatePicker = false }
+                }
+            }
+        }
+        .presentationDetents([.medium])
     }
 
     // MARK: - Milestones

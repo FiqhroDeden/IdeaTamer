@@ -6,7 +6,8 @@ struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var currentPage = 0
 
-    private let pageColors: [Color] = [.hero, .rival, .victory]
+    private let pageCount = 5
+    private let pageColors: [Color] = [.hero, .streak, .rival, .victory, .hero]
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -15,10 +16,14 @@ struct OnboardingView: View {
                     .tag(0)
                 OnboardingPage2()
                     .tag(1)
-                OnboardingPage3 {
+                OnboardingPage3()
+                    .tag(2)
+                OnboardingPage4()
+                    .tag(3)
+                OnboardingPage5 {
                     completeOnboarding()
                 }
-                .tag(2)
+                .tag(4)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .ignoresSafeArea()
@@ -37,7 +42,7 @@ struct OnboardingView: View {
     private var topBar: some View {
         HStack {
             Spacer()
-            if currentPage < 2 {
+            if currentPage < pageCount - 1 {
                 Button("Skip") {
                     completeOnboarding()
                 }
@@ -54,7 +59,7 @@ struct OnboardingView: View {
 
     private var pageIndicator: some View {
         HStack(spacing: 8) {
-            ForEach(0..<3, id: \.self) { index in
+            ForEach(0..<pageCount, id: \.self) { index in
                 Capsule()
                     .fill(index == currentPage ? pageColors[index] : Color.textPrimary.opacity(0.15))
                     .frame(width: index == currentPage ? 24 : 8, height: 8)

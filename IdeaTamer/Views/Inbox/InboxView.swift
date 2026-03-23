@@ -19,6 +19,7 @@ struct InboxView: View {
     @State private var filter: InboxFilter = .all
     @State private var showUndoToast = false
     @State private var deletedIdea: Idea?
+    @State private var activationError: String?
 
     enum InboxFilter: String, CaseIterable {
         case all = "All"
@@ -44,7 +45,7 @@ struct InboxView: View {
     var body: some View {
         ZStack(alignment: .top) {
             mainContent
-            XPFloatView(amount: 10, isShowing: $showXPFloat)
+            XPFloatView(amount: XP.capture, isShowing: $showXPFloat)
                 .padding(.top, 60)
 
             // Undo toast at bottom
@@ -70,6 +71,14 @@ struct InboxView: View {
         .sheet(item: $selectedIdeaForScoring) { idea in
             ScoringSheet(idea: idea)
                 .presentationDetents([.medium, .large])
+        }
+        .alert("Cannot Activate", isPresented: .init(
+            get: { activationError != nil },
+            set: { if !$0 { activationError = nil } }
+        )) {
+            Button("OK") { activationError = nil }
+        } message: {
+            Text(activationError ?? "")
         }
     }
 
@@ -101,8 +110,8 @@ struct InboxView: View {
                     .foregroundStyle(Color.textPrimary)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                QuickCaptureBar(showXPFloat: $showXPFloat) { title in
-                    viewModel?.captureIdea(title: title)
+                QuickCaptureBar(showXPFloat: $showXPFloat, isAtCap: viewModel?.isInboxFull ?? false) { title in
+                    _ = try? viewModel?.captureIdea(title: title)
                 }
 
                 CapturePaceIndicator()
@@ -187,7 +196,23 @@ struct InboxView: View {
                     Button {
                         selectedIdeaForScoring = idea
                     } label: {
-                        Label("Score Idea", systemImage: "slider.horizontal.3")
+                        Label(idea.isScored ? "Re-score" : "Score Idea", systemImage: "slider.horizontal.3")
+                    }
+                    if idea.isScored {
+                        Button {
+                            do {
+                                try viewModel?.activateIdea(idea)
+                            } catch {
+                                activationError = error.localizedDescription
+                            }
+                        } label: {
+                            Label("Activate Quest", systemImage: "bolt.fill")
+                        }
+                        Button {
+                            viewModel?.parkIdea(idea)
+                        } label: {
+                            Label("Park Idea", systemImage: "square.grid.2x2")
+                        }
                     }
                     Button(role: .destructive) {
                         softDeleteIdea(idea)
@@ -237,8 +262,8 @@ struct InboxView: View {
                 gradientColors: [Color.heroBG, Color.surface]
             )
             Spacer()
-            QuickCaptureBar(showXPFloat: $showXPFloat) { title in
-                viewModel?.captureIdea(title: title)
+            QuickCaptureBar(showXPFloat: $showXPFloat, isAtCap: viewModel?.isInboxFull ?? false) { title in
+                _ = try? viewModel?.captureIdea(title: title)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)

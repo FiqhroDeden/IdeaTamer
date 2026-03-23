@@ -148,7 +148,7 @@ struct ActiveQuestMediumView: View {
         VStack(alignment: .leading, spacing: 8) {
             statRow(icon: "star.fill", label: "XP", value: "\(data.totalXP)", color: Color.victory)
             statRow(icon: "shield.fill", label: "Lv.\(data.currentLevel)", value: data.levelTitle, color: Color.hero)
-            statRow(icon: "flame.fill", label: "Streak", value: "\(data.captureStreakCount)d", color: Color.streak)
+            statRow(icon: "flame.fill", label: "Focus", value: "\(data.focusStreakCount)d", color: Color.streak)
             statRow(icon: "trophy.fill", label: "Done", value: "\(data.questsCompletedCount)", color: Color.victory)
         }
     }

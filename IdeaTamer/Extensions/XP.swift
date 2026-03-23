@@ -3,14 +3,14 @@ import Foundation
 enum XP {
     // MARK: - XP Award Constants
 
-    static let capture = 10
+    static let capture = 5
     static let score = 25
-    static let milestone = 50
+    static let milestone = 75
     static let questComplete = 500
     static let duelWin = 200
     static let duelDraw = 50
-    static let captureStreak = 15
-    static let focusStreak = 20
+    static let captureStreak = 10
+    static let focusStreak = 30
 
     // MARK: - Level Formula
 

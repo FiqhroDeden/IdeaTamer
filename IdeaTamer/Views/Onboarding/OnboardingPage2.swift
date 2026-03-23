@@ -6,7 +6,7 @@ struct OnboardingPage2: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [Color.surface, Color.rivalBG],
+                colors: [Color.surface, Color.streakBG],
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -14,70 +14,64 @@ struct OnboardingPage2: View {
 
             VStack(spacing: 0) {
                 Spacer()
-                vsIllustration
+                stepFlow
                 content
                 Spacer()
                 Spacer()
             }
-            .padding(.horizontal, 40)
+            .padding(.horizontal, 32)
         }
-        .onAppear { animate = true }
+        .onAppear {
+            withAnimation(.easeOut(duration: 0.8).delay(0.3)) {
+                animate = true
+            }
+        }
     }
 
-    // MARK: - VS Illustration
+    // MARK: - Step Flow
 
-    private var vsIllustration: some View {
-        HStack(spacing: 20) {
-            avatarColumn(
-                letter: "Y",
-                label: "You now",
-                color: Color.hero,
-                floatUp: true
-            )
-
-            Text("VS")
-                .font(.custom("PlusJakartaSans-ExtraBold", size: 20))
-                .foregroundStyle(Color.textPrimary.opacity(0.2))
-
-            avatarColumn(
-                letter: nil,
-                label: "Past you",
-                color: Color.rival,
-                floatUp: false
-            )
+    private var stepFlow: some View {
+        HStack(spacing: 8) {
+            stepIcon(icon: "lightbulb.fill", color: Color.hero, label: "Capture", step: 1)
+            dottedLine
+            stepIcon(icon: "chart.bar.fill", color: Color.streak, label: "Score", step: 2)
+            dottedLine
+            stepIcon(icon: "bolt.fill", color: Color.rival, label: "Focus", step: 3)
+            dottedLine
+            stepIcon(icon: "trophy.fill", color: Color.victory, label: "Ship", step: 4)
         }
-        .frame(height: 160)
         .padding(.bottom, 24)
     }
 
-    private func avatarColumn(letter: String?, label: String, color: Color, floatUp: Bool) -> some View {
-        VStack(spacing: 8) {
+    private func stepIcon(icon: String, color: Color, label: String, step: Int) -> some View {
+        VStack(spacing: 6) {
             ZStack {
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(LinearGradient(colors: [color, color.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .frame(width: 64, height: 64)
-                    .shadow(color: color.opacity(0.25), radius: 8)
-
-                if let letter {
-                    Text(letter)
-                        .font(.system(size: 24, weight: .black))
-                        .foregroundStyle(.white)
-                } else {
-                    Image(systemName: "person.fill")
-                        .font(.system(size: 24))
-                        .foregroundStyle(.white)
-                }
+                    .fill(Color.card)
+                    .frame(width: 48, height: 48)
+                    .shadow(color: color.opacity(0.15), radius: 6)
+                Image(systemName: icon)
+                    .font(.system(size: 18))
+                    .foregroundStyle(color)
             }
-            .offset(y: animate ? (floatUp ? -6 : 6) : (floatUp ? 6 : -6))
-            .animation(.easeInOut(duration: 3).repeatForever(autoreverses: true), value: animate)
+            .scaleEffect(animate ? 1 : 0.6)
+            .opacity(animate ? 1 : 0)
+            .animation(.spring(response: 0.5, dampingFraction: 0.7).delay(Double(step) * 0.15), value: animate)
 
             Text(label)
-                .font(.brand(.label))
+                .font(.system(size: 9, weight: .bold))
                 .textCase(.uppercase)
                 .tracking(1)
-                .fontWeight(.bold)
-                .foregroundStyle(color)
+                .foregroundStyle(Color.textMid)
         }
+    }
+
+    private var dottedLine: some View {
+        Rectangle()
+            .stroke(style: StrokeStyle(lineWidth: 1, dash: [3, 3]))
+            .foregroundStyle(Color.textPrimary.opacity(0.15))
+            .frame(width: 16, height: 1)
+            .padding(.bottom, 20)
     }
 
     // MARK: - Content
@@ -85,18 +79,18 @@ struct OnboardingPage2: View {
     private var content: some View {
         VStack(spacing: 12) {
             VStack(spacing: 4) {
-                Text("Your only rival")
+                Text("Capture. Score.")
                 HStack(spacing: 0) {
-                    Text("is ")
-                    Text("yesterday's you.")
-                        .foregroundStyle(Color.rival)
+                    Text("Focus. ")
+                    Text("Ship.")
+                        .foregroundStyle(Color.victory)
                 }
             }
             .font(.custom("PlusJakartaSans-ExtraBold", size: 26))
             .foregroundStyle(Color.textPrimary)
             .multilineTextAlignment(.center)
 
-            Text("Every week, you duel your past self. Beat them in XP, milestones, and streaks to **level up.**")
+            Text("Score your ideas to find the best one. Activate it as your quest. Complete milestones. **Ship it.**")
                 .font(.brand(.body))
                 .foregroundStyle(Color.textMid)
                 .multilineTextAlignment(.center)

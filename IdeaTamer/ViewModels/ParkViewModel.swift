@@ -10,6 +10,15 @@ final class ParkViewModel {
         self.modelContext = modelContext
     }
 
+    // MARK: - Staleness
+
+    static let staleDays = 30
+
+    func isStale(_ idea: Idea) -> Bool {
+        let cutoff = Calendar.current.date(byAdding: .day, value: -Self.staleDays, to: .now) ?? .now
+        return idea.createdAt < cutoff
+    }
+
     // MARK: - Actions
 
     func activateIdea(_ idea: Idea) throws {

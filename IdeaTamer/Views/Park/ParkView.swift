@@ -132,16 +132,53 @@ struct ParkView: View {
     private var ideaCards: some View {
         LazyVStack(spacing: 8) {
             ForEach(Array(sortedIdeas.enumerated()), id: \.element.id) { index, idea in
-                Button {
-                    selectedIdea = idea
-                } label: {
-                    RankedQuestCard(idea: idea, rank: index + 1) {
-                        activateIdea(idea)
+                VStack(spacing: 0) {
+                    if viewModel?.isStale(idea) == true {
+                        staleBanner(for: idea)
                     }
+                    Button {
+                        selectedIdea = idea
+                    } label: {
+                        RankedQuestCard(idea: idea, rank: index + 1) {
+                            activateIdea(idea)
+                        }
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
             }
         }
+    }
+
+    // MARK: - Stale Banner
+
+    private func staleBanner(for idea: Idea) -> some View {
+        HStack(spacing: 6) {
+            Image(systemName: "clock.arrow.circlepath")
+                .font(.caption2)
+            Text("Parked 30+ days — still relevant?")
+                .font(.brand(.label))
+            Spacer()
+            Button("Keep") {
+                Haptics.light()
+                // Touch createdAt to reset staleness clock
+                idea.createdAt = .now
+            }
+            .font(.brand(.label))
+            .fontWeight(.bold)
+            .foregroundStyle(Color.streakDim)
+            Button("Remove") {
+                Haptics.light()
+                viewModel?.deleteIdea(idea)
+            }
+            .font(.brand(.label))
+            .fontWeight(.bold)
+            .foregroundStyle(Color.rivalMid)
+        }
+        .foregroundStyle(Color.streakDim)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(Color.streakBG, in: RoundedRectangle(cornerRadius: 8))
+        .padding(.bottom, 4)
     }
 
     // MARK: - Empty State

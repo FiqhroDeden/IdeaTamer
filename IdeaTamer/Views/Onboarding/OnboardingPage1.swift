@@ -28,7 +28,7 @@ struct OnboardingPage1: View {
 
     private var illustration: some View {
         ZStack {
-            // Center person
+            // Center person overwhelmed
             RoundedRectangle(cornerRadius: 16)
                 .fill(Color.hero.opacity(0.1))
                 .frame(width: 80, height: 80)
@@ -40,7 +40,7 @@ struct OnboardingPage1: View {
                 .offset(y: animate ? -4 : 4)
                 .animation(.easeInOut(duration: 3).repeatForever(autoreverses: true), value: animate)
 
-            // Floating bubbles
+            // Floating lightbulbs — too many ideas
             floatingBubble(icon: "lightbulb", color: Color.rival, x: -60, y: -50, delay: 0.2)
             floatingBubble(icon: "lightbulb", color: Color.streak, x: 55, y: -40, delay: 0.8)
             floatingBubble(icon: "lightbulb", color: Color.hero, x: -50, y: 40, delay: 0.5)

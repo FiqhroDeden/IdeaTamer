@@ -28,6 +28,7 @@ enum DuelService {
             xpEarned: tracker.xpEarned,
             milestonesCompleted: tracker.milestonesCompleted,
             ideasCaptured: tracker.ideasCaptured,
+            questsCompleted: tracker.questsCompleted,
             streakDays: tracker.streakDays
         )
 
@@ -75,8 +76,8 @@ enum DuelService {
         if current.milestonesCompleted > previous.milestonesCompleted { won += 1 }
         else if current.milestonesCompleted < previous.milestonesCompleted { lost += 1 }
 
-        if current.ideasCaptured > previous.ideasCaptured { won += 1 }
-        else if current.ideasCaptured < previous.ideasCaptured { lost += 1 }
+        if current.questsCompleted > previous.questsCompleted { won += 1 }
+        else if current.questsCompleted < previous.questsCompleted { lost += 1 }
 
         if current.streakDays > previous.streakDays { won += 1 }
         else if current.streakDays < previous.streakDays { lost += 1 }
@@ -88,11 +89,11 @@ enum DuelService {
         current: CurrentWeekTracker,
         previous: WeeklySnapshot?
     ) -> [DuelRound] {
-        let past = previous ?? WeeklySnapshot(weekStartDate: .now, xpEarned: 0, milestonesCompleted: 0, ideasCaptured: 0, streakDays: 0)
+        let past = previous ?? WeeklySnapshot(weekStartDate: .now, xpEarned: 0, milestonesCompleted: 0, ideasCaptured: 0, questsCompleted: 0, streakDays: 0)
         return [
             DuelRound(name: "XP Earned", icon: "bolt.fill", currentValue: current.xpEarned, pastValue: past.xpEarned),
             DuelRound(name: "Milestones", icon: "checkmark.circle.fill", currentValue: current.milestonesCompleted, pastValue: past.milestonesCompleted),
-            DuelRound(name: "Ideas Captured", icon: "lightbulb.fill", currentValue: current.ideasCaptured, pastValue: past.ideasCaptured),
+            DuelRound(name: "Quests Shipped", icon: "checkmark.seal.fill", currentValue: current.questsCompleted, pastValue: past.questsCompleted),
             DuelRound(name: "Streak Days", icon: "flame.fill", currentValue: current.streakDays, pastValue: past.streakDays),
         ]
     }

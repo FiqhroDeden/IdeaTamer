@@ -17,6 +17,24 @@ struct DoneView: View {
     @State private var showConfetti = false
     @State private var showXPFloat = false
     @State private var selectedQuest: Idea?
+    @State private var sortMode: DoneSort = .recent
+
+    enum DoneSort: String, CaseIterable {
+        case recent = "Recent"
+        case fastest = "Fastest"
+        case mostXP = "Most XP"
+    }
+
+    private var sortedIdeas: [Idea] {
+        switch sortMode {
+        case .recent:
+            return completedIdeas.sorted { ($0.completedAt ?? .distantPast) > ($1.completedAt ?? .distantPast) }
+        case .fastest:
+            return completedIdeas.sorted { ($0.completionDays ?? Int.max) < ($1.completionDays ?? Int.max) }
+        case .mostXP:
+            return completedIdeas.sorted { $0.xpEarned > $1.xpEarned }
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -28,7 +46,7 @@ struct DoneView: View {
                 }
             }
             ConfettiView(isShowing: $showConfetti)
-            XPFloatView(amount: 500, isShowing: $showXPFloat)
+            XPFloatView(amount: XP.questComplete, isShowing: $showXPFloat)
                 .padding(.top, 100)
         }
         .task { loadStats() }
@@ -50,6 +68,7 @@ struct DoneView: View {
                 VStack(spacing: 16) {
                     header
                     legacyStats
+                    sortPicker
                     questCards
                     badgeSection
                 }
@@ -90,15 +109,40 @@ struct DoneView: View {
         )
     }
 
+    // MARK: - Sort Picker
+
+    private var sortPicker: some View {
+        HStack(spacing: 8) {
+            ForEach(DoneSort.allCases, id: \.self) { mode in
+                Button {
+                    withAnimation(.springFast) { sortMode = mode }
+                    Haptics.selection()
+                } label: {
+                    Text(mode.rawValue)
+                        .font(.brand(.label))
+                        .fontWeight(.bold)
+                        .foregroundStyle(sortMode == mode ? .white : Color.textMid)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(
+                            sortMode == mode ? Color.victory : Color.surfaceLow,
+                            in: Capsule()
+                        )
+                }
+            }
+            Spacer()
+        }
+    }
+
     // MARK: - Quest Cards
 
     private var questCards: some View {
         LazyVStack(spacing: 8) {
-            ForEach(Array(completedIdeas.enumerated()), id: \.element.id) { index, idea in
+            ForEach(Array(sortedIdeas.enumerated()), id: \.element.id) { index, idea in
                 Button {
                     selectedQuest = idea
                 } label: {
-                    CompletedQuestCard(idea: idea, isLatest: index == 0)
+                    CompletedQuestCard(idea: idea, isLatest: sortMode == .recent && index == 0)
                 }
                 .buttonStyle(.plain)
             }

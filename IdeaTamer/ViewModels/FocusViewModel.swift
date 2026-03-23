@@ -41,10 +41,21 @@ final class FocusViewModel {
         WidgetService.updateWidgetData(context: modelContext)
     }
 
+    func setTargetDate(_ date: Date?, for idea: Idea) {
+        idea.targetDate = date
+        if let date {
+            NotificationService.scheduleTargetDateReminder(questTitle: idea.title, targetDate: date)
+        } else {
+            NotificationService.cancelTargetDateReminders()
+        }
+    }
+
     func parkQuest(_ idea: Idea) {
         idea.status = .parked
         idea.activatedAt = nil
         activeQuest = nil
+        NotificationService.cancelTargetDateReminders()
+        NotificationService.cancelQuestNudge()
         WidgetService.updateWidgetData(context: modelContext)
     }
 
@@ -60,6 +71,7 @@ final class FocusViewModel {
         let tracker = CurrentWeekTracker.fetchOrCreate(context: modelContext)
 
         profile.questsCompletedCount += 1
+        tracker.questsCompleted += 1
         lastXPEvent = XPService.awardQuestComplete(profile: profile, tracker: tracker)
         idea.xpEarned += XP.questComplete
         newBadges = BadgeService.evaluate(profile: profile, idea: idea)
@@ -69,6 +81,8 @@ final class FocusViewModel {
         }
 
         activeQuest = nil
+        NotificationService.cancelTargetDateReminders()
+        NotificationService.cancelQuestNudge()
         WidgetService.updateWidgetData(context: modelContext)
     }
 
@@ -97,6 +111,7 @@ final class FocusViewModel {
             NotificationCenter.default.post(name: .leveledUp, object: newLevel)
         }
 
+        NotificationService.resetQuestNudge()
         WidgetService.updateWidgetData(context: modelContext)
     }
 

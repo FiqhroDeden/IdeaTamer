@@ -14,8 +14,8 @@ enum BadgeService {
             newBadges.append(.firstBlood)
         }
 
-        // 7-Day Streak
-        if !profile.hasBadge(.streak7) && profile.captureStreakCount >= 7 {
+        // 7-Day Focus Streak
+        if !profile.hasBadge(.streak7) && profile.focusStreakCount >= 7 {
             profile.unlockBadge(.streak7)
             newBadges.append(.streak7)
         }
@@ -47,8 +47,8 @@ enum BadgeService {
             newBadges.append(.moonshot)
         }
 
-        // Streak Master — 30-day capture streak
-        if !profile.hasBadge(.streakMaster) && profile.captureStreakCount >= 30 {
+        // Streak Master — 30-day focus streak
+        if !profile.hasBadge(.streakMaster) && profile.focusStreakCount >= 30 {
             profile.unlockBadge(.streakMaster)
             newBadges.append(.streakMaster)
         }

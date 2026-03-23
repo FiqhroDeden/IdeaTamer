@@ -43,7 +43,7 @@ struct SettingsView: View {
                         Text("Streak Reminders")
                             .font(.brand(.body))
                             .fontWeight(.semibold)
-                        Text("Daily reminder to keep your streak")
+                        Text("Daily reminder to make progress")
                             .font(.brand(.caption))
                             .foregroundStyle(Color.textLight)
                     }

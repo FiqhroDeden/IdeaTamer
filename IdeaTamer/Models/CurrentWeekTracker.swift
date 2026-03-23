@@ -7,6 +7,7 @@ final class CurrentWeekTracker {
     var xpEarned: Int
     var milestonesCompleted: Int
     var ideasCaptured: Int
+    var questsCompleted: Int
     var streakDays: Int
 
     init() {
@@ -14,6 +15,7 @@ final class CurrentWeekTracker {
         self.xpEarned = 0
         self.milestonesCompleted = 0
         self.ideasCaptured = 0
+        self.questsCompleted = 0
         self.streakDays = 0
     }
 
@@ -37,6 +39,7 @@ final class CurrentWeekTracker {
         self.xpEarned = 0
         self.milestonesCompleted = 0
         self.ideasCaptured = 0
+        self.questsCompleted = 0
         self.streakDays = 0
     }
 }

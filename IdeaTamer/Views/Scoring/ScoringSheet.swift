@@ -139,7 +139,7 @@ private struct ScoringContent: View {
         } label: {
             HStack(spacing: 6) {
                 Image(systemName: "checkmark.circle.fill")
-                Text("Score & Park")
+                Text("Save Score")
                     .fontWeight(.bold)
                 Text("+25 XP")
                     .font(.brand(.label))

@@ -417,69 +417,83 @@ After 12+ months of consecutive subscription, Apple's cut drops further for subs
 
 ## 6. Free vs Pro Feature Split
 
+### 6.0 Golden Rule: Never Take Away What's Already Free
+
+IdeaTamer v1.0 launches as 100% free. When Pro is introduced in v1.1, **no existing feature gets locked.** Pro only adds NEW features and EXPANDED limits. This prevents "bait and switch" backlash and respects early adopters.
+
+Users who installed v1.0 are **"Founding Users"** — they keep ALL v1.0 features unlimited, forever.
+
 ### 6.1 Design Principles for the Split
 
-1. **Free must be genuinely useful** — not a crippled demo. Users should be able to capture, score, and complete quests entirely for free.
-2. **The "aha moment" must be free** — the first quest completion with XP celebration is the hook.
-3. **Pro gates the "I need more" moment** — when users want to compete with themselves, track history, or share achievements.
-4. **No artificial friction in free** — don't nag, don't show disabled buttons everywhere. Free feels complete, just limited in scope.
+1. **Free must be genuinely useful** — not a crippled demo. Users should be able to capture, score, complete quests, duel, earn badges, and share — entirely for free.
+2. **The "aha moment" must be free** — the first quest completion, first duel, first badge — all free.
+3. **Pro adds new layers on top** — not locks on existing features. Enhanced duel history, analytics, templates, streak freeze.
+4. **No artificial friction in free** — don't nag, don't show disabled buttons everywhere. Free feels complete.
+5. **Grandfathering** — v1.0 users keep unlimited milestones and inbox even after Pro is introduced.
 
-### 6.2 Feature Matrix
+### 6.2 Grandfathering Strategy
 
-| Feature | Free | Pro |
-|---------|------|-----|
-| **Core Loop** | | |
-| Quick idea capture | ✅ | ✅ |
-| Idea scoring (Impact/Effort/Alignment) | ✅ | ✅ |
-| 1 active quest at a time | ✅ | ✅ |
-| Milestones per quest | 5 max | Unlimited |
-| Inbox capacity | 10 ideas | 25 ideas |
-| Park (vault) | ✅ | ✅ |
-| Done (hall of fame) | ✅ | ✅ |
-| **Gamification** | | |
-| XP earning | ✅ | ✅ |
-| Level progression | ✅ | ✅ |
-| Level-up celebrations | ✅ | ✅ |
-| Capture streak tracking | ✅ | ✅ |
-| Focus streak tracking | Basic (count only) | Full (history + comparison) |
-| **Streak freeze** (pause streak 1x/month) | ❌ | ✅ |
-| **Weekly Duel** | | |
-| Duel banner (teaser — "See how you compare") | Teaser only | ✅ Full |
-| VS card & round-by-round results | ❌ | ✅ |
-| Momentum score | ❌ | ✅ |
-| Duel history (W/L/D record) | ❌ | ✅ |
-| Duel XP rewards (+200 win, +50 draw) | ❌ | ✅ |
-| **Badges** | | |
-| First Blood badge (first quest complete) | ✅ | ✅ |
-| All other badges | Locked (visible but grayed) | ✅ Full |
-| Badge grid display | ✅ (shows what you could earn) | ✅ |
-| **Social & Sharing** | | |
-| Share quest completion | Basic (text only) | Premium card |
-| Share duel results | ❌ | ✅ |
-| Share badges | ❌ | ✅ |
-| Custom share card templates | ❌ | ✅ |
-| **Analytics & Insights** | | |
-| Basic XP total | ✅ | ✅ |
-| XP chart over time | ❌ | ✅ |
-| Completion rate trends | ❌ | ✅ |
-| Weekly productivity insights | ❌ | ✅ |
-| Quest completion time tracking | Basic | Detailed with comparison |
-| **Customization** | | |
-| App icon alternatives | Default only | Multiple options |
-| Theme variations | Default only | Dark, OLED, custom accent |
-| **Widgets** | | |
-| Active quest widget | ✅ | ✅ |
-| Streak widget | ❌ | ✅ |
-| Duel status widget | ❌ | ✅ |
+| User Type | How to Identify | Privileges |
+|-----------|----------------|------------|
+| **Founding User** (installed v1.0) | `PlayerProfile.isFoundingUser == true` | All v1.0 features unlimited forever + Pro adds only new features |
+| **New Free User** (installed v1.1+) | `PlayerProfile.isFoundingUser == false` | Full core experience but with limits (5 milestones, 10 inbox) |
+| **Pro User** (any) | Active subscription or lifetime purchase | Everything unlimited + all new features |
 
-### 6.3 Why This Split Works
+**Implementation (at v1.1 launch):**
+- If `PlayerProfile` already exists when v1.1 runs → set `isFoundingUser = true` (existing user)
+- If `PlayerProfile` is newly created → `isFoundingUser = false` (new install)
 
-- **Free users get hooked** on the capture → score → execute → celebrate loop
-- **XP and leveling are free** — the dopamine loop must not be gated
-- **Weekly Duel is the conversion driver** — it's the feature you can't get anywhere else, and it provides ongoing value (justifying ongoing subscription)
-- **Badge visibility creates curiosity** — seeing grayed-out badges triggers completionist desire
-- **Share cards as social proof** — Pro users generate organic marketing content
+### 6.3 Feature Matrix
+
+**Three columns: what v1.0 founding users keep, what new free users get, what Pro adds.**
+
+| Feature | Founding User (v1.0) | New Free User (v1.1+) | Pro |
+|---------|---------------------|----------------------|-----|
+| **CORE (free for everyone, always)** | | | |
+| Quick idea capture + scoring | ✅ | ✅ | ✅ |
+| 1 active quest at a time | ✅ | ✅ | ✅ |
+| XP, levels, level-up celebrations | ✅ | ✅ | ✅ |
+| Park (vault) + Done (hall of fame) | ✅ | ✅ | ✅ |
+| Capture + focus streak tracking | ✅ | ✅ | ✅ |
+| **DUEL (v1.0 features free, enhancements Pro)** | | | |
+| Weekly Duel (4 rounds, VS card, result) | ✅ | ✅ | ✅ |
+| Momentum score | ✅ | ✅ | ✅ |
+| Share duel result | ✅ | ✅ | ✅ |
+| Duel history (current week) | ✅ | ✅ | ✅ |
+| **Duel full history (all weeks, trend chart)** | ❌ NEW | ❌ NEW | ✅ Pro |
+| **Duel insights (best week, win streak, trends)** | ❌ NEW | ❌ NEW | ✅ Pro |
+| **BADGES (v1.0 badges free)** | | | |
+| All 7 original badges | ✅ | ✅ | ✅ |
+| **Future new badge drops (8+)** | ❌ NEW | ❌ NEW | ✅ Pro |
+| **SHARING (v1.0 sharing free, templates Pro)** | | | |
+| Share cards (current v1.0 design) | ✅ | ✅ | ✅ |
+| **Premium share templates (seasonal, custom)** | ❌ NEW | ❌ NEW | ✅ Pro |
+| **LIMITS (grandfathered for v1.0 users)** | | | |
+| Milestones per quest | Unlimited (grandfathered) | 5 max | Unlimited |
+| Inbox capacity | Unlimited (grandfathered) | 10 ideas | 25 ideas |
+| **WIDGETS (v1.0 widget free, new widgets Pro)** | | | |
+| Active quest widget | ✅ | ✅ | ✅ |
+| **Streak widget** | ❌ NEW | ❌ NEW | ✅ Pro |
+| **Duel status widget** | ❌ NEW | ❌ NEW | ✅ Pro |
+| **100% NEW FEATURES (Pro for everyone)** | | | |
+| **Analytics Dashboard (XP charts, trends)** | ❌ NEW | ❌ NEW | ✅ Pro |
+| **Streak Freeze (2x/month)** | ❌ NEW | ❌ NEW | ✅ Pro |
+| **Quest Templates (6+ presets)** | ❌ NEW | ❌ NEW | ✅ Pro |
+| **Daily Reflection Prompt** | ❌ NEW | ❌ NEW | ✅ Pro |
+| **Monthly Challenges** | ❌ NEW | ❌ NEW | ✅ Pro |
+| **App icon alternatives** | ❌ NEW | ❌ NEW | ✅ Pro |
+| **Theme customization** | ❌ NEW | ❌ NEW | ✅ Pro |
+
+### 6.4 Why This Split Works
+
+- **Zero backlash** — nothing is taken away from any user, ever
+- **Free users get the full core experience** — capture, score, quest, duel, badges, share. This is a complete app, not a trial.
+- **Founding users feel rewarded** — "I got unlimited everything because I was early" creates loyalty and evangelism
+- **Pro is genuinely new value** — analytics, templates, streak freeze, duel insights are features that don't exist yet. Users pay for NEW things, not unlocking OLD things.
+- **XP and leveling stay free** — the dopamine loop must never be gated
+- **Duel stays free** — users experience it, love it, then want MORE (history, insights) → natural conversion
 - **Streak freeze reduces churn** — Pro subscribers who would otherwise rage-quit over a broken streak stay subscribed
+- **Premium share templates = organic marketing** — Pro users generate branded content that markets the app
 
 ---
 
@@ -489,14 +503,16 @@ After 12+ months of consecutive subscription, Apple's cut drops further for subs
 
 **Never on first launch.** RevenueCat data shows showing paywall on first launch reduces conversion by 50%+.
 
-| Trigger | When | Why It Works |
-|---------|------|-------------|
-| **First quest completion** | After user finishes their first quest | User has proven engagement + feels the "win" |
-| **First Monday** | When the weekly duel would start | "Your rival is ready — upgrade to see how you compare" |
-| **Badge unlock (locked)** | When user earns a badge they can't see | Curiosity trigger: "You earned something! Upgrade to reveal" |
-| **Streak at 7 days** | When capture/focus streak hits 7 | "You're on fire! Protect your streak with Streak Freeze — included in Pro" |
-| **Second quest activation** | When user activates their second quest | User is committed to the app |
-| **Share attempt** | When user tries to share (free = text only) | "Upgrade for beautiful share cards" |
+Since the duel and core features are FREE, paywall triggers are contextual — they appear when users encounter NEW Pro features:
+
+| Trigger | When | Copy |
+|---------|------|------|
+| **Duel insights teaser** | After viewing weekly duel result | "Want to see your full duel history and trend insights? Try Pro." |
+| **6th milestone** (new free user) | When trying to add milestone #6 | "Upgrade for unlimited milestones." |
+| **Streak break** | When a streak resets | "Wish you had a Streak Freeze? Included in Pro." |
+| **Quest template preview** | When viewing templates | "Jumpstart your quest with Pro templates." |
+| **Premium share template** | When sharing a completed quest | "Try premium share card designs with Pro." |
+| **11th idea** (new free user) | When inbox hits limit | "Expand your inbox to 25 ideas with Pro." |
 
 ### 7.2 Paywall Presentation
 
@@ -504,7 +520,7 @@ After 12+ months of consecutive subscription, Apple's cut drops further for subs
 
 Design principles:
 1. Show a beautiful, non-intrusive "Upgrade to Pro" card — not a full-screen blocker
-2. Highlight 3 key benefits: Weekly Duel, Badges, Share Cards
+2. Highlight 3 key benefits: Analytics, Streak Freeze, Duel Insights
 3. Show pricing with annual highlighted (save 44%)
 4. Include 7-day free trial CTA
 5. Easy dismiss — one tap, no guilt-tripping
@@ -512,17 +528,17 @@ Design principles:
 
 ### 7.3 Paywall Copy Framework
 
-**Hero headline:** "Compete with your past self."
+**Hero headline:** "Go deeper. Get better."
 
-**Subheadline:** "Unlock Weekly Duels, all badges, and premium share cards."
+**Subheadline:** "Unlock Analytics, Streak Freeze, Duel Insights, Templates, and more."
 
 **Benefits (3 pillars):**
 
 | Icon | Benefit | Description |
 |------|---------|-------------|
-| ⚔️ | Weekly Duel | Race your past self every week. Win 3+ rounds to earn bonus XP. |
-| 🏅 | Full Badge Collection | Unlock all 7+ achievement badges. Share your victories. |
-| 📊 | Insights & Analytics | Track your productivity trends. See how you improve over time. |
+| 📊 | Analytics & Insights | See your XP trends, completion rates, and productivity score over time. |
+| 🛡️ | Streak Freeze | Protect your streak on busy days. 2 freezes per month. |
+| ⚔️ | Duel History & Insights | Full duel history, winning streaks, and "best week" analysis. |
 
 **CTA:** "Try Pro Free for 7 Days"
 
@@ -532,23 +548,25 @@ Design principles:
 
 ### 7.4 Conversion Optimization Tactics
 
-1. **Onboarding mention:** During onboarding page 2 (the "Your rival is yesterday's you" page), subtly introduce the duel concept. Plant the seed but don't paywall yet.
-2. **Duel teaser in free tier:** Show the duel banner on Inbox with "Your past self scored 120 XP last week. Can you beat it? [Upgrade to find out]". This creates ongoing FOMO.
-3. **Badge grid visibility:** Show all badges in the Done tab — locked ones are visible but grayed with a small "Pro" tag. Completionists will convert.
-4. **Share card preview:** When a free user tries to share, show a preview of the premium card design before prompting upgrade.
-5. **Weekly email/notification:** If notifications are enabled, send "Your weekly duel is ready!" as a retention + conversion touchpoint (Pro users get the full duel; free users get the upgrade prompt).
+1. **Duel as the gateway:** Users already love the free duel. After seeing their result, show a teaser: "You've won 4 out of 6 duels! See your full trend → [Pro]". Natural upsell from engaged behavior.
+2. **Premium share card preview:** When sharing, show a split preview: current design vs premium template. "Upgrade for seasonal and custom designs."
+3. **Streak break moment:** The moment a streak resets is emotionally charged. A gentle "This wouldn't have happened with Streak Freeze" is highly effective.
+4. **Analytics teaser on Done tab:** Show a blurred/preview chart in the Done section: "Track your growth over time → [Pro]".
+5. **Template showcase:** When activating a quest, show template options with Pro badge. User sees the value but can still proceed with custom (free).
 6. **Price anchor against competitors:** On the paywall, show: "Less than the cost of one coffee per month" or compare to Habitica ($48/yr) and Todoist ($60/yr).
 
 ### 7.5 Anti-Patterns to Avoid
 
 | Don't | Why |
 |-------|-----|
+| **Don't lock existing v1.0 features** | "Bait and switch" = 1-star reviews and App Store backlash |
 | Don't paywall before 3–5 sessions | User hasn't felt value yet — will just uninstall |
 | Don't show paywall on every app open | Nag fatigue → 1-star reviews |
 | Don't make free tier feel broken | Frustrated users don't convert, they leave |
 | Don't guilt-trip on dismissal | "You're missing out!" → negative brand perception |
 | Don't hide the dismiss button | Dark pattern → App Store rejection risk + 1-star reviews |
 | Don't lock XP/leveling behind Pro | The dopamine loop must be free to create habit |
+| Don't lock the duel behind Pro | It's the signature feature — free users must experience it to love it |
 
 ---
 

@@ -185,39 +185,55 @@ struct InboxView: View {
 
     private var questsSection: some View {
         VStack(spacing: 8) {
-            ForEach(filteredIdeas) { idea in
-                Button {
-                    selectedIdeaForScoring = idea
-                } label: {
-                    IdeaCard(idea: idea)
+            if filteredIdeas.isEmpty && !ideas.isEmpty {
+                VStack(spacing: 8) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.title2)
+                        .foregroundStyle(Color.textLight)
+                    Text("No ideas match")
+                        .font(.brand(.headline))
+                        .foregroundStyle(Color.textMid)
+                    Text("Try adjusting your search or filter")
+                        .font(.brand(.body))
+                        .foregroundStyle(Color.textLight)
                 }
-                .buttonStyle(.plain)
-                .contextMenu {
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 40)
+            } else {
+                ForEach(filteredIdeas) { idea in
                     Button {
                         selectedIdeaForScoring = idea
                     } label: {
-                        Label(idea.isScored ? "Re-score" : "Score Idea", systemImage: "slider.horizontal.3")
+                        IdeaCard(idea: idea)
                     }
-                    if idea.isScored {
+                    .buttonStyle(.plain)
+                    .contextMenu {
                         Button {
-                            do {
-                                try viewModel?.activateIdea(idea)
-                            } catch {
-                                activationError = error.localizedDescription
+                            selectedIdeaForScoring = idea
+                        } label: {
+                            Label(idea.isScored ? "Re-score" : "Score Idea", systemImage: "slider.horizontal.3")
+                        }
+                        if idea.isScored {
+                            Button {
+                                do {
+                                    try viewModel?.activateIdea(idea)
+                                } catch {
+                                    activationError = error.localizedDescription
+                                }
+                            } label: {
+                                Label("Activate Quest", systemImage: "bolt.fill")
                             }
-                        } label: {
-                            Label("Activate Quest", systemImage: "bolt.fill")
+                            Button {
+                                viewModel?.parkIdea(idea)
+                            } label: {
+                                Label("Park Idea", systemImage: "square.grid.2x2")
+                            }
                         }
-                        Button {
-                            viewModel?.parkIdea(idea)
+                        Button(role: .destructive) {
+                            softDeleteIdea(idea)
                         } label: {
-                            Label("Park Idea", systemImage: "square.grid.2x2")
+                            Label("Delete", systemImage: "trash")
                         }
-                    }
-                    Button(role: .destructive) {
-                        softDeleteIdea(idea)
-                    } label: {
-                        Label("Delete", systemImage: "trash")
                     }
                 }
             }
@@ -252,8 +268,7 @@ struct InboxView: View {
     // MARK: - Empty State
 
     private var emptyState: some View {
-        VStack(spacing: 24) {
-            Spacer()
+        ZStack(alignment: .bottom) {
             EmptyStateView(
                 systemImage: "lightbulb.max",
                 title: "Your journey starts here",
@@ -261,7 +276,7 @@ struct InboxView: View {
                 iconColor: Color.hero,
                 gradientColors: [Color.heroBG, Color.surface]
             )
-            Spacer()
+
             QuickCaptureBar(showXPFloat: $showXPFloat, isAtCap: viewModel?.isInboxFull ?? false) { title in
                 _ = try? viewModel?.captureIdea(title: title)
             }

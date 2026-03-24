@@ -74,13 +74,13 @@ struct XPLevelTests {
     // MARK: - XP Constants
 
     @Test func xpConstants_areCorrect() {
-        #expect(XP.capture == 10)
+        #expect(XP.capture == 5)
         #expect(XP.score == 25)
-        #expect(XP.milestone == 50)
+        #expect(XP.milestone == 75)
         #expect(XP.questComplete == 500)
         #expect(XP.duelWin == 200)
         #expect(XP.duelDraw == 50)
-        #expect(XP.captureStreak == 15)
-        #expect(XP.focusStreak == 20)
+        #expect(XP.captureStreak == 10)
+        #expect(XP.focusStreak == 30)
     }
 }

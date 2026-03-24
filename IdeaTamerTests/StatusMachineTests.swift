@@ -50,7 +50,7 @@ struct StatusMachineTests {
 
     // MARK: - Status Transitions
 
-    @Test func scoring_movesInboxToParked() throws {
+    @Test func scoring_savesScoreWithoutParking() throws {
         let container = try makeContainer()
         let context = container.mainContext
         let vm = ScoringViewModel(modelContext: context)
@@ -60,7 +60,7 @@ struct StatusMachineTests {
         #expect(idea.status == .inbox)
 
         vm.saveScore(for: idea)
-        #expect(idea.status == .parked)
+        #expect(idea.status == .inbox) // stays in inbox after scoring
         #expect(idea.computedScore != nil)
         #expect(idea.impactScore == 5) // default slider
     }
